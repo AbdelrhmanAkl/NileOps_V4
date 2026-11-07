@@ -45,3 +45,4 @@ class AuthenticationException(NileOpsException):
             detail=detail,
             error_code="AUTHENTICATION_FAILED",
         )
+

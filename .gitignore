@@ -72,6 +72,13 @@ models/
 *.pt
 *.pth
 
+# Binaries, Executables & Runtime Storage
+bin/
+data/
+*.exe
+*.zip
+*.tar.gz
+
 # Database & Container Data
 postgres_data/
 qdrant_data/
@@ -90,3 +97,4 @@ desktop.ini
 # Privacy Boundary Protection (Never commit uploaded physical ID images or raw scans)
 .user_uploaded/
 *.log
+

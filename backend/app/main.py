@@ -1,10 +1,29 @@
 """NileOps Intelligent Digital Banking Operations Platform — FastAPI Application Entry Point."""
 
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.v1.auth import seed_demo_data
 from app.api.v1.router import api_v1_router
 from app.core.config import settings
+from app.db.session import async_session_maker, init_db
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application startup and shutdown lifecycle handler."""
+    # 1. Initialize database tables
+    await init_db()
+
+    # 2. Automatically seed demo data on fresh SQLite database
+    async with async_session_maker() as session:
+        try:
+            await seed_demo_data(session)
+        except Exception as e:
+            print(f"[NileOps Startup] Demo seeder notice: {e}")
+
+    yield
 
 
 def create_application() -> FastAPI:
@@ -15,6 +34,7 @@ def create_application() -> FastAPI:
         description="Bilingual Intelligent Digital Banking Operations Platform (Simulation: NileOps Demo Bank)",
         docs_url="/docs" if settings.DEBUG else None,
         redoc_url="/redoc" if settings.DEBUG else None,
+        lifespan=lifespan,
     )
 
     # CORS Middleware configuration
@@ -34,6 +54,7 @@ def create_application() -> FastAPI:
             "status": "healthy",
             "service": "NileOps Backend",
             "version": "1.0.0",
+            "database": "SQLite Async MVP",
         }
 
     # Root redirect / greeting
