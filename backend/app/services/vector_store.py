@@ -5,6 +5,8 @@ chunk ingestion with 4-eyes governance validation, portal filtering,
 and PostgreSQL-Qdrant consistency reconciliation.
 """
 
+import os
+import sys
 import uuid
 from typing import Any, Dict, List, Optional, Tuple
 from qdrant_client import QdrantClient
@@ -20,11 +22,28 @@ COLLECTION_NAME = "nileops_kb"
 
 
 class QdrantVectorService:
-    def __init__(self, host_url: str = settings.QDRANT_URL):
+    def __init__(self, host_url: str = settings.QDRANT_URL, collection_name: Optional[str] = None):
         self.url = host_url
         self.client = QdrantClient(url=self.url, check_compatibility=False)
-        self.collection_name = COLLECTION_NAME
+        self.collection_name = collection_name or os.getenv("QDRANT_COLLECTION", COLLECTION_NAME)
         self.initialized = False
+        self._check_test_isolation_guard()
+
+    def _check_test_isolation_guard(self) -> None:
+        """Strict hard-fail guard ensuring tests NEVER write to production collection."""
+        db_url = os.getenv("DATABASE_URL", "")
+        is_testing = (
+            "pytest" in sys.modules
+            or "nileops_test" in db_url
+            or os.getenv("PYTEST_CURRENT_TEST") is not None
+            or os.getenv("NILEOPS_TEST_MODE") == "1"
+        )
+        if is_testing and not self.collection_name.endswith("_test"):
+            raise RuntimeError(
+                f"CRITICAL TEST ISOLATION FAILURE: Qdrant collection is '{self.collection_name}', "
+                f"but MUST end with '_test' (e.g. 'nileops_kb_test') in test environments! "
+                f"Production collection '{COLLECTION_NAME}' is strictly protected."
+            )
 
     async def init_collection(self) -> bool:
         """Dynamically discover embedding dimension and create collection if missing."""
@@ -223,7 +242,15 @@ class QdrantVectorService:
                 models.FieldCondition(key="portal_access", match=models.MatchValue(value="customer"))
             )
 
-        query_filter = models.Filter(must=filter_conditions)
+        # Defense-in-Depth Guard: Exclude synthetic/test policies at vector query time
+        must_not_conditions: List[models.Condition] = [
+            models.FieldCondition(key="code", match=models.MatchText(text="POL-TEST"))
+        ]
+
+        query_filter = models.Filter(
+            must=filter_conditions,
+            must_not=must_not_conditions,
+        )
 
         res = self.client.query_points(
             collection_name=self.collection_name,
@@ -236,11 +263,16 @@ class QdrantVectorService:
         results = []
         for hit in res.points:
             payload = hit.payload or {}
+            code = payload.get("code") or ""
+            # Secondary defense-in-depth guard: ignore any test policy codes
+            if code.startswith("POL-TEST-"):
+                continue
+
             results.append(
                 {
                     "score": round(float(hit.score), 4),
                     "document_id": payload.get("document_id"),
-                    "code": payload.get("code"),
+                    "code": code,
                     "title": payload.get("title_ar") if payload.get("language") == "ar" else payload.get("title_en"),
                     "title_en": payload.get("title_en"),
                     "title_ar": payload.get("title_ar"),

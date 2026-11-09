@@ -1,0 +1,131 @@
+{
+  "stats": {
+    "total": 46,
+    "passed": 43,
+    "failed": 3,
+    "abstention_correct": 11,
+    "abstention_total": 12,
+    "isolation_verified": 6,
+    "isolation_total": 6,
+    "citation_accuracy": 26,
+    "retrieval_total": 28
+  },
+  "samples": [
+    {
+      "id": "C-AR-01",
+      "query": "ما هو الحد الأدنى لفتح حساب جاري للأفراد في بنك النيل؟",
+      "portal": "customer",
+      "lang": "ar",
+      "abstained": false,
+      "score": 0.4945,
+      "citations": [
+        "POL-RETAIL-001",
+        "POL-TEST-B1852B",
+        "POL-TEST-D5179B"
+      ],
+      "answer_preview": "بناءً على السياسة البنكية المعتمدة (إرشادات فتح حسابات الودائع للأفراد والحد الأدنى للرصيد - رمز POL-RETAIL-001):\n\nيجوز للعملاء الأفراد فتح حسابات جار"
+    },
+    {
+      "id": "C-AR-02",
+      "query": "ما هي المستندات المطلوبة من المواطن المصري لفتح حساب بنكي؟",
+      "portal": "customer",
+      "lang": "ar",
+      "abstained": false,
+      "score": 0.2156,
+      "citations": [
+        "POL-TEST-B1852B",
+        "POL-TEST-D5179B",
+        "POL-RETAIL-001"
+      ],
+      "answer_preview": "بناءً على السياسة البنكية المعتمدة (سياسة تسوية منازعات الصراف الآلي - رمز POL-TEST-B1852B):\n\nيجب تسوية أخطاء السحب من ماكينات الصراف الآلي وقيد المبا"
+    },
+    {
+      "id": "C-AR-03",
+      "query": "هل يشترط إثبات الدخل لفتح حساب التوفير للأفراد؟",
+      "portal": "customer",
+      "lang": "ar",
+      "abstained": false,
+      "score": 0.258,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "answer_preview": "بناءً على السياسة البنكية المعتمدة (إرشادات فتح حسابات الودائع للأفراد والحد الأدنى للرصيد - رمز POL-RETAIL-001):\n\nيجوز للعملاء الأفراد فتح حسابات جار"
+    },
+    {
+      "id": "C-AR-04",
+      "query": "ما هي مدة تسوية خطأ سحب ماكينة الصراف الآلي وقيد المبلغ؟",
+      "portal": "customer",
+      "lang": "ar",
+      "abstained": false,
+      "score": 0.5415,
+      "citations": [
+        "POL-TEST-B1852B",
+        "POL-TEST-D5179B"
+      ],
+      "answer_preview": "بناءً على السياسة البنكية المعتمدة (سياسة تسوية منازعات الصراف الآلي - رمز POL-TEST-B1852B):\n\nيجب تسوية أخطاء السحب من ماكينات الصراف الآلي وقيد المبا"
+    },
+    {
+      "id": "C-AR-05",
+      "query": "كيف يتم التعامل مع شكاوى ماكينات الصراف الآلي؟",
+      "portal": "customer",
+      "lang": "ar",
+      "abstained": false,
+      "score": 0.3726,
+      "citations": [
+        "POL-TEST-B1852B",
+        "POL-TEST-D5179B"
+      ],
+      "answer_preview": "بناءً على السياسة البنكية المعتمدة (سياسة تسوية منازعات الصراف الآلي - رمز POL-TEST-B1852B):\n\nيجب تسوية أخطاء السحب من ماكينات الصراف الآلي وقيد المبا"
+    },
+    {
+      "id": "C-AR-06",
+      "query": "إجراءات تسوية منازعات أجهزة الصراف الآلي",
+      "portal": "customer",
+      "lang": "ar",
+      "abstained": false,
+      "score": 0.3528,
+      "citations": [
+        "POL-TEST-B1852B",
+        "POL-TEST-D5179B"
+      ],
+      "answer_preview": "بناءً على السياسة البنكية المعتمدة (سياسة تسوية منازعات الصراف الآلي - رمز POL-TEST-B1852B):\n\nيجب تسوية أخطاء السحب من ماكينات الصراف الآلي وقيد المبا"
+    },
+    {
+      "id": "E-AR-04",
+      "query": "ما هي القنوات السرية المعتمدة لتقديم بلاغات الفساد المالي؟",
+      "portal": "employee",
+      "lang": "ar",
+      "abstained": true,
+      "score": 0.0,
+      "citations": [],
+      "answer_preview": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك."
+    },
+    {
+      "id": "E-MUL-04",
+      "query": "إجراءات العناية الواجبة ومكافحة غسل الأموال مع الإبلاغ عن المخالفات",
+      "portal": "employee",
+      "lang": "ar",
+      "abstained": false,
+      "score": 0.2803,
+      "citations": [
+        "POL-TEST-9AF9FB",
+        "POL-TEST-38C190",
+        "POL-TEST-70D4C1"
+      ],
+      "answer_preview": "بناءً على السياسة البنكية المعتمدة (سياسة حماية المبلغين عن المخالفات - رمز POL-TEST-9AF9FB):\n\nيجوز للموظفين الإبلاغ بسرية عن أي أنشطة مشبوهة دون خوف "
+    },
+    {
+      "id": "E-ABS-02",
+      "query": "What are the statutory reserve requirements for interplanetary commercial banks?",
+      "portal": "employee",
+      "lang": "en",
+      "abstained": false,
+      "score": 0.2373,
+      "citations": [
+        "POL-RETAIL-001",
+        "POL-KYC-001"
+      ],
+      "answer_preview": "Based on the approved banking policy (Retail Deposit Accounts Opening & Minimum Balance Guidelines - Code POL-RETAIL-001):\n\nRetail customers may open "
+    }
+  ]
+}

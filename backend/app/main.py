@@ -50,11 +50,12 @@ def create_application() -> FastAPI:
     @app.get("/health", tags=["Health"], summary="System Health Status")
     async def health_check():
         """Unauthenticated health status probe."""
+        db_type = "PostgreSQL 16" if "postgresql" in settings.DATABASE_URL else "SQLite Async MVP"
         return {
             "status": "healthy",
             "service": "NileOps Backend",
             "version": "1.0.0",
-            "database": "SQLite Async MVP",
+            "database": db_type,
         }
 
     # Root redirect / greeting

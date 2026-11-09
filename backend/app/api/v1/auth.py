@@ -190,7 +190,7 @@ async def seed_demo_data(db: AsyncSession = Depends(get_db)):
     db.add_all([acc1, acc2, acc3, acc4])
     await db.flush()
 
-    # 3. Synthetic Transactions for Ahmed Mansour
+    # 3. Synthetic Transactions for Ahmed Mansour (Chronologically spaced timestamps)
     txns = [
         Transaction(
             id="txn-001",
@@ -203,6 +203,7 @@ async def seed_demo_data(db: AsyncSession = Depends(get_db)):
             description_ar="تحويل راتب شهري — شركة نايل تك",
             counterparty="Nile Tech Payroll",
             status="COMPLETED",
+            timestamp=datetime(2026, 11, 1, 9, 30, 0, tzinfo=timezone.utc),
         ),
         Transaction(
             id="txn-002",
@@ -215,6 +216,7 @@ async def seed_demo_data(db: AsyncSession = Depends(get_db)):
             description_ar="سداد فاتورة الكهرباء والمرافق (فوري)",
             counterparty="South Cairo Electricity Co.",
             status="COMPLETED",
+            timestamp=datetime(2026, 11, 3, 14, 15, 0, tzinfo=timezone.utc),
         ),
         Transaction(
             id="txn-003",
@@ -227,6 +229,7 @@ async def seed_demo_data(db: AsyncSession = Depends(get_db)):
             description_ar="سحب نقدي من الصراف الآلي — فرع الزمالك #04",
             counterparty="NileOps ATM Zamalek",
             status="COMPLETED",
+            timestamp=datetime(2026, 11, 5, 18, 45, 0, tzinfo=timezone.utc),
         ),
         Transaction(
             id="txn-004",
@@ -239,6 +242,7 @@ async def seed_demo_data(db: AsyncSession = Depends(get_db)):
             description_ar="إضافة العائد الشهري لحساب التوفير عالي العائد",
             counterparty="NileOps Treasury Operations",
             status="COMPLETED",
+            timestamp=datetime(2026, 11, 6, 0, 1, 0, tzinfo=timezone.utc),
         ),
     ]
     db.add_all(txns)

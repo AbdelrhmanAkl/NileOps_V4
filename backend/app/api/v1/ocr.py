@@ -53,3 +53,66 @@ async def process_synthetic_card(
     )
     return result
 
+
+MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10 MB limit
+JPEG_MAGIC = b"\xFF\xD8\xFF"
+PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
+WEBP_RIFF = b"RIFF"
+WEBP_MAGIC = b"WEBP"
+
+
+def is_valid_image_header(content: bytes) -> bool:
+    """Validate image magic bytes for JPEG, PNG, or WebP without trusting RIFF alone."""
+    if len(content) < 12:
+        return False
+    if content.startswith(JPEG_MAGIC):
+        return True
+    if content.startswith(PNG_MAGIC):
+        return True
+    if content[:4] == WEBP_RIFF and content[8:12] == WEBP_MAGIC:
+        return True
+    return False
+
+
+@router.post("/process-image-card")
+async def process_image_card(
+    file: UploadFile = File(..., description="JPEG/PNG/WebP image of Egyptian National ID front"),
+    comparison_id: Optional[str] = Form(None, description="Optional comparison National ID for cross-field consistency check"),
+):
+    """Process an image file through real computer vision OCR and 9D validation with strict security guards."""
+    content = await file.read()
+    if len(content) > MAX_UPLOAD_SIZE:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=f"File size exceeds maximum permitted limit of {MAX_UPLOAD_SIZE // (1024 * 1024)}MB.",
+        )
+
+    if len(content) < 12:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="File content is too small to be a valid image.",
+        )
+
+    if not is_valid_image_header(content):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid image format. Expected verified JPEG, PNG, or WebP magic bytes.",
+        )
+
+    case_id = f"case-{uuid.uuid4().hex[:8]}"
+    from app.services.image_pipeline import image_ocr_pipeline
+    result = image_ocr_pipeline.process_image(
+        image_input=content,
+        case_id=case_id,
+        comparison_id=comparison_id,
+    )
+
+    if result.get("ingestion_status") == "FAIL":
+        err_msg = result.get("error", "Image decoding failed.")
+        if "dimensions" in err_msg.lower():
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=err_msg)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=err_msg)
+
+    return result
+
+

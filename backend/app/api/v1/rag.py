@@ -5,8 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.v1.auth import get_current_user
-from app.db.session import get_db_session
+from app.api.deps import get_current_user, get_db_session, get_optional_user
 from app.models.user import User
 from app.services.rag import rag_service
 from app.services.vector_store import qdrant_service
@@ -28,6 +27,7 @@ class CitationItem(BaseModel):
     version: str
     portal_access: str
     score: float
+    passage: Optional[str] = None
 
 
 class RAGQueryResponse(BaseModel):
@@ -37,12 +37,29 @@ class RAGQueryResponse(BaseModel):
     answer: str
     confidence_score: float
     abstained: bool
+    fallback_used: bool = False
     citations: List[CitationItem]
 
 
 @router.post("/ask", response_model=RAGQueryResponse)
-async def ask_banking_assistant(payload: RAGQueryRequest):
-    """Ask the NileOps RAG banking assistant with strict portal isolation and citations."""
+async def ask_banking_assistant(
+    payload: RAGQueryRequest,
+    current_user: Optional[User] = Depends(get_optional_user),
+):
+    """Ask the NileOps RAG banking assistant with strict portal isolation, RBAC, and citations."""
+    # RBAC: Access to internal employee policies strictly requires employee authentication
+    if payload.portal_type == "employee":
+        if not current_user:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Authentication required: Employee session needed to access internal staff policies.",
+            )
+        if current_user.user_type != "employee":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied: Customers are strictly forbidden from querying employee policies.",
+            )
+
     response = await rag_service.retrieve_and_generate(
         query=payload.query,
         portal_type=payload.portal_type,

@@ -6,6 +6,7 @@ and verifiable policy citations.
 """
 
 from typing import Any, Dict, List, Optional
+import time
 import httpx
 
 from app.core.config import settings
@@ -23,11 +24,17 @@ class RAGService:
     def __init__(self, ollama_url: str = settings.OLLAMA_URL, model: str = settings.OLLAMA_MODEL):
         self.ollama_url = ollama_url
         self.model = model
+        self._ollama_available: Optional[bool] = None
+        self._last_ollama_check: float = 0.0
 
     async def _query_llm(self, prompt: str, system_prompt: str) -> Optional[str]:
-        """Query local Ollama LLM with fallback on timeout."""
+        """Query local Ollama LLM with fallback on timeout and circuit-breaker."""
+        now = time.time()
+        if self._ollama_available is False and (now - self._last_ollama_check) < 60.0:
+            return None
+
         try:
-            async with httpx.AsyncClient(timeout=3.0) as client:
+            async with httpx.AsyncClient(timeout=httpx.Timeout(connect=0.2, read=2.0, write=1.0, pool=1.0)) as client:
                 res = await client.post(
                     f"{self.ollama_url}/api/generate",
                     json={
@@ -38,12 +45,18 @@ class RAGService:
                     },
                 )
                 if res.status_code == 200:
+                    self._ollama_available = True
+                    self._last_ollama_check = now
                     data = res.json()
                     response_text = data.get("response", "").strip()
                     if response_text:
                         return response_text
+                else:
+                    self._ollama_available = False
+                    self._last_ollama_check = now
         except Exception:
-            pass  # Fallback to extractive grounded response
+            self._ollama_available = False
+            self._last_ollama_check = now
         return None
 
     def _synthesize_fallback_answer(self, chunks: List[Dict[str, Any]], language: str) -> str:
@@ -94,6 +107,7 @@ class RAGService:
                 "answer": ABSTENTION_MESSAGES.get(language, ABSTENTION_MESSAGES["en"]),
                 "confidence_score": 0.0,
                 "abstained": True,
+                "fallback_used": False,
                 "citations": [],
             }
 
@@ -114,6 +128,7 @@ class RAGService:
                         "version": h["version"],
                         "portal_access": h["portal_access"],
                         "score": h["score"],
+                        "passage": h.get("content", ""),
                     }
                 )
             context_snippets.append(f"[{code}] {h['title']}:\n{h['content']}")
@@ -136,9 +151,11 @@ class RAGService:
             prompt = f"Approved Banking Policies:\n{combined_context}\n\nQuestion: {query}\n\nAnswer:"
 
         # 5. LLM Query with Fallback
+        fallback_used = False
         llm_answer = await self._query_llm(prompt, system_prompt)
         if not llm_answer:
             llm_answer = self._synthesize_fallback_answer(hits, language)
+            fallback_used = True
 
         return {
             "query": query,
@@ -147,6 +164,7 @@ class RAGService:
             "answer": llm_answer,
             "confidence_score": top_score,
             "abstained": False,
+            "fallback_used": fallback_used,
             "citations": citations,
         }
 

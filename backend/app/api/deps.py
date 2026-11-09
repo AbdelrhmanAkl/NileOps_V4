@@ -51,6 +51,32 @@ async def get_current_user(
     return user
 
 
+async def get_optional_user(
+    auth: Optional[HTTPAuthorizationCredentials] = Security(security_scheme),
+    db: AsyncSession = Depends(get_db),
+) -> Optional[User]:
+    """Optionally validate Bearer JWT and retrieve User entity if present, else None."""
+    if not auth or not auth.credentials:
+        return None
+
+    payload = decode_access_token(auth.credentials)
+    if not payload:
+        return None
+
+    user_id = payload.get("sub")
+    if not user_id:
+        return None
+
+    stmt = select(User).where(User.id == str(user_id))
+    result = await db.execute(stmt)
+    user = result.scalar_one_or_none()
+
+    if not user or not user.is_active:
+        return None
+
+    return user
+
+
 def require_roles(allowed_roles: List[str]) -> Callable:
     """Enforce server-side Role-Based Access Control."""
     async def role_checker(current_user: User = Depends(get_current_user)) -> User:

@@ -75,6 +75,7 @@ models/
 # Binaries, Executables & Runtime Storage
 bin/
 data/
+scratch/
 *.exe
 *.zip
 *.tar.gz
@@ -97,4 +98,7 @@ desktop.ini
 # Privacy Boundary Protection (Never commit uploaded physical ID images or raw scans)
 .user_uploaded/
 *.log
+tests/ocr/fixtures/
+tests/ocr/fixtures/*
+
 

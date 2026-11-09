@@ -135,3 +135,45 @@ async def list_faqs():
     """List bilingual banking customer service FAQs."""
     return FAQS_DATA
 
+
+CARD_PRODUCTS_DATA = [
+    {
+        "id": "DEBIT_VISA_CLASSIC",
+        "name_en": "Nile Classic Visa Debit Card",
+        "name_ar": "بطاقة فيزا الكلاسيكية للخصم المباشر",
+        "type": "DEBIT",
+        "features_en": ["Instant ATM cash access", "Contactless NFC payments", "Online shopping security with 3D Secure"],
+        "features_ar": ["سحب نقدي فوري من الصراف الآلي", "مدفوعات لا تلامسية NFC", "تسوق آمن عبر الإنترنت مع 3D Secure"],
+    },
+    {
+        "id": "DEBIT_MASTERCARD_TITANIUM",
+        "name_en": "Nile Titanium Mastercard Debit Card",
+        "name_ar": "بطاقة ماستركارد تيتانيوم للخصم المباشر",
+        "type": "DEBIT",
+        "features_en": ["Airport lounge access (MENA)", "Higher daily withdrawal limits", "Priceless Cities discounts"],
+        "features_ar": ["دخول صالات كبار الزوار بالمطارات (الشرق الأوسط)", "حدود سحب يومية أعلى", "خصومات برايسليس"],
+    },
+    {
+        "id": "CREDIT_VISA_PLATINUM",
+        "name_en": "Nile Platinum Visa Credit Card",
+        "name_ar": "بطاقة فيزا البلاتينية الائتمانية",
+        "type": "CREDIT",
+        "features_en": ["Up to 55 days interest-free grace period", "Reward points on all purchases", "Purchase protection & extended warranty"],
+        "features_ar": ["فترة سماح تصل إلى 55 يوماً بدون فوائد", "نقاط مكافآت على جميع المشتريات", "حماية المشتريات وتمديد الضمان"],
+    },
+    {
+        "id": "PREPAID_MEEZA",
+        "name_en": "Nile Meeza National Prepaid Card",
+        "name_ar": "بطاقة ميزة الوطنية مسبقة الدفع",
+        "type": "PREPAID",
+        "features_en": ["Acceptance across all domestic Egyptian merchants", "Instant top-up via mobile banking", "Government payments compliant"],
+        "features_ar": ["قبول لدى جميع التجار في جمهورية مصر العربية", "شحن فوري عبر التطبيق المصرفي", "متوافقة مع المدفوعات الحكومية"],
+    },
+]
+
+
+@router.get("/cards")
+async def list_card_products():
+    """List available synthetic payment card products."""
+    return CARD_PRODUCTS_DATA
+

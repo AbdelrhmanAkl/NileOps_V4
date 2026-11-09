@@ -30,14 +30,20 @@ async def list_or_search_policies(
     q: Optional[str] = Query(None, description="Keyword search across title, content, or domain"),
     domain: Optional[str] = Query(None, description="Filter by policy domain"),
     status_filter: Optional[str] = Query(None, alias="status"),
+    include_test: bool = Query(False, description="Whether to include test-origin POL-TEST-* policies"),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """List or keyword-search banking policy documents.
 
     Staff may view all document states. Customers only view APPROVED or INDEXED policies.
+    POL-TEST-* policies are excluded by default from normal lists.
     """
     stmt = select(PolicyDocument)
+
+    # Exclude test-injected policies by default
+    if not include_test:
+        stmt = stmt.where(~PolicyDocument.code.startswith("POL-TEST-"))
 
     # Access control boundary: Retail customers only see active policies
     if current_user.user_type == "customer":

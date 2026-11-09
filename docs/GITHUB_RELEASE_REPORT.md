@@ -1,5 +1,13 @@
 # NileOps — Official GitHub Release Audit & Verification Report
 
+> **DATED CORRECTION & HISTORICAL SUPERSEDENCE NOTICE (2026-11-09):**  
+> This release report documents the initial commit state (`2ece794d1bb5a3dfbb513ba3d865f77b717581e1`) pushed on November 8, 2026. Subsequent verification phases have superseded the following claims:  
+> 1. **Test Suite Scope (Superseded):** The pre-release test suite executed 22 unit tests; subsequent development added 55 additional tests, expanding the verified suite to **77 tests across 11 test files**.  
+> 2. **Production Readiness (Superseded / Scope Boundary):** NileOps is strictly a fictional banking operations prototype. Public production deployment is out of Handbook scope.  
+> 3. **Database & Storage (Superseded):** All early SQLite migration scripts are legacy artifacts; native PostgreSQL 16 is the sole database engine.  
+> 4. **Credentials Notice:** Plaintext passwords in legacy docs are deprecated in favor of 1-click UI authentication personas.  
+> 5. **Audit Trail Immutability (Clarified):** Audit immutability is enforced at the application level; database-level revoke triggers are proposed.
+
 > **Project:** NileOps — Intelligent Digital Banking Operations Platform  
 > **Simulation Identity:** NileOps Demo Bank  
 > **Release Target:** `https://github.com/AbdelrhmanAkl/NileOps_V4`  
@@ -142,3 +150,4 @@ A thorough security inspection was conducted across all files prior to git stagi
 ## 7. Final Acceptance Status
 
 **ACCEPTED & PUBLISHED TO GITHUB**
+

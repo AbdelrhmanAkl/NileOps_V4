@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class AccountOut(BaseModel):
@@ -14,6 +14,18 @@ class AccountOut(BaseModel):
     interest_rate: float
     status: str
     created_at: datetime
+
+    @field_validator("account_number")
+    @classmethod
+    def mask_account_number(cls, v: str) -> str:
+        """Mask account number / IBAN to preserve banking confidentiality (EG98••••••••••••2233)."""
+        if not v:
+            return v
+        clean = str(v).strip()
+        if len(clean) <= 8:
+            return clean
+        bullets = "•" * (len(clean) - 8)
+        return f"{clean[:4]}{bullets}{clean[-4:]}"
 
     class Config:
         from_attributes = True
