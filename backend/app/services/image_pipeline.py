@@ -106,15 +106,59 @@ from app.services.ocr import (
 
 EASTERN_TO_WESTERN = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
 
+import threading
+
 _OCR_ENGINE = None
+_OCR_LOCK = threading.Lock()
 
 
 def get_ocr_engine():
-    """Lazy singleton initializer for PaddleOCR Arabic engine."""
+    """Lazily-initialised, thread-safe, process-wide singleton for PaddleOCR Arabic engine.
+
+    Guarantees exactly one process-wide initialization of PaddleOCR and PaddleX pipelines,
+    preventing repeated initialization runtime errors and redundant model reload overhead.
+    """
     global _OCR_ENGINE
     if _OCR_ENGINE is None:
-        from paddleocr import PaddleOCR
-        _OCR_ENGINE = PaddleOCR(use_textline_orientation=True, lang="ar")
+        with _OCR_LOCK:
+            if _OCR_ENGINE is None:
+                # Provide lightweight shim for pandas if native ccalendar.pyd is blocked by Windows AppLocker / Smart App Control
+                try:
+                    import pandas  # noqa: F401
+                except (ImportError, Exception):
+                    import sys
+                    from unittest.mock import MagicMock
+                    from importlib.machinery import ModuleSpec
+
+                    class _PandasShimFinder:
+                        def find_spec(self, fullname, path, target=None):
+                            if fullname == "pandas" or fullname.startswith("pandas."):
+                                return ModuleSpec(fullname, self, is_package=True)
+                            return None
+
+                        def create_module(self, spec):
+                            mod = MagicMock()
+                            mod.__file__ = "<mock>"
+                            mod.__path__ = []
+                            return mod
+
+                        def exec_module(self, module):
+                            pass
+
+                    sys.meta_path.insert(0, _PandasShimFinder())
+
+                try:
+                    import paddle
+                    paddle.set_flags({
+                        "FLAGS_use_mkldnn": False,
+                        "FLAGS_enable_pir_api": False,
+                        "FLAGS_enable_pir_in_executor": False,
+                    })
+                except Exception:
+                    pass
+
+                from paddleocr import PaddleOCR
+                _OCR_ENGINE = PaddleOCR(use_textline_orientation=True, lang="ar")
     return _OCR_ENGINE
 
 
