@@ -86,14 +86,29 @@ Following explicit approval, the retrieval pollution was resolved via a defense-
 
 ### 3.1 Lexical Benchmark (40 Questions, Exact/Formal Terminology)
 Grounded in `POL-RETAIL-001` and `POL-KYC-001` with official bank wording (`data/rag_eval/rag_evaluation_results.json`):
-- **Hit@1 Rate:** **100.0%** (25/25 in-domain)
+- **Hit@1 Rate:** **92.0%** (23/25 in-domain) *(Note: An earlier preliminary figure of 100.0% is superseded; see below)*
 - **Hit@3 Rate:** **100.0%** (25/25 in-domain)
-- **Mean Reciprocal Rank (MRR):** **1.0000**
+- **Mean Reciprocal Rank (MRR):** **0.9600**
 - **Abstention Precision:** **100.0%**
 - **Abstention Recall:** **86.7%** (13/15 negative/out-of-domain)
 - **Abstention $F_1$ Score:** **92.9%**
 - **Customer Portal Leakage:** **0.00%** (0/19)
-- **Citation Correctness:** **100.0%** (25/25)
+- **Citation Correctness:** **92.0%** (23/25)
+
+#### Analysis of Hit@1 Discrepancy & Root Cause
+In empirical verification against the live `/api/v1/rag/ask` endpoint, exactly 2 out of 25 in-domain questions retrieved the target policy at Rank 2 instead of Rank 1 (achieving Hit@3 = 100% and MRR = 0.9600):
+1. **Question Q28:** *"What is the checksum digit location on Egyptian ID and what is the savings account opening balance?"*  
+   - Expected Target: `POL-KYC-001` (Single-target label).  
+   - Retrieved at Rank 1: `POL-RETAIL-001` (Score: 0.3522).  
+   - Retrieved at Rank 2: `POL-KYC-001` (Score: 0.3251).  
+   - **Reason:** Q28 is a composite question combining concepts from retail banking (savings account opening balance) and KYC identity verification (checksum digit location). Because the random projection sub-word hashing feature vector assigns slightly more weight to the retail terminology, `POL-RETAIL-001` scored marginally higher than `POL-KYC-001`.
+2. **Question Q30:** *"Summarize customer deposit account minimum balances and customer identification digit structures."*  
+   - Expected Target: `POL-RETAIL-001` (Single-target label).  
+   - Retrieved at Rank 1: `POL-KYC-001` (Score: 0.3465).  
+   - Retrieved at Rank 2: `POL-RETAIL-001` (Score: 0.3324).  
+   - **Reason:** Similar to Q28, Q30 bridges retail deposit accounts and national ID digit structures. Both policies were retrieved within the top 2 candidates, but `POL-KYC-001` narrowly led by 0.014 in similarity score.
+
+Both queries represent valid multi-document retrievals where both relevant policies are present in the top-2 ranking. Across single-policy queries, Hit@1 is 100.0% (23/23). Older claims of 100% Hit@1 across the full 25 questions are hereby marked **SUPERSEDED** by the measured empirical rate of **92.0%**.
 
 ### 3.2 Paraphrase Benchmark: Before vs. After Pollution Removal
 Stored in `data/rag_eval/rag_paraphrase_results.json` across 15 in-domain questions (Egyptian colloquial + natural English) and 5 out-of-domain negative controls:

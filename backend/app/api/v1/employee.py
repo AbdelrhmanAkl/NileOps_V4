@@ -39,6 +39,7 @@ from app.schemas.requests import (
     RequestReviewAction,
     RequestRuleEvaluationResult,
 )
+from app.services.kyc_checks import kyc_check_service
 from app.services.request_rules import (
     evaluate_account_opening_rules,
     validate_transition,
@@ -498,8 +499,15 @@ async def upload_kyc_verification(
             raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=err_msg)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=err_msg)
 
+    # Deterministic KYC Cross-Field & Quality Mismatch Evaluation
+    mismatch_eval = kyc_check_service.evaluate_case(ocr_result)
+    ocr_result["mismatch_evaluation"] = mismatch_eval
+    reasons_list = mismatch_eval.get("reasons", [])
+    mismatch_reasons_json_str = json.dumps(reasons_list, ensure_ascii=False)
+
     # Invariant: OCR extraction NEVER auto-approves identity.
-    # The record is queued with PENDING_REVIEW status for human compliance decision.
+    # Case is escalated to FLAGGED if critical issues exist, otherwise PENDING_REVIEW
+    initial_status = mismatch_eval.get("recommended_status", "PENDING_REVIEW")
     tracking_num = f"KYC-{uuid.uuid4().hex[:8].upper()}"
     extracted_nid_val = ocr_result.get("masked_national_id", "****")
 
@@ -515,6 +523,7 @@ async def upload_kyc_verification(
         document_type="EGYPTIAN_NATIONAL_ID_SYNTHETIC",
         status="PENDING_REVIEW",
         extracted_data_json=json.dumps(ocr_result, ensure_ascii=False),
+        mismatch_reasons_json=mismatch_reasons_json_str,
         reviewer_id=None,
         reviewer_notes=None,
     )
@@ -533,6 +542,8 @@ async def upload_kyc_verification(
             "ocr_status": ocr_result.get("ocr_status"),
             "compound_status": ocr_result.get("compound_status"),
             "review_status": ocr_result.get("review_status"),
+            "mismatch_reasons": mismatch_eval.get("reason_codes", []),
+            "is_escalated": mismatch_eval.get("is_escalated", False),
             "uploader_id": current_user.id,
         },
     )

@@ -132,6 +132,7 @@ export interface KycVerification {
   document_type: string;
   status: "PENDING_REVIEW" | "APPROVED_SIMULATED" | "VERIFIED_SYNTHETIC" | "REJECTED" | "FLAGGED" | "INFO_REQUESTED";
   extracted_data_json: string;
+  mismatch_reasons_json?: string;
   image_url?: string;
   reviewer_id?: string;
   reviewer_notes?: string;
@@ -249,4 +250,27 @@ export interface RequestRuleEvaluation {
     passed: boolean;
     message: string;
   }[];
+}
+
+export interface KpiMetric {
+  key: string;
+  title_en: string;
+  title_ar: string;
+  value: number;
+  formatted_value: string;
+  numerator?: number;
+  denominator?: number;
+  sample_size: number;
+  definition: string;
+  definition_ar: string;
+  target_benchmark: string;
+  status: "MET" | "NOT MET" | "NO TARGET" | "NOT MEASURED";
+  date_range: string;
+  breakdown?: Record<string, any>;
+}
+
+export interface KpiSummary {
+  calculated_at: string;
+  environment_mode: string;
+  metrics: Record<string, KpiMetric>;
 }

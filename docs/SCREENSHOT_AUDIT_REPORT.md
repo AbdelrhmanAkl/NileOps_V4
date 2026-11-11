@@ -72,13 +72,13 @@ Detections by Classification:
 
 | Filename | Location | Triggers Detected | Analysis & Invariant Status |
 |---|---|---|---|
-| `01_login_screen_en.png` | `root` | `EMAIL: 6` | Public login page displaying 6 one-click demo persona buttons (e.g. `customer@nileops.eg`, `fatma.almasri@nileops.internal`). Clean. |
-| `07_employee_customer_search.png` | `archive/` | `EMAIL: 2` | Internal customer directory table showing demo customer persona emails. Clean. |
-| `10_employee_kyc_audit.png` | `archive/` | `EMAIL: 27` | Audit trail table displaying employee actor email addresses. Clean. |
+| `01_login_screen_en.png` | `root` | `EMAIL: 6` | Public login page displaying 6 one-click demo persona buttons (`customer1@nileops.demo`, `ops@nileops.demo`, `cs@nileops.demo`, `compliance@nileops.demo`, `manager@nileops.demo`, `admin@nileops.demo`). Clean. |
+| `07_employee_customer_search.png` | `archive/` | `EMAIL: 2` | Internal customer directory table showing demo customer persona emails (`customer1@nileops.demo`, `customer2@nileops.demo`). Clean. |
+| `10_employee_kyc_audit.png` | `archive/` | `EMAIL: 27` | Audit trail table displaying employee actor email addresses (`compliance@nileops.demo`, `admin@nileops.demo`, `ops@nileops.demo`). Clean. |
 | `12_employee_kyc_queue_en.png` | `root` | `14_DIGIT_ID: 1` | Synthetic ID number rendered on card preview canvas. Flagged for review. |
-| `14_employee_audit_trail_compliance_en.png` | `root` | `EMAIL: 18` | Audit trail table displaying compliance reviewer actor emails. Clean. |
+| `14_employee_audit_trail_compliance_en.png` | `root` | `EMAIL: 18` | Audit trail table displaying compliance reviewer actor emails (`compliance@nileops.demo`). Clean. |
 | `phase1b_arabic_kyc_workspace.png` | `root` | `14_DIGIT_ID: 1` | Synthetic ID number rendered on card preview canvas. Flagged for review. |
-| `phase1b_audit_trail_utc.png` | `root` | `EMAIL: 27` | Audit trail table displaying employee actor emails with UTC timestamps. Clean. |
+| `phase1b_audit_trail_utc.png` | `root` | `EMAIL: 27` | Audit trail table displaying employee actor emails with UTC timestamps (`compliance@nileops.demo`, `ops@nileops.demo`). Clean. |
 | `phase1b_blurred_upload_warnings.png` | `root` | `14_DIGIT_ID: 1` | Synthetic ID number rendered on card preview canvas. Flagged for review. |
 | `phase1b_clean_upload_results.png` | `root` | `14_DIGIT_ID: 1` | Synthetic ID number rendered on card preview canvas. Flagged for review. |
 | `phase1b_request_more_info.png` | `root` | `14_DIGIT_ID: 1` | Synthetic ID number rendered on card preview canvas. Flagged for review. |

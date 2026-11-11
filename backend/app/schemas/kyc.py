@@ -35,6 +35,7 @@ class KycVerificationOut(BaseModel):
     document_type: str
     status: str
     extracted_data_json: str
+    mismatch_reasons_json: Optional[str] = "[]"
     image_url: Optional[str] = None
     reviewer_id: Optional[str] = None
     reviewer_notes: Optional[str] = None

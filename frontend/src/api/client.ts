@@ -1,3 +1,5 @@
+import { KpiSummary } from "../types";
+
 /**
  * NileOps Frontend API Client — Connects to FastAPI Backend.
  */
@@ -465,6 +467,18 @@ export async function askBankingAssistant(params: {
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.detail || "Failed to query NileOps AI Policy Assistant.");
+  }
+  return res.json();
+}
+
+// 8. Operational & Risk KPI Scorecard
+export async function fetchKpiSummary(): Promise<KpiSummary> {
+  const res = await fetch(`${API_BASE}/kpi/summary`, {
+    headers: { ...getAuthHeader() },
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || "Failed to load operational KPI scorecard.");
   }
   return res.json();
 }

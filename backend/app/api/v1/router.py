@@ -9,6 +9,7 @@ from app.api.v1.policy import router as policy_router
 from app.api.v1.public import router as public_router
 from app.api.v1.rag import router as rag_router
 from app.api.v1.ocr import router as ocr_router
+from app.api.v1.kpi import router as kpi_router
 
 api_v1_router = APIRouter()
 
@@ -20,6 +21,7 @@ api_v1_router.include_router(policy_router)
 api_v1_router.include_router(public_router)
 api_v1_router.include_router(rag_router)
 api_v1_router.include_router(ocr_router)
+api_v1_router.include_router(kpi_router)
 
 
 @api_v1_router.get("/status", tags=["Status"])

@@ -233,15 +233,21 @@ cd ..
 ### 4. Setup Qdrant Vector Database
 Run the standalone Qdrant binary or the verified pure-Python dev substitute:
 ```bash
-# Option A: Standalone Qdrant binary (Linux / macOS / Windows without Smart App Control)
-cd data/qdrant_storage
-../../bin/qdrant.exe
+# Option A: Standalone Qdrant binary or Docker (Linux / CI / macOS / standard Windows)
+docker run -d -p 6333:6333 -v $(pwd)/qdrant_data:/qdrant/storage qdrant/qdrant:v1.12.0
+# Or run standalone binary:
+cd data/qdrant_storage && ../../bin/qdrant.exe
 
-# Option B: Development Substitute Service (Windows 11 with Smart App Control / WDAC active)
-# On Windows hosts where unsigned binaries are blocked by Code Integrity (Event 3077/3118),
+# Option B: Development Substitute Service (Machine-specific Windows workaround)
+# On Windows hosts where unsigned binaries (qdrant.exe) or native C-extensions (.pyd)
+# are blocked by Windows Smart App Control (SAC) / Code Integrity (Event 3077/3118),
 # use the pure-Python in-memory dev substitute serving the identical 38-point nileops_kb collection:
 python scratch/run_qdrant_service.py
 ```
+
+> **Note on Windows Workarounds:** On workstations running Windows Smart App Control, two developer mitigations are documented (see `docs/RUNBOOK.md`):
+> 1. `scratch/run_qdrant_service.py`: A pure-Python HTTP substitute on port 6333 matching Qdrant v1 REST API with zero native DLL dependencies.
+> 2. `_PandasShimFinder`: A dynamic runtime meta-path import hook that shims `pandas` during PaddleOCR invocations when unsigned `.pyd` native extensions are blocked by OS security policy. Neither workaround is required in CI or standard Linux environments.
 
 ---
 
