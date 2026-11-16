@@ -13,6 +13,19 @@ from app.core.config import settings
 from app.services.query_normalizer import normalize_colloquial_query
 from app.services.vector_store import qdrant_service
 
+def map_similarity_threshold(threshold: Optional[float] = None) -> float:
+    backend = getattr(settings, "EMBEDDING_BACKEND", "e5").lower()
+    if threshold is None:
+        return settings.RAG_SIMILARITY_THRESHOLD if backend == "e5" else 0.15
+    if backend == "e5" and threshold < 0.5:
+        # Rescale legacy hash threshold (0.0 - 0.30) to E5 cosine threshold range (0.70 - 0.85)
+        return 0.70 + threshold * 0.5
+    return threshold
+
+
+def get_default_similarity_threshold() -> float:
+    return map_similarity_threshold(None)
+
 DEFAULT_SIMILARITY_THRESHOLD = 0.15
 
 ABSTENTION_MESSAGES = {
@@ -88,16 +101,17 @@ class RAGService:
         query: str,
         portal_type: str = "customer",
         language: str = "ar",
-        threshold: float = DEFAULT_SIMILARITY_THRESHOLD,
+        threshold: Optional[float] = None,
     ) -> Dict[str, Any]:
         """Execute end-to-end RAG with thresholding, portal isolation, and citations."""
+        effective_threshold = map_similarity_threshold(threshold)
         # 1. Colloquial query normalization & semantic retrieval from Qdrant
         normalized_query = normalize_colloquial_query(query)
         hits = await qdrant_service.search(
             query=normalized_query,
             portal_type=portal_type,
             limit=3,
-            score_threshold=threshold,
+            score_threshold=effective_threshold,
         )
 
         # 2. Check for abstention condition

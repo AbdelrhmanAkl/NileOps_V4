@@ -19,7 +19,7 @@ class RAGQueryRequest(BaseModel):
     query: str = Field(..., min_length=2, max_length=1000, description="Customer or employee inquiry")
     portal_type: str = Field(default="customer", pattern="^(customer|employee)$")
     language: str = Field(default="ar", pattern="^(ar|en)$")
-    threshold: Optional[float] = Field(default=0.15, ge=0.0, le=1.0)
+    threshold: Optional[float] = Field(default=None, ge=0.0, le=1.0)
 
 
 class CitationItem(BaseModel):
@@ -75,7 +75,7 @@ async def ask_banking_assistant(
         query=payload.query,
         portal_type=payload.portal_type,
         language=payload.language,
-        threshold=payload.threshold or 0.15,
+        threshold=payload.threshold,
     )
     return response
 

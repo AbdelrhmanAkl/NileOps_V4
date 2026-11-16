@@ -1,0 +1,272 @@
+[
+  {
+    "id": "H01",
+    "language": "ar",
+    "portal": "customer",
+    "question": "ما هو الحد الأدنى المطلوب للإيداع عند فتح حساب توفير عالي العائد بالجنيه المصري؟",
+    "category": "held_out_formal_ar",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H02",
+    "language": "ar",
+    "portal": "customer",
+    "question": "هل يفرض البنك أية رسوم صيانة شهرية على الحسابات الجارية إذا قل الرصيد عن الحد المقرر؟",
+    "category": "held_out_formal_ar",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H03",
+    "language": "ar",
+    "portal": "customer",
+    "question": "ما هي العملة المعتمدة لفتح الحسابات الجارية وحسابات التوفير للأفراد في الفرع؟",
+    "category": "held_out_formal_ar",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H04",
+    "language": "ar",
+    "portal": "customer",
+    "question": "كم يبلغ الحد الأدنى لفتح حساب جاري كلاسيكي للأفراد في بنك النيل؟",
+    "category": "held_out_formal_ar",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H05",
+    "language": "ar",
+    "portal": "customer",
+    "question": "ما هي قيمة الغرامة أو المصاريف الدورية المطبقة عند نزول رصيد الحساب عن 2500 جنيه؟",
+    "category": "held_out_formal_ar",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H06",
+    "language": "ar",
+    "portal": "employee",
+    "question": "كيف يتم فحص هيكل الرقم القومي المكون من 14 رقماً وفق معايير اعرف عميلك؟",
+    "category": "held_out_formal_ar",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H07",
+    "language": "ar",
+    "portal": "employee",
+    "question": "ماذا يشير الرقم الأول من اليسار في بطاقة الرقم القومي المصرية؟",
+    "category": "held_out_formal_ar",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H08",
+    "language": "ar",
+    "portal": "employee",
+    "question": "ما هي الخانات المسؤولة عن تحديد كود محافظة ميلاد العميل في الرقم القومي؟",
+    "category": "held_out_formal_ar",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H09",
+    "language": "ar",
+    "portal": "employee",
+    "question": "ما هو كود محافظة بورسعيد في بطاقة الرقم القومي المصري للأفراد؟",
+    "category": "held_out_formal_ar",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H10",
+    "language": "ar",
+    "portal": "employee",
+    "question": "ما هي التعليمات الإلزامية الخاصة باستخدام وثائق وبيانات اصطناعية في بيئات الاختبار؟",
+    "category": "held_out_formal_ar",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H11",
+    "language": "ar",
+    "portal": "customer",
+    "question": "عاوز افتح حساب جاري عادي هو لازم ادفع كام اقل حاجة؟",
+    "category": "held_out_colloquial_ar",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H12",
+    "language": "ar",
+    "portal": "customer",
+    "question": "لو فلوسي في الحساب الجاري نزلت عن الفين ونص هيتخصم مني كام كل شهر؟",
+    "category": "held_out_colloquial_ar",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H13",
+    "language": "ar",
+    "portal": "customer",
+    "question": "هو حساب التوفير اللي بيديني فايدة شهرية محتاج ايداع كام في الاول؟",
+    "category": "held_out_colloquial_ar",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H14",
+    "language": "ar",
+    "portal": "customer",
+    "question": "ممكن افتح حساب بالجنيه المصري عادي في البنك كفرد؟",
+    "category": "held_out_colloquial_ar",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H15",
+    "language": "ar",
+    "portal": "customer",
+    "question": "هي مصاريف الصيانة الشهرية للحساب كام بالظبط لو الرصيد قل؟",
+    "category": "held_out_colloquial_ar",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H16",
+    "language": "ar",
+    "portal": "employee",
+    "question": "لو العميل مولود سنة 2005 اول رقم في بطاقته هيكون 2 ولا 3؟",
+    "category": "held_out_colloquial_ar",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H17",
+    "language": "ar",
+    "portal": "employee",
+    "question": "هو كود اسكندرية كام في خانات المحافظة في الرقم القومي؟",
+    "category": "held_out_colloquial_ar",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H18",
+    "language": "ar",
+    "portal": "employee",
+    "question": "انهي رقم في البطاقة ال14 بيعبر عن تاريخ ميلاد العميل وسنة ميلاده؟",
+    "category": "held_out_colloquial_ar",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H19",
+    "language": "ar",
+    "portal": "employee",
+    "question": "اخر رقم في البطاقة من اليمين ده بتاع ايه بالظبط في السيستم؟",
+    "category": "held_out_colloquial_ar",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H20",
+    "language": "ar",
+    "portal": "employee",
+    "question": "في التست والـ QA مسموح نستخدم بطايق حقيقية ولا لازم داتا فيك؟",
+    "category": "held_out_colloquial_ar",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H21",
+    "language": "en",
+    "portal": "customer",
+    "question": "What is the initial deposit requirement for opening a classic retail current account?",
+    "category": "held_out_english",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H22",
+    "language": "en",
+    "portal": "customer",
+    "question": "Does the bank charge a recurring penalty if the current account balance drops below the required minimum?",
+    "category": "held_out_english",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H23",
+    "language": "en",
+    "portal": "employee",
+    "question": "Which digits in the 14-digit Egyptian National ID indicate the birth date YYMMDD format?",
+    "category": "held_out_english",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H24",
+    "language": "en",
+    "portal": "employee",
+    "question": "What is the designated governorate code for Alexandria in Egyptian National ID compliance checks?",
+    "category": "held_out_english",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H25",
+    "language": "en",
+    "portal": "employee",
+    "question": "What is the role of the 14th digit in the Egyptian National ID according to KYC policy?",
+    "category": "held_out_english",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false
+  },
+  {
+    "id": "H26",
+    "language": "en",
+    "portal": "customer",
+    "question": "What are the main ingredients and steps to bake a traditional French baguette?",
+    "category": "held_out_out_domain",
+    "expected_policy": null,
+    "should_abstain": true
+  },
+  {
+    "id": "H27",
+    "language": "en",
+    "portal": "customer",
+    "question": "How does a transformer self-attention mechanism compute query and key matrix dot products?",
+    "category": "held_out_out_domain",
+    "expected_policy": null,
+    "should_abstain": true
+  },
+  {
+    "id": "H28",
+    "language": "en",
+    "portal": "customer",
+    "question": "What is the distance between Earth and the planet Mars during closest approach?",
+    "category": "held_out_out_domain",
+    "expected_policy": null,
+    "should_abstain": true
+  },
+  {
+    "id": "H29",
+    "language": "ar",
+    "portal": "customer",
+    "question": "من هو الهداف التاريخي لبطولة كأس العالم لكرة القدم عبر كل النسخ؟",
+    "category": "held_out_out_domain",
+    "expected_policy": null,
+    "should_abstain": true
+  },
+  {
+    "id": "H30",
+    "language": "ar",
+    "portal": "customer",
+    "question": "كيف يمكن زراعة أشجار المانجو في الأراضي الصحراوية والتربة الرملية؟",
+    "category": "held_out_out_domain",
+    "expected_policy": null,
+    "should_abstain": true
+  }
+]

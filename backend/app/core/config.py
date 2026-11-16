@@ -85,6 +85,9 @@ try:
         QDRANT_URL: str = Field(default_factory=lambda: os.getenv("QDRANT_URL", "http://127.0.0.1:6333"))
         OLLAMA_URL: str = Field(default_factory=lambda: os.getenv("OLLAMA_URL", "http://127.0.0.1:11434"))
         OLLAMA_MODEL: str = Field(default_factory=lambda: os.getenv("OLLAMA_MODEL", "qwen3:8b"))
+        EMBEDDING_BACKEND: str = Field(default_factory=lambda: os.getenv("EMBEDDING_BACKEND", "e5"))
+        EMBEDDING_MODEL_NAME: str = Field(default_factory=lambda: os.getenv("EMBEDDING_MODEL_NAME", "intfloat/multilingual-e5-small"))
+        RAG_SIMILARITY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("RAG_SIMILARITY_THRESHOLD", "0.75")))
 
         # CORS Origins
         ALLOWED_ORIGINS: List[str] = Field(default_factory=get_default_cors_origins)
@@ -144,6 +147,9 @@ except ImportError:
         QDRANT_URL: str = Field(default_factory=lambda: os.getenv("QDRANT_URL", "http://127.0.0.1:6333"))
         OLLAMA_URL: str = Field(default_factory=lambda: os.getenv("OLLAMA_URL", "http://127.0.0.1:11434"))
         OLLAMA_MODEL: str = Field(default_factory=lambda: os.getenv("OLLAMA_MODEL", "qwen3:8b"))
+        EMBEDDING_BACKEND: str = Field(default_factory=lambda: os.getenv("EMBEDDING_BACKEND", "e5"))
+        EMBEDDING_MODEL_NAME: str = Field(default_factory=lambda: os.getenv("EMBEDDING_MODEL_NAME", "intfloat/multilingual-e5-small"))
+        RAG_SIMILARITY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("RAG_SIMILARITY_THRESHOLD", "0.75")))
 
         # CORS Origins
         ALLOWED_ORIGINS: List[str] = Field(default_factory=get_default_cors_origins)

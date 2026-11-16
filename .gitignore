@@ -74,7 +74,8 @@ models/
 
 # Binaries, Executables & Runtime Storage
 bin/
-data/
+data/*
+!data/rag_eval/
 scratch/
 *.exe
 *.zip

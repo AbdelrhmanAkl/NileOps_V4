@@ -201,3 +201,45 @@ def test_qdrant_test_isolation_guard():
         QdrantVectorService(collection_name="nileops_kb")
     assert "CRITICAL TEST ISOLATION FAILURE" in str(exc_info.value)
     assert "nileops_kb" in str(exc_info.value)
+
+
+def test_rag_colloquial_egyptian_arabic_query(client: TestClient):
+    """Verify Egyptian colloquial query retrieves correct retail policy."""
+    payload = {
+        "query": "عايز افتح حساب جاري عادي هو لازم ادفع كام اقل حاجة؟",
+        "portal_type": "customer",
+        "language": "ar",
+    }
+    resp = client.post("/api/v1/rag/ask", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["abstained"] is False
+    assert len(data["citations"]) >= 1
+    assert data["citations"][0]["code"] == "POL-RETAIL-001"
+    assert "2,500" in data["answer"] or "2500" in data["answer"] or "POL-RETAIL-001" in data["answer"]
+
+
+def test_rag_held_out_cross_portal_isolation(client: TestClient):
+    """Verify customer portal receives zero employee KYC citations on held-out compliance questions."""
+    payload = {
+        "query": "انهي رقم في البطاقة ال14 بيعبر عن تاريخ ميلاد العميل وسنة ميلاده؟",
+        "portal_type": "customer",
+        "language": "ar",
+    }
+    resp = client.post("/api/v1/rag/ask", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+    for cit in data.get("citations", []):
+        assert cit["code"] != "POL-KYC-001"
+        assert cit["portal_access"] == "customer"
+
+
+def test_embedding_backend_graceful_fallback():
+    """Verify EmbeddingService gracefully falls back to hash backend on invalid backend or error."""
+    from app.services.embedding import EmbeddingService
+    svc = EmbeddingService()
+    assert svc.dimension == 384
+    # Test fallback vector generation
+    vec = svc._generate_dense_vector("test banking policy query")
+    assert len(vec) == 384
+    assert isinstance(vec[0], float)

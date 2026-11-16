@@ -1,0 +1,642 @@
+{
+  "timestamp": "2026-11-09T01:43:49Z",
+  "thresholds": {
+    "0.15": {
+      "metrics": {
+        "total_queries": 20,
+        "in_domain_count": 15,
+        "out_domain_count": 5,
+        "hit1_rate": 60.0,
+        "hit3_rate": 60.0,
+        "mrr": 0.6,
+        "abstention_precision": 45.5,
+        "abstention_recall": 100.0,
+        "abstention_f1": 62.5,
+        "customer_leakage_rate": 0.0,
+        "citation_correctness": 100.0,
+        "answered_count": 9,
+        "abstained_total": 11
+      },
+      "details": [
+        {
+          "id": "P01",
+          "question": "عايز افتح حساب عادي بالمصري بس مش عارف محتاج فلوس كام في الاول؟",
+          "portal": "customer",
+          "language": "ar",
+          "category": "paraphrase_current_min",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P02",
+          "question": "لو الفلوس اللي في حسابي قلت عن الرصيد المطلوب البنك بيخصم كام كل شهر مصاريف؟",
+          "portal": "customer",
+          "language": "ar",
+          "category": "paraphrase_fee",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P03",
+          "question": "لو عاوز اعمل حساب توفير يديني عائد شهري محترم، احط فيه كام كبداية؟",
+          "portal": "customer",
+          "language": "ar",
+          "category": "paraphrase_savings_min",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "بناءً على السياسة البنكية المعتمدة (إرشادات فتح حسابات الودائع للأفراد والحد الأدنى للرصيد - رمز POL-RETAIL-001):\n\nيجوز للعملاء الأفراد فتح حسابات جارية وحسابات توفير بالجنيه المصري. الحد الأدنى لفتح الحساب الجاري الكلاسيكي هو 2,500 جنيه مصري، والحد الأدنى لحساب التوفير عالي العائد هو 10,000 جنيه مصري. تطبق رسوم صيانة دورية قدرها 25 جنيهاً مصرياً إذا انخفض الرصيد عن الحد الأدنى.\n\nيرجى الالتزام بالتعليمات المذكورة أعلاه ومراجعة الفرع في حال الحاجة لأي مستندات إضافية.",
+          "citations": [
+            {
+              "code": "POL-RETAIL-001",
+              "version": "1.0.0",
+              "score": 0.1535,
+              "portal_access": "customer",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P04",
+          "question": "ممكن افتح حساب جاري بالجنيه ولا لازم عملة صعبة؟",
+          "portal": "customer",
+          "language": "ar",
+          "category": "paraphrase_currency",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "بناءً على السياسة البنكية المعتمدة (إرشادات فتح حسابات الودائع للأفراد والحد الأدنى للرصيد - رمز POL-RETAIL-001):\n\nيجوز للعملاء الأفراد فتح حسابات جارية وحسابات توفير بالجنيه المصري. الحد الأدنى لفتح الحساب الجاري الكلاسيكي هو 2,500 جنيه مصري، والحد الأدنى لحساب التوفير عالي العائد هو 10,000 جنيه مصري. تطبق رسوم صيانة دورية قدرها 25 جنيهاً مصرياً إذا انخفض الرصيد عن الحد الأدنى.\n\nيرجى الالتزام بالتعليمات المذكورة أعلاه ومراجعة الفرع في حال الحاجة لأي مستندات إضافية.",
+          "citations": [
+            {
+              "code": "POL-RETAIL-001",
+              "version": "1.0.0",
+              "score": 0.3125,
+              "portal_access": "customer",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P05",
+          "question": "هو الموظف في الفرع بيعرف منين المحافظة اللي اتولد فيها العميل من أرقام البطاقة؟",
+          "portal": "employee",
+          "language": "ar",
+          "category": "paraphrase_kyc_gov",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P06",
+          "question": "يعني ايه اول رقم في البطاقة ده اتنين ولا تلاتة؟ بيحدد ايه بالضبط في فحص الهوية؟",
+          "portal": "employee",
+          "language": "ar",
+          "category": "paraphrase_kyc_century",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P07",
+          "question": "هو في خانات في الرقم القومي بتعرف الموظف سنة وشهر ويوم ميلاد صاحب البطاقة؟",
+          "portal": "employee",
+          "language": "ar",
+          "category": "paraphrase_kyc_bdate",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "بناءً على السياسة البنكية المعتمدة (معايير العناية الواجبة وتدقيق بطاقات الرقم القومي الاصطناعية - رمز POL-KYC-001):\n\nيتطلب التحقق من الرقم القومي فحص الهيكل المكون من 14 رقماً: الرقم الأول يعبر عن القرن (2 لمواليد 1900-1999، 3 لمواليد 2000-2099)؛ الأرقام 2 إلى 7 تعبر عن تاريخ الميلاد (سنة شهر يوم)؛ الرقمان 8 و9 يعبران عن كود محافظة الميلاد (01 القاهرة، 02 الإسكندرية، 03 بورسعيد، إلخ)؛ الرقم 14 يمثل رقم التدقيق الحسابي. يجب قصر الاختبارات تماماً على وثائق وبيانات اصطناعية.\n\nيرجى الالتزام بالتعليمات المذكورة أعلاه ومراجعة الفرع في حال الحاجة لأي مستندات إضافية.",
+          "citations": [
+            {
+              "code": "POL-KYC-001",
+              "version": "1.0.0",
+              "score": 0.211,
+              "portal_access": "employee",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P08",
+          "question": "ايه المطلوب للتاكد من عدم استخدام بطاقات حقيقية في تجارب واختبارات فحص الجودة؟",
+          "portal": "employee",
+          "language": "ar",
+          "category": "paraphrase_kyc_qa",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "بناءً على السياسة البنكية المعتمدة (معايير العناية الواجبة وتدقيق بطاقات الرقم القومي الاصطناعية - رمز POL-KYC-001):\n\nيتطلب التحقق من الرقم القومي فحص الهيكل المكون من 14 رقماً: الرقم الأول يعبر عن القرن (2 لمواليد 1900-1999، 3 لمواليد 2000-2099)؛ الأرقام 2 إلى 7 تعبر عن تاريخ الميلاد (سنة شهر يوم)؛ الرقمان 8 و9 يعبران عن كود محافظة الميلاد (01 القاهرة، 02 الإسكندرية، 03 بورسعيد، إلخ)؛ الرقم 14 يمثل رقم التدقيق الحسابي. يجب قصر الاختبارات تماماً على وثائق وبيانات اصطناعية.\n\nيرجى الالتزام بالتعليمات المذكورة أعلاه ومراجعة الفرع في حال الحاجة لأي مستندات إضافية.",
+          "citations": [
+            {
+              "code": "POL-KYC-001",
+              "version": "1.0.0",
+              "score": 0.1663,
+              "portal_access": "employee",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P09",
+          "question": "How much cash do I need to put down up front to get a standard personal checking account running?",
+          "portal": "customer",
+          "language": "en",
+          "category": "paraphrase_current_min",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "Based on the approved banking policy (Retail Deposit Accounts Opening & Minimum Balance Guidelines - Code POL-RETAIL-001):\n\nRetail customers may open Current and Savings accounts in EGP. The minimum opening balance for Classic Current Accounts is 2,500 EGP. Minimum balance for High-Yield Monthly Savings is 10,000 EGP. A monthly maintenance fee of 25 EGP applies if the balance falls below the minimum requirement.\n\nPlease comply with the instructions above and consult a representative if additional assistance is needed.",
+          "citations": [
+            {
+              "code": "POL-RETAIL-001",
+              "version": "1.0.0",
+              "score": 0.178,
+              "portal_access": "customer",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P10",
+          "question": "What penalty does the bank charge to my balance every month if I dip below the required minimum deposit?",
+          "portal": "customer",
+          "language": "en",
+          "category": "paraphrase_fee",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "Based on the approved banking policy (Retail Deposit Accounts Opening & Minimum Balance Guidelines - Code POL-RETAIL-001):\n\nRetail customers may open Current and Savings accounts in EGP. The minimum opening balance for Classic Current Accounts is 2,500 EGP. Minimum balance for High-Yield Monthly Savings is 10,000 EGP. A monthly maintenance fee of 25 EGP applies if the balance falls below the minimum requirement.\n\nPlease comply with the instructions above and consult a representative if additional assistance is needed.",
+          "citations": [
+            {
+              "code": "POL-RETAIL-001",
+              "version": "1.0.0",
+              "score": 0.3552,
+              "portal_access": "customer",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P11",
+          "question": "What is the initial deposit requirement for the top-tier monthly interest savings option?",
+          "portal": "customer",
+          "language": "en",
+          "category": "paraphrase_savings_min",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "Based on the approved banking policy (Retail Deposit Accounts Opening & Minimum Balance Guidelines - Code POL-RETAIL-001):\n\nRetail customers may open Current and Savings accounts in EGP. The minimum opening balance for Classic Current Accounts is 2,500 EGP. Minimum balance for High-Yield Monthly Savings is 10,000 EGP. A monthly maintenance fee of 25 EGP applies if the balance falls below the minimum requirement.\n\nPlease comply with the instructions above and consult a representative if additional assistance is needed.",
+          "citations": [
+            {
+              "code": "POL-RETAIL-001",
+              "version": "1.0.0",
+              "score": 0.4111,
+              "portal_access": "customer",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P12",
+          "question": "Can personal deposit accounts be denominated in local currency?",
+          "portal": "customer",
+          "language": "en",
+          "category": "paraphrase_currency",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+          "citations": []
+        },
+        {
+          "id": "P13",
+          "question": "Which digits on an Egyptian identity card tell the branch teller where the person was born?",
+          "portal": "employee",
+          "language": "en",
+          "category": "paraphrase_kyc_gov",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "Based on the approved banking policy (Customer Due Diligence & Synthetic Egyptian National ID Standards - Code POL-KYC-001):\n\nNational ID verification requires checking the 14-digit format: digit 1 indicates century (2 for 1900-1999, 3 for 2000-2099); digits 2-7 denote birth date (YYMMDD); digits 8-9 denote governorate code (01 for Cairo, 02 for Alexandria, 03 for Port Said, etc.); digit 14 serves as checksum. Strictly synthetic document fixtures must be used for testing and QA.\n\nPlease comply with the instructions above and consult a representative if additional assistance is needed.",
+          "citations": [
+            {
+              "code": "POL-KYC-001",
+              "version": "1.0.0",
+              "score": 0.1648,
+              "portal_access": "employee",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P14",
+          "question": "How does the system distinguish people born in the 1900s from people born in the 2000s on their civil ID?",
+          "portal": "employee",
+          "language": "en",
+          "category": "paraphrase_kyc_century",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+          "citations": []
+        },
+        {
+          "id": "P15",
+          "question": "Where on the 14-digit Egyptian card sequence can staff identify the birth date information?",
+          "portal": "employee",
+          "language": "en",
+          "category": "paraphrase_kyc_bdate",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "Based on the approved banking policy (Customer Due Diligence & Synthetic Egyptian National ID Standards - Code POL-KYC-001):\n\nNational ID verification requires checking the 14-digit format: digit 1 indicates century (2 for 1900-1999, 3 for 2000-2099); digits 2-7 denote birth date (YYMMDD); digits 8-9 denote governorate code (01 for Cairo, 02 for Alexandria, 03 for Port Said, etc.); digit 14 serves as checksum. Strictly synthetic document fixtures must be used for testing and QA.\n\nPlease comply with the instructions above and consult a representative if additional assistance is needed.",
+          "citations": [
+            {
+              "code": "POL-KYC-001",
+              "version": "1.0.0",
+              "score": 0.2873,
+              "portal_access": "employee",
+              "text": ""
+            },
+            {
+              "code": "POL-RETAIL-001",
+              "version": "1.0.0",
+              "score": 0.1635,
+              "portal_access": "customer",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P16",
+          "question": "ازاي اعمل ملوخية بالفراخ على الطريقة المصرية المظبوطة؟",
+          "portal": "customer",
+          "language": "ar",
+          "category": "out_of_domain",
+          "expected": null,
+          "should_abstain": true,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P17",
+          "question": "عايز اعرف احسن ورشة لتصليح عفشة العربيات في شارع فيصل",
+          "portal": "customer",
+          "language": "ar",
+          "category": "out_of_domain",
+          "expected": null,
+          "should_abstain": true,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P18",
+          "question": "سعر الدولار كام في السوق الموازي النهاردة في القاهرة؟",
+          "portal": "employee",
+          "language": "ar",
+          "category": "out_of_domain",
+          "expected": null,
+          "should_abstain": true,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P19",
+          "question": "What are the standard rules for playing squash in Egyptian sporting clubs?",
+          "portal": "customer",
+          "language": "en",
+          "category": "out_of_domain",
+          "expected": null,
+          "should_abstain": true,
+          "abstained": true,
+          "answer": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+          "citations": []
+        },
+        {
+          "id": "P20",
+          "question": "How do I fix a leaking water pipe under my kitchen sink with teflon tape?",
+          "portal": "employee",
+          "language": "en",
+          "category": "out_of_domain",
+          "expected": null,
+          "should_abstain": true,
+          "abstained": true,
+          "answer": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+          "citations": []
+        }
+      ]
+    },
+    "0.2": {
+      "metrics": {
+        "total_queries": 20,
+        "in_domain_count": 15,
+        "out_domain_count": 5,
+        "hit1_rate": 33.3,
+        "hit3_rate": 33.3,
+        "mrr": 0.3333,
+        "abstention_precision": 33.3,
+        "abstention_recall": 100.0,
+        "abstention_f1": 50.0,
+        "customer_leakage_rate": 0.0,
+        "citation_correctness": 100.0,
+        "answered_count": 5,
+        "abstained_total": 15
+      },
+      "details": [
+        {
+          "id": "P01",
+          "question": "عايز افتح حساب عادي بالمصري بس مش عارف محتاج فلوس كام في الاول؟",
+          "portal": "customer",
+          "language": "ar",
+          "category": "paraphrase_current_min",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P02",
+          "question": "لو الفلوس اللي في حسابي قلت عن الرصيد المطلوب البنك بيخصم كام كل شهر مصاريف؟",
+          "portal": "customer",
+          "language": "ar",
+          "category": "paraphrase_fee",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P03",
+          "question": "لو عاوز اعمل حساب توفير يديني عائد شهري محترم، احط فيه كام كبداية؟",
+          "portal": "customer",
+          "language": "ar",
+          "category": "paraphrase_savings_min",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P04",
+          "question": "ممكن افتح حساب جاري بالجنيه ولا لازم عملة صعبة؟",
+          "portal": "customer",
+          "language": "ar",
+          "category": "paraphrase_currency",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "بناءً على السياسة البنكية المعتمدة (إرشادات فتح حسابات الودائع للأفراد والحد الأدنى للرصيد - رمز POL-RETAIL-001):\n\nيجوز للعملاء الأفراد فتح حسابات جارية وحسابات توفير بالجنيه المصري. الحد الأدنى لفتح الحساب الجاري الكلاسيكي هو 2,500 جنيه مصري، والحد الأدنى لحساب التوفير عالي العائد هو 10,000 جنيه مصري. تطبق رسوم صيانة دورية قدرها 25 جنيهاً مصرياً إذا انخفض الرصيد عن الحد الأدنى.\n\nيرجى الالتزام بالتعليمات المذكورة أعلاه ومراجعة الفرع في حال الحاجة لأي مستندات إضافية.",
+          "citations": [
+            {
+              "code": "POL-RETAIL-001",
+              "version": "1.0.0",
+              "score": 0.3125,
+              "portal_access": "customer",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P05",
+          "question": "هو الموظف في الفرع بيعرف منين المحافظة اللي اتولد فيها العميل من أرقام البطاقة؟",
+          "portal": "employee",
+          "language": "ar",
+          "category": "paraphrase_kyc_gov",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P06",
+          "question": "يعني ايه اول رقم في البطاقة ده اتنين ولا تلاتة؟ بيحدد ايه بالضبط في فحص الهوية؟",
+          "portal": "employee",
+          "language": "ar",
+          "category": "paraphrase_kyc_century",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P07",
+          "question": "هو في خانات في الرقم القومي بتعرف الموظف سنة وشهر ويوم ميلاد صاحب البطاقة؟",
+          "portal": "employee",
+          "language": "ar",
+          "category": "paraphrase_kyc_bdate",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "بناءً على السياسة البنكية المعتمدة (معايير العناية الواجبة وتدقيق بطاقات الرقم القومي الاصطناعية - رمز POL-KYC-001):\n\nيتطلب التحقق من الرقم القومي فحص الهيكل المكون من 14 رقماً: الرقم الأول يعبر عن القرن (2 لمواليد 1900-1999، 3 لمواليد 2000-2099)؛ الأرقام 2 إلى 7 تعبر عن تاريخ الميلاد (سنة شهر يوم)؛ الرقمان 8 و9 يعبران عن كود محافظة الميلاد (01 القاهرة، 02 الإسكندرية، 03 بورسعيد، إلخ)؛ الرقم 14 يمثل رقم التدقيق الحسابي. يجب قصر الاختبارات تماماً على وثائق وبيانات اصطناعية.\n\nيرجى الالتزام بالتعليمات المذكورة أعلاه ومراجعة الفرع في حال الحاجة لأي مستندات إضافية.",
+          "citations": [
+            {
+              "code": "POL-KYC-001",
+              "version": "1.0.0",
+              "score": 0.211,
+              "portal_access": "employee",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P08",
+          "question": "ايه المطلوب للتاكد من عدم استخدام بطاقات حقيقية في تجارب واختبارات فحص الجودة؟",
+          "portal": "employee",
+          "language": "ar",
+          "category": "paraphrase_kyc_qa",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P09",
+          "question": "How much cash do I need to put down up front to get a standard personal checking account running?",
+          "portal": "customer",
+          "language": "en",
+          "category": "paraphrase_current_min",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+          "citations": []
+        },
+        {
+          "id": "P10",
+          "question": "What penalty does the bank charge to my balance every month if I dip below the required minimum deposit?",
+          "portal": "customer",
+          "language": "en",
+          "category": "paraphrase_fee",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "Based on the approved banking policy (Retail Deposit Accounts Opening & Minimum Balance Guidelines - Code POL-RETAIL-001):\n\nRetail customers may open Current and Savings accounts in EGP. The minimum opening balance for Classic Current Accounts is 2,500 EGP. Minimum balance for High-Yield Monthly Savings is 10,000 EGP. A monthly maintenance fee of 25 EGP applies if the balance falls below the minimum requirement.\n\nPlease comply with the instructions above and consult a representative if additional assistance is needed.",
+          "citations": [
+            {
+              "code": "POL-RETAIL-001",
+              "version": "1.0.0",
+              "score": 0.3552,
+              "portal_access": "customer",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P11",
+          "question": "What is the initial deposit requirement for the top-tier monthly interest savings option?",
+          "portal": "customer",
+          "language": "en",
+          "category": "paraphrase_savings_min",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "Based on the approved banking policy (Retail Deposit Accounts Opening & Minimum Balance Guidelines - Code POL-RETAIL-001):\n\nRetail customers may open Current and Savings accounts in EGP. The minimum opening balance for Classic Current Accounts is 2,500 EGP. Minimum balance for High-Yield Monthly Savings is 10,000 EGP. A monthly maintenance fee of 25 EGP applies if the balance falls below the minimum requirement.\n\nPlease comply with the instructions above and consult a representative if additional assistance is needed.",
+          "citations": [
+            {
+              "code": "POL-RETAIL-001",
+              "version": "1.0.0",
+              "score": 0.4111,
+              "portal_access": "customer",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P12",
+          "question": "Can personal deposit accounts be denominated in local currency?",
+          "portal": "customer",
+          "language": "en",
+          "category": "paraphrase_currency",
+          "expected": "POL-RETAIL-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+          "citations": []
+        },
+        {
+          "id": "P13",
+          "question": "Which digits on an Egyptian identity card tell the branch teller where the person was born?",
+          "portal": "employee",
+          "language": "en",
+          "category": "paraphrase_kyc_gov",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+          "citations": []
+        },
+        {
+          "id": "P14",
+          "question": "How does the system distinguish people born in the 1900s from people born in the 2000s on their civil ID?",
+          "portal": "employee",
+          "language": "en",
+          "category": "paraphrase_kyc_century",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": true,
+          "answer": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+          "citations": []
+        },
+        {
+          "id": "P15",
+          "question": "Where on the 14-digit Egyptian card sequence can staff identify the birth date information?",
+          "portal": "employee",
+          "language": "en",
+          "category": "paraphrase_kyc_bdate",
+          "expected": "POL-KYC-001",
+          "should_abstain": false,
+          "abstained": false,
+          "answer": "Based on the approved banking policy (Customer Due Diligence & Synthetic Egyptian National ID Standards - Code POL-KYC-001):\n\nNational ID verification requires checking the 14-digit format: digit 1 indicates century (2 for 1900-1999, 3 for 2000-2099); digits 2-7 denote birth date (YYMMDD); digits 8-9 denote governorate code (01 for Cairo, 02 for Alexandria, 03 for Port Said, etc.); digit 14 serves as checksum. Strictly synthetic document fixtures must be used for testing and QA.\n\nPlease comply with the instructions above and consult a representative if additional assistance is needed.",
+          "citations": [
+            {
+              "code": "POL-KYC-001",
+              "version": "1.0.0",
+              "score": 0.2873,
+              "portal_access": "employee",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "id": "P16",
+          "question": "ازاي اعمل ملوخية بالفراخ على الطريقة المصرية المظبوطة؟",
+          "portal": "customer",
+          "language": "ar",
+          "category": "out_of_domain",
+          "expected": null,
+          "should_abstain": true,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P17",
+          "question": "عايز اعرف احسن ورشة لتصليح عفشة العربيات في شارع فيصل",
+          "portal": "customer",
+          "language": "ar",
+          "category": "out_of_domain",
+          "expected": null,
+          "should_abstain": true,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P18",
+          "question": "سعر الدولار كام في السوق الموازي النهاردة في القاهرة؟",
+          "portal": "employee",
+          "language": "ar",
+          "category": "out_of_domain",
+          "expected": null,
+          "should_abstain": true,
+          "abstained": true,
+          "answer": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
+          "citations": []
+        },
+        {
+          "id": "P19",
+          "question": "What are the standard rules for playing squash in Egyptian sporting clubs?",
+          "portal": "customer",
+          "language": "en",
+          "category": "out_of_domain",
+          "expected": null,
+          "should_abstain": true,
+          "abstained": true,
+          "answer": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+          "citations": []
+        },
+        {
+          "id": "P20",
+          "question": "How do I fix a leaking water pipe under my kitchen sink with teflon tape?",
+          "portal": "employee",
+          "language": "en",
+          "category": "out_of_domain",
+          "expected": null,
+          "should_abstain": true,
+          "abstained": true,
+          "answer": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+          "citations": []
+        }
+      ]
+    }
+  }
+}

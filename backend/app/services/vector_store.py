@@ -156,7 +156,7 @@ class QdrantVectorService:
         # Process English content
         en_chunks = self._chunk_text(doc.content_en)
         for idx, chunk in enumerate(en_chunks):
-            embedding = await embedding_service.get_embedding(chunk)
+            embedding = await embedding_service.get_embedding(chunk, is_query=False)
             point_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, f"{doc.id}_en_{idx}"))
             payload = {
                 "document_id": str(doc.id),
@@ -178,7 +178,7 @@ class QdrantVectorService:
         # Process Arabic content
         ar_chunks = self._chunk_text(doc.content_ar)
         for idx, chunk in enumerate(ar_chunks):
-            embedding = await embedding_service.get_embedding(chunk)
+            embedding = await embedding_service.get_embedding(chunk, is_query=False)
             point_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, f"{doc.id}_ar_{idx}"))
             payload = {
                 "document_id": str(doc.id),
@@ -223,13 +223,20 @@ class QdrantVectorService:
         query: str,
         portal_type: str = "customer",
         limit: int = 4,
-        score_threshold: float = 0.15,
+        score_threshold: Optional[float] = None,
     ) -> List[Dict[str, Any]]:
         """Perform semantic retrieval with strict portal isolation and threshold enforcement."""
+        if score_threshold is None:
+            score_threshold = (
+                settings.RAG_SIMILARITY_THRESHOLD
+                if getattr(settings, "EMBEDDING_BACKEND", "e5").lower() == "e5"
+                else 0.15
+            )
+
         if not self.initialized:
             await self.init_collection()
 
-        query_vector = await embedding_service.get_embedding(query)
+        query_vector = await embedding_service.get_embedding(query, is_query=True)
 
         filter_conditions: List[models.Condition] = [
             models.FieldCondition(key="is_active", match=models.MatchValue(value=True))

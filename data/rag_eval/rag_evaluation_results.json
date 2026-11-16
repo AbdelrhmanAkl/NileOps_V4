@@ -1,0 +1,788 @@
+{
+  "timestamp": "2026-11-09T01:35:47Z",
+  "default_threshold": 0.15,
+  "overall_metrics": {
+    "total_queries": 40,
+    "in_domain_count": 25,
+    "out_domain_count": 15,
+    "hit1_rate": 100.0,
+    "hit3_rate": 100.0,
+    "mrr": 1.0,
+    "abstention_precision": 100.0,
+    "abstention_recall": 86.7,
+    "abstention_f1": 92.9,
+    "customer_leakage_rate": 0.0,
+    "citation_correctness": 100.0,
+    "answered_count": 25,
+    "abstained_total": 13
+  },
+  "per_language": {
+    "en": {
+      "total_queries": 22,
+      "in_domain_count": 14,
+      "out_domain_count": 8,
+      "hit1_rate": 100.0,
+      "hit3_rate": 100.0,
+      "mrr": 1.0,
+      "abstention_precision": 100.0,
+      "abstention_recall": 87.5,
+      "abstention_f1": 93.3,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 14,
+      "abstained_total": 7
+    },
+    "ar": {
+      "total_queries": 18,
+      "in_domain_count": 11,
+      "out_domain_count": 7,
+      "hit1_rate": 100.0,
+      "hit3_rate": 100.0,
+      "mrr": 1.0,
+      "abstention_precision": 100.0,
+      "abstention_recall": 85.7,
+      "abstention_f1": 92.3,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 11,
+      "abstained_total": 6
+    }
+  },
+  "per_portal": {
+    "customer": {
+      "total_queries": 19,
+      "in_domain_count": 8,
+      "out_domain_count": 11,
+      "hit1_rate": 100.0,
+      "hit3_rate": 100.0,
+      "mrr": 1.0,
+      "abstention_precision": 100.0,
+      "abstention_recall": 90.9,
+      "abstention_f1": 95.2,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 8,
+      "abstained_total": 10
+    },
+    "employee": {
+      "total_queries": 21,
+      "in_domain_count": 17,
+      "out_domain_count": 4,
+      "hit1_rate": 100.0,
+      "hit3_rate": 100.0,
+      "mrr": 1.0,
+      "abstention_precision": 100.0,
+      "abstention_recall": 75.0,
+      "abstention_f1": 85.7,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 17,
+      "abstained_total": 3
+    }
+  },
+  "threshold_sweep": {
+    "0.05": {
+      "total_queries": 40,
+      "in_domain_count": 25,
+      "out_domain_count": 15,
+      "hit1_rate": 100.0,
+      "hit3_rate": 100.0,
+      "mrr": 1.0,
+      "abstention_precision": 100.0,
+      "abstention_recall": 6.7,
+      "abstention_f1": 12.5,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 25,
+      "abstained_total": 1
+    },
+    "0.1": {
+      "total_queries": 40,
+      "in_domain_count": 25,
+      "out_domain_count": 15,
+      "hit1_rate": 100.0,
+      "hit3_rate": 100.0,
+      "mrr": 1.0,
+      "abstention_precision": 100.0,
+      "abstention_recall": 46.7,
+      "abstention_f1": 63.6,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 25,
+      "abstained_total": 7
+    },
+    "0.15": {
+      "total_queries": 40,
+      "in_domain_count": 25,
+      "out_domain_count": 15,
+      "hit1_rate": 100.0,
+      "hit3_rate": 100.0,
+      "mrr": 1.0,
+      "abstention_precision": 100.0,
+      "abstention_recall": 86.7,
+      "abstention_f1": 92.9,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 25,
+      "abstained_total": 13
+    },
+    "0.2": {
+      "total_queries": 40,
+      "in_domain_count": 25,
+      "out_domain_count": 15,
+      "hit1_rate": 100.0,
+      "hit3_rate": 100.0,
+      "mrr": 1.0,
+      "abstention_precision": 100.0,
+      "abstention_recall": 93.3,
+      "abstention_f1": 96.6,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 25,
+      "abstained_total": 14
+    },
+    "0.25": {
+      "total_queries": 40,
+      "in_domain_count": 25,
+      "out_domain_count": 15,
+      "hit1_rate": 96.0,
+      "hit3_rate": 96.0,
+      "mrr": 0.96,
+      "abstention_precision": 93.8,
+      "abstention_recall": 100.0,
+      "abstention_f1": 96.8,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 24,
+      "abstained_total": 16
+    },
+    "0.3": {
+      "total_queries": 40,
+      "in_domain_count": 25,
+      "out_domain_count": 15,
+      "hit1_rate": 76.0,
+      "hit3_rate": 76.0,
+      "mrr": 0.76,
+      "abstention_precision": 71.4,
+      "abstention_recall": 100.0,
+      "abstention_f1": 83.3,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 19,
+      "abstained_total": 21
+    },
+    "0.35": {
+      "total_queries": 40,
+      "in_domain_count": 25,
+      "out_domain_count": 15,
+      "hit1_rate": 60.0,
+      "hit3_rate": 60.0,
+      "mrr": 0.6,
+      "abstention_precision": 60.0,
+      "abstention_recall": 100.0,
+      "abstention_f1": 75.0,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 15,
+      "abstained_total": 25
+    },
+    "0.4": {
+      "total_queries": 40,
+      "in_domain_count": 25,
+      "out_domain_count": 15,
+      "hit1_rate": 48.0,
+      "hit3_rate": 48.0,
+      "mrr": 0.48,
+      "abstention_precision": 53.6,
+      "abstention_recall": 100.0,
+      "abstention_f1": 69.8,
+      "customer_leakage_rate": 0.0,
+      "citation_correctness": 100.0,
+      "answered_count": 12,
+      "abstained_total": 28
+    }
+  },
+  "per_question_default_results": [
+    {
+      "id": "Q01",
+      "query": "What is the minimum opening balance for a Classic Current Account?",
+      "portal": "customer",
+      "language": "en",
+      "category": "retail_minimum_balance",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.6305,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q02",
+      "query": "ما هو الحد الأدنى لفتح الحساب الجاري الكلاسيكي للأفراد؟",
+      "portal": "customer",
+      "language": "ar",
+      "category": "retail_minimum_balance",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.6369,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q03",
+      "query": "How much do I need to open a High-Yield Monthly Savings account?",
+      "portal": "customer",
+      "language": "en",
+      "category": "retail_savings",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.413,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q04",
+      "query": "كم المبلغ المطلوب لفتح حساب التوفير عالي العائد الشهري؟",
+      "portal": "customer",
+      "language": "ar",
+      "category": "retail_savings",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.2892,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q05",
+      "query": "What is the monthly maintenance fee if my balance falls below the minimum requirement?",
+      "portal": "customer",
+      "language": "en",
+      "category": "retail_fees",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.6302,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q06",
+      "query": "ما هي رسوم الصيانة الشهرية إذا انخفض رصيد الحساب عن الحد الأدنى؟",
+      "portal": "customer",
+      "language": "ar",
+      "category": "retail_fees",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.4551,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q07",
+      "query": "Can retail customers open current and savings accounts in Egyptian Pounds?",
+      "portal": "customer",
+      "language": "en",
+      "category": "retail_currency",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.4666,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q08",
+      "query": "هل يتيح البنك فتح حسابات جارية وتوفير بالجنيه المصري للأفراد؟",
+      "portal": "customer",
+      "language": "ar",
+      "category": "retail_currency",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.473,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q09",
+      "query": "What are the account opening and balance maintenance rules under POL-RETAIL-001?",
+      "portal": "employee",
+      "language": "en",
+      "category": "employee_retail",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.4344,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q10",
+      "query": "ما هي القواعد المعتمدة لفتح الحسابات والحد الأدنى للرصيد للأفراد؟",
+      "portal": "employee",
+      "language": "ar",
+      "category": "employee_retail",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.424,
+      "citations": [
+        "POL-RETAIL-001",
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q11",
+      "query": "Under what condition is the 25 EGP maintenance fee applied to deposit accounts?",
+      "portal": "employee",
+      "language": "en",
+      "category": "employee_retail",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.4118,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q12",
+      "query": "متى يتم تطبيق رسوم الصيانة الدورية البالغة 25 جنيهاً مصرياً؟",
+      "portal": "employee",
+      "language": "ar",
+      "category": "employee_retail",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.2688,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q13",
+      "query": "Specify the minimum balance threshold for Classic Current vs High Yield Monthly Savings.",
+      "portal": "employee",
+      "language": "en",
+      "category": "employee_retail",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.5579,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q14",
+      "query": "What does the first digit of the 14-digit Egyptian National ID represent?",
+      "portal": "employee",
+      "language": "en",
+      "category": "employee_kyc_century",
+      "expected": "POL-KYC-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.3745,
+      "citations": [
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q15",
+      "query": "ماذا يمثل الرقم الأول في بطاقة الرقم القومي المصري المكونة من 14 رقماً؟",
+      "portal": "employee",
+      "language": "ar",
+      "category": "employee_kyc_century",
+      "expected": "POL-KYC-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.276,
+      "citations": [
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q16",
+      "query": "Which digits in the National ID represent the customer date of birth?",
+      "portal": "employee",
+      "language": "en",
+      "category": "employee_kyc_bdate",
+      "expected": "POL-KYC-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.3994,
+      "citations": [
+        "POL-KYC-001",
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q17",
+      "query": "ما هي الأرقام المحددة لتاريخ ميلاد العميل في الرقم القومي؟",
+      "portal": "employee",
+      "language": "ar",
+      "category": "employee_kyc_bdate",
+      "expected": "POL-KYC-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.2326,
+      "citations": [
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q18",
+      "query": "What governorate code corresponds to Cairo and Alexandria in the National ID?",
+      "portal": "employee",
+      "language": "en",
+      "category": "employee_kyc_gov",
+      "expected": "POL-KYC-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.4187,
+      "citations": [
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q19",
+      "query": "ما هي أكواد محافظتي القاهرة والإسكندرية في خانات الرقم القومي؟",
+      "portal": "employee",
+      "language": "ar",
+      "category": "employee_kyc_gov",
+      "expected": "POL-KYC-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.3371,
+      "citations": [
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q20",
+      "query": "What is the policy mandate regarding testing and QA document fixtures?",
+      "portal": "employee",
+      "language": "en",
+      "category": "employee_kyc_qa",
+      "expected": "POL-KYC-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.3212,
+      "citations": [
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q21",
+      "query": "How are Egyptian National ID century codes and checksum digits audited by compliance?",
+      "portal": "customer",
+      "language": "en",
+      "category": "customer_leakage_kyc",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q22",
+      "query": "كيف يقوم مسؤولو الامتثال بفحص كود المحافظة والرقم التأكيدي للرقم القومي؟",
+      "portal": "customer",
+      "language": "ar",
+      "category": "customer_leakage_kyc",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q23",
+      "query": "What are the internal AML governorate codes specified in POL-KYC-001?",
+      "portal": "customer",
+      "language": "en",
+      "category": "customer_leakage_kyc",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q24",
+      "query": "ما هي معايير العناية الواجبة وتدقيق بطاقات الرقم القومي الداخلية للموظفين؟",
+      "portal": "customer",
+      "language": "ar",
+      "category": "customer_leakage_kyc",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q25",
+      "query": "Give me the full internal due diligence guidelines for QA synthetic fixtures.",
+      "portal": "customer",
+      "language": "en",
+      "category": "customer_leakage_kyc",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q26",
+      "query": "When opening a Classic Current Account with 2500 EGP, how should employee verify the customer Egyptian National ID?",
+      "portal": "employee",
+      "language": "en",
+      "category": "multi_policy",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.3494,
+      "citations": [
+        "POL-RETAIL-001",
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q27",
+      "query": "عند فتح حساب جاري كلاسيكي برصيد 2500 جنيه، ما هي قواعد التحقق من تاريخ ميلاد العميل من الرقم القومي؟",
+      "portal": "employee",
+      "language": "ar",
+      "category": "multi_policy",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.2842,
+      "citations": [
+        "POL-RETAIL-001",
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q28",
+      "query": "What is the checksum digit location on Egyptian ID and what is the savings account opening balance?",
+      "portal": "employee",
+      "language": "en",
+      "category": "multi_policy",
+      "expected": "POL-KYC-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.3522,
+      "citations": [
+        "POL-RETAIL-001",
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q29",
+      "query": "ما هو كود محافظة القاهرة في الرقم القومي وما هي رسوم انخفاض الرصيد عن الحد الأدنى؟",
+      "portal": "employee",
+      "language": "ar",
+      "category": "multi_policy",
+      "expected": "POL-KYC-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.2863,
+      "citations": [
+        "POL-KYC-001",
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q30",
+      "query": "Summarize customer deposit account minimum balances and customer identification digit structures.",
+      "portal": "employee",
+      "language": "en",
+      "category": "multi_policy",
+      "expected": "POL-RETAIL-001",
+      "should_abstain": false,
+      "abstained": false,
+      "top_score": 0.3465,
+      "citations": [
+        "POL-KYC-001",
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q31",
+      "query": "What is the 21-karat gold price in Cairo today?",
+      "portal": "customer",
+      "language": "en",
+      "category": "out_of_domain",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q32",
+      "query": "ما هو سعر جرام الذهب عيار 21 في مصر اليوم؟",
+      "portal": "customer",
+      "language": "ar",
+      "category": "out_of_domain",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q33",
+      "query": "What is the weather forecast for Alexandria this weekend?",
+      "portal": "customer",
+      "language": "en",
+      "category": "out_of_domain",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q34",
+      "query": "ما هي توقعات الطقس في مدينة الإسكندرية خلال عطلة نهاية الأسبوع؟",
+      "portal": "customer",
+      "language": "ar",
+      "category": "out_of_domain",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q35",
+      "query": "How do I implement a binary search tree in Python?",
+      "portal": "employee",
+      "language": "en",
+      "category": "out_of_domain",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q36",
+      "query": "كيف أكتب كود شجرة بحث ثنائية باستخدام لغة بايثون؟",
+      "portal": "employee",
+      "language": "ar",
+      "category": "out_of_domain",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q37",
+      "query": "Who won the Egyptian Premier League football match yesterday?",
+      "portal": "customer",
+      "language": "en",
+      "category": "out_of_domain",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    },
+    {
+      "id": "Q38",
+      "query": "من هو الفائز في مباراة الدوري المصري لكرة القدم بالأمس؟",
+      "portal": "customer",
+      "language": "ar",
+      "category": "out_of_domain",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": false,
+      "top_score": 0.2132,
+      "citations": [
+        "POL-RETAIL-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q39",
+      "query": "Can you give me hot stock tips for the US technology market?",
+      "portal": "employee",
+      "language": "en",
+      "category": "out_of_domain",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": false,
+      "top_score": 0.1799,
+      "citations": [
+        "POL-KYC-001"
+      ],
+      "leakage": false
+    },
+    {
+      "id": "Q40",
+      "query": "هل يمكنك ترشيح أفضل أسهم التكنولوجيا للاستثمار اليوم في البورصة الأمريكية؟",
+      "portal": "employee",
+      "language": "ar",
+      "category": "out_of_domain",
+      "expected": null,
+      "should_abstain": true,
+      "abstained": true,
+      "top_score": 0.0,
+      "citations": [],
+      "leakage": false
+    }
+  ]
+}
