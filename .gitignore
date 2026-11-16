@@ -1,4 +1,4 @@
-# NileOps — Hardened Git Ignore
+﻿# NileOps â€” Hardened Git Ignore
 
 # Environments and Secrets
 .env
@@ -19,11 +19,11 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
-parts/
+/lib/
+/lib64/
+/parts/
 sdist/
-var/
+/var/
 wheels/
 share/python-wheels/
 *.egg-info/
@@ -65,7 +65,7 @@ backend/uploads/*
 !backend/uploads/.gitkeep
 
 # Machine Learning & Large Artifacts
-models/
+/models/
 *.onnx
 *.bin
 *.safetensors
@@ -110,3 +110,6 @@ scripts/local_only/
 
 
 
+
+!backend/app/models/
+!backend/app/models/**
