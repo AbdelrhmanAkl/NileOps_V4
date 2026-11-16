@@ -1,6 +1,6 @@
 # NileOps — Intelligent Digital Banking Operations Platform
 
-[![Backend Tests](https://img.shields.io/badge/tests-77%20passed-brightgreen.svg)]()
+[![Backend Tests](https://img.shields.io/badge/tests-119%20passed-brightgreen.svg)]()
 [![Frontend Build](https://img.shields.io/badge/frontend-Vite%20%2B%20TypeScript-blue.svg)]()
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)]()
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg)]()
@@ -195,7 +195,7 @@ Every ID input or document scan is evaluated independently across 9 dimensions:
 
 - **Operating System:** Windows 10/11 (or Linux/macOS)
 - **Python:** 3.11.x (tested on Python 3.11.9)
-- **Node.js:** v20.x or v22.x LTS (tested on Node.js v26.13.0 LTS & npm)
+- **Node.js:** v20.x or v22.x LTS (with npm)
 - **PostgreSQL:** Version 16.x (installed locally or via service)
 - **Qdrant:** Version 1.12.x+ standalone executable or Python service (port 6333)
 - **Ollama (Optional):** Running locally with `qwen3:8b` (extractive fallback operates autonomously when offline)
@@ -321,23 +321,27 @@ The backend test suite enforces strict isolation:
 - **Relational Isolation:** All tests run against database `nileops_test`. The development database `nileops` is guarded and unreachable by tests.
 - **Vector Isolation:** All tests run against collection `nileops_kb_test`. A hard-failing check in `vector_store.py` ensures tests fail immediately if the collection does not end with `_test`.
 
-### Execute Test Suite (77 Tests)
+### Execute Test Suite (119 Tests)
 ```bash
 cd backend
-pytest -q
+pytest -v -x -s --durations=10
 ```
-Test module breakdown:
-- `tests/test_health.py`: Health probes, root redirect, API v1 status, and production JWT secret key guard.
-- `tests/test_mvp.py`: Authentication, RBAC isolation, data ownership, complaints, and four-eyes policy approval.
-- `tests/test_complaint_intelligence.py`: Deterministic advisory classification, SLA calculations, complaint lifecycle transitions, and employee pagination.
-- `tests/test_simulated_requests.py`: Account opening requests, debit card requests, and state machine validation.
-- `tests/test_iban_masking.py`: Public IBAN masking invariants.
-- `tests/test_kyc_document_ai.py`: Synthetic National ID masking, review notes requirements, and KYC lifecycle.
-- `tests/test_ocr.py`: Digit normalization, leap-year calendar validation, governorate allowlists, Decision Tables 7.1.1 & 7.1.2.
-- `tests/test_ocr_phase_2_1.py`: Address parsing, WebP validation, and security fuzzing.
-- `tests/test_ocr_phase_2_2.py`: Image quality assessment, CLAHE contrast enhancement, and deskewing.
-- `tests/test_ocr_security.py`: Image size guards, decompression bomb protection, and PII masking.
-- `tests/test_rag.py`: Qdrant health, grounded answers, portal isolation, abstention, POL-TEST exclusion, and RBAC guards.
+Test module breakdown (119 passed / 100% pass rate):
+- `tests/test_adversarial_agent.py` (29 tests): Allowlisted Ops Assistant agent, adversarial prompt injection defenses (EN/AR), forbidden tools refusal, and output guardrails (14-digit National ID, IBAN, and JWT scrubbing).
+- `tests/test_health.py` (4 tests): Health probes, root redirect, API v1 status, and production JWT secret key guard.
+- `tests/test_mvp.py` (6 tests): Authentication, RBAC isolation, data ownership, complaints, and four-eyes policy approval.
+- `tests/test_complaint_intelligence.py` (6 tests): Deterministic advisory classification, SLA calculations, complaint lifecycle transitions, and employee pagination.
+- `tests/test_simulated_requests.py` (7 tests): Account opening requests, debit card requests, and state machine validation.
+- `tests/test_iban_masking.py` (2 tests): Public IBAN masking invariants.
+- `tests/test_kpi_service.py` (6 tests): Operational KPI calculation engine and employee role RBAC.
+- `tests/test_kyc_document_ai.py` (3 tests): Synthetic National ID masking, review notes requirements, and KYC lifecycle.
+- `tests/test_kyc_mismatch.py` (12 tests): Cross-field KYC discrepancy checks (birthdate vs ID, governorate vs ID, low OCR confidence, missing fields).
+- `tests/test_ocr.py` (12 tests): Digit normalization, leap-year calendar validation, governorate allowlists, Decision Tables 7.1.1 & 7.1.2.
+- `tests/test_ocr_phase_2_1.py` (9 tests): Address parsing, WebP validation, and security fuzzing.
+- `tests/test_ocr_phase_2_2.py` (5 tests): Image quality assessment, CLAHE contrast enhancement, and deskewing.
+- `tests/test_ocr_security.py` (6 tests): Image size guards, decompression bomb protection, and PII masking.
+- `tests/test_production_guards.py` (7 tests): Weak secret rejection, CORS wildcard prevention, login lockout, and sliding-window rate limiting.
+- `tests/test_rag.py` (8 tests): Qdrant health, grounded answers, portal isolation, abstention, POL-TEST exclusion, and RBAC guards.
 
 ### Frontend Typecheck & Build
 ```bash
@@ -366,6 +370,11 @@ For rapid local evaluation, NileOps provides convenient **1-click quick-login bu
 ## 14. Transparent Architectural Limitations
 
 NileOps is designed as an architectural reference implementation and simulator. In the interest of engineering transparency, the following technical limitations are explicitly documented:
+
+> [!IMPORTANT]
+> **Known Limitations & Simulation Scope Notice:**
+> - **100% Synthetic Simulation:** All data within NileOps—including customer profiles, account balances, complaint tickets, transaction ledgers, and 14-digit Egyptian National IDs—is 100% synthetic mock data generated for developer simulation. The platform is an architectural prototype and is not a licensed financial institution.
+> - **Local LLM & Deterministic Fallback:** If a local Ollama instance (`qwen3:8b`) is not running or times out (2.0s threshold), the platform automatically activates deterministic extractive quotation fallback (`fallback_used: true`). Answers are extracted verbatim from retrieved policy chunks, ensuring high availability and zero hallucinations without requiring active GPU/neural generation.
 
 1. **Hashing (Non-Semantic) Embeddings & Paraphrase Drop:**
    - The active embedding pipeline (`backend/app/services/embedding.py`) utilizes sub-word character trigram feature hashing projected down to 384 dimensions rather than a deep contextual neural transformer (such as BGE-M3 or text-embedding-3).
