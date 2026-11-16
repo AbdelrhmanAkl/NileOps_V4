@@ -315,3 +315,65 @@ def test_customer_kyc_self_service_update_and_status(client: TestClient):
     assert staff_resp.status_code == 403
 
 
+def test_kyc_expiry_date_and_normalized_bounding_boxes():
+    """Verify field-level provenance, expiry date extraction, and normalized [ymin, xmin, ymax, xmax] coordinates."""
+    from app.services.image_pipeline import ImageOCRPipeline
+    pipeline = ImageOCRPipeline()
+
+    rec_texts = [
+        "جمهورية مصر العربية",
+        "محمود عادل إبراهيم حسن",
+        "15 شارع النيل، المعادي، القاهرة",
+        "29505140101234",
+        "IS0664295",
+        "تاريخ الانتهاء 2029-05-14",
+    ]
+    rec_scores = [0.95, 0.92, 0.89, 0.98, 0.91, 0.94]
+    dt_polys = [
+        [[50, 20], [350, 20], [350, 50], [50, 50]],
+        [[50, 70], [300, 70], [300, 100], [50, 100]],
+        [[50, 110], [380, 110], [380, 140], [50, 140]],
+        [[50, 150], [350, 150], [350, 180], [50, 180]],
+        [[30, 200], [120, 200], [120, 220], [30, 220]],
+        [[200, 200], [380, 200], [380, 220], [200, 220]],
+    ]
+    img_dims = (250, 400)
+
+    fields = pipeline.extract_fields_from_ocr(
+        rec_texts=rec_texts,
+        rec_scores=rec_scores,
+        dt_polys=dt_polys,
+        img_dims=img_dims,
+    )
+
+    assert fields["national_id"] == "29505140101234"
+    assert fields["name"] == "محمود عادل إبراهيم حسن"
+    assert "المعادي" in fields["address"]
+    assert fields["factory_code"] == "IS0664295"
+    assert fields["expiry_date"] == "2029-05-14"
+
+    # Verify provenance structure
+    prov = fields["fields_provenance"]
+    assert "national_id" in prov
+    assert "name" in prov
+    assert "address" in prov
+    assert "expiry_date" in prov
+    assert "factory_code" in prov
+
+    # Verify normalized bounding box ranges [0.0, 1.0] and [ymin, xmin, ymax, xmax] ordering
+    for field_name, meta in prov.items():
+        assert meta is not None, f"Provenance missing for {field_name}"
+        assert "value" in meta
+        assert "confidence" in meta
+        assert "source" in meta
+        src = meta["source"]
+        assert src["document"] == "EGYPTIAN_NATIONAL_ID_SYNTHETIC"
+        assert src["page"] == 1
+        bbox = src["bbox"]
+        assert len(bbox) == 4, f"Invalid bbox format for {field_name}: {bbox}"
+        ymin, xmin, ymax, xmax = bbox
+        assert 0.0 <= ymin <= ymax <= 1.0, f"Invalid y range for {field_name}: {bbox}"
+        assert 0.0 <= xmin <= xmax <= 1.0, f"Invalid x range for {field_name}: {bbox}"
+
+
+
