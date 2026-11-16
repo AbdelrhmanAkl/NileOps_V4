@@ -225,6 +225,32 @@ export async function updateKycStatus(id: string, status: string, notes?: string
   return res.json();
 }
 
+export async function submitCustomerKycUpdate(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const token = localStorage.getItem("nileops_token");
+  const res = await fetch(`${API_BASE}/customer/kyc-update`, {
+    method: "POST",
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: formData,
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || "Failed to submit KYC update.");
+  }
+  return res.json();
+}
+
+export async function fetchCustomerKycStatus() {
+  const res = await fetch(`${API_BASE}/customer/kyc-status`, {
+    headers: { ...getAuthHeader() },
+  });
+  if (!res.ok) throw new Error("Failed to load KYC status.");
+  return res.json();
+}
+
+
 // 5. Policy Governance
 export async function fetchPolicies(query?: string, domain?: string, statusFilter?: string) {
   const params = new URLSearchParams();

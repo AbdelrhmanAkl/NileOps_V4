@@ -147,6 +147,20 @@ def get_ocr_engine():
 
                     sys.meta_path.insert(0, _PandasShimFinder())
 
+                # Ensure torch DLL directory is available on Windows before modelscope/paddleocr import
+                if hasattr(os, "add_dll_directory"):
+                    import importlib.util
+                    torch_spec = importlib.util.find_spec("torch")
+                    if torch_spec and torch_spec.origin:
+                        torch_lib = os.path.join(os.path.dirname(torch_spec.origin), "lib")
+                        if os.path.exists(torch_lib):
+                            try:
+                                os.environ["PATH"] = torch_lib + ";" + os.environ.get("PATH", "")
+                                os.add_dll_directory(torch_lib)
+                                import torch  # Pre-load torch DLLs safely
+                            except Exception:
+                                pass
+
                 try:
                     import paddle
                     paddle.set_flags({
@@ -444,8 +458,8 @@ class ImageOCRPipeline:
                 extracted["factory_code"] = re.sub(r"\s+", "", fc_match.group(1)).upper()
                 extracted["factory_code_conf"] = float(score)
 
-            # 3. Filter Administrative Headers & Field Labels
-            if any(h in raw for h in ADMINISTRATIVE_HEADERS):
+            # 3. Filter Administrative Headers & Field Labels (tolerant to OCR misrecognitions like تحقليق)
+            if any(h in raw for h in ADMINISTRATIVE_HEADERS) or re.search(r"بطاق[ةه]|تحق[ييل]+ق|الشخصي[ةه]|المدني[ةه]|الداخلي[ةه]", raw):
                 continue
 
             raw_clean = re.sub(r"[:\-\s]", "", raw)
@@ -460,9 +474,13 @@ class ImageOCRPipeline:
             if self.is_likely_address(raw, has_prior_address=bool(address_candidates)):
                 address_candidates.append((raw, float(score)))
             elif len(digits) < 5:
-                # Strip leading label prefix e.g. "الاسم : " if present on the name line
-                cleaned_token = re.sub(r"^(الاسم|اسم)\s*[:\-]\s*", "", raw).strip()
-                if cleaned_token and cleaned_token not in CARD_FIELD_LABELS:
+                # Strip leading label prefix e.g. "الاسم : " or "الأسم : "
+                cleaned_token = re.sub(r"^([إأآا]ل[إأآا]?سم|[إأآا]سم)\s*[:\-]?\s*", "", raw).strip()
+                if (
+                    cleaned_token
+                    and cleaned_token not in CARD_FIELD_LABELS
+                    and not re.search(r"بطاق[ةه]|تحق[ييل]+ق|الشخصي[ةه]", cleaned_token)
+                ):
                     name_candidates.append((cleaned_token, float(score)))
 
         if name_candidates:

@@ -47,7 +47,7 @@ def run_evaluation() -> Dict[str, Any]:
     per_reason = data.get("per_reason_code_metrics", {})
 
     summary = {
-        "benchmark_name": "30_card_kyc_mismatch_exception_benchmark",
+        "benchmark_name": f"{total_cards}_card_kyc_mismatch_exception_benchmark",
         "sample_size": total_cards,
         "positive_exceptions_ground_truth": actual_positives,
         "negative_clean_ground_truth": actual_negatives,
@@ -79,7 +79,7 @@ def run_evaluation() -> Dict[str, Any]:
         json.dump(summary, f, indent=2, ensure_ascii=False)
 
     print("\n--- Exception Detection & Escalation Summary ---")
-    print(f"Sample Size: {total_cards} Cards (15 Clean, 15 Planted Exceptions)")
+    print(f"Sample Size: {total_cards} Cards ({actual_negatives} Clean, {actual_positives} Planted Exceptions)")
     print(f"Exception Recall:         {recall:.1f}% (Target: >=95.0%) -> {summary['targets']['exception_recall_status']}")
     print(f"Correct Escalation Rate:  {escalation_correctness:.1f}% (Target: >=95.0%) -> {summary['targets']['escalation_rate_status']}")
     print(f"Precision:                {precision:.1f}%")

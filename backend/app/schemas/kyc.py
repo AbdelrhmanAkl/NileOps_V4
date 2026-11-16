@@ -67,4 +67,38 @@ class KycVerificationOut(BaseModel):
         from_attributes = True
 
 
+class CustomerKycOut(BaseModel):
+    id: str
+    tracking_number: str
+    synthetic_national_id: str
+    document_type: str = "EGYPTIAN_NATIONAL_ID_SYNTHETIC"
+    status: str
+    identity_verification_status: str = "NOT_VERIFIED"
+    created_at: datetime
+    updated_at: datetime
+
+    @field_validator("status")
+    @classmethod
+    def normalize_status(cls, v: str) -> str:
+        if v == "VERIFIED_SYNTHETIC":
+            return "APPROVED_SIMULATED"
+        return v
+
+    @field_validator("synthetic_national_id")
+    @classmethod
+    def mask_national_id(cls, v: str) -> str:
+        if not v:
+            return v
+        clean = str(v).strip()
+        if len(clean) == 14:
+            return f"{clean[:4]}****{clean[-4:]}"
+        elif len(clean) > 8:
+            return f"{clean[:4]}****{clean[-4:]}"
+        return clean
+
+    class Config:
+        from_attributes = True
+
+
+
 

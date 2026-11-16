@@ -339,27 +339,45 @@ class KycCheckService:
             })
 
         # 2. Missing Name
-        has_name = (name_extracted is True) or (citizen_name and str(citizen_name).strip() not in ("Missing from card", "مفقود من الوثيقة", "None", ""))
-        if not has_name or not citizen_name or len(str(citizen_name).strip()) < 3:
+        # Validate that citizen_name contains real Arabic/English letters and is not header noise or single fragment
+        is_valid_name = False
+        if citizen_name:
+            c_str = str(citizen_name).strip()
+            has_letters = bool(re.search(r"[\u0621-\u064Aa-zA-Z]", c_str))
+            not_placeholder = c_str not in ("Missing from card", "مفقود من الوثيقة", "None", "")
+            not_header = not any(h in c_str for h in ["بطاقة", "تحقيق", "الشخصية", "تحقليق", "الداخلية", "الأحوال", "المدنية", "جمهورية"])
+            if has_letters and not_placeholder and not_header and len(c_str) >= 4 and len(c_str.split()) >= 2:
+                is_valid_name = True
+        has_name = is_valid_name
+
+        if not is_valid_name or (name_extracted is False):
             reasons.append({
                 "code": KycReasonCode.MISSING_FIELD_NAME.value,
                 "severity": KycSeverity.WARNING.value,
                 "field": "name",
-                "explanation_en": "Citizen full name is missing from document extraction.",
-                "explanation_ar": "اسم المواطن بالكامل مفقود من البيانات المستخرجة للوثيقة.",
-                "details": {},
+                "explanation_en": "Citizen full name is missing or contains invalid noise in document extraction.",
+                "explanation_ar": "اسم المواطن بالكامل مفقود أو غير صالح في البيانات المستخرجة للوثيقة.",
+                "details": {"raw_name": citizen_name},
             })
 
         # 3. Missing Address
-        has_address = (address_extracted is True) or (address and str(address).strip() not in ("Missing from card", "مفقود من الوثيقة", "None", ""))
-        if not has_address or not address or len(str(address).strip()) < 5:
+        is_valid_address = False
+        if address:
+            a_str = str(address).strip()
+            has_letters = bool(re.search(r"[\u0621-\u064Aa-zA-Z]", a_str))
+            not_placeholder = a_str not in ("Missing from card", "مفقود من الوثيقة", "None", "")
+            if has_letters and not_placeholder and len(a_str) >= 5:
+                is_valid_address = True
+        has_address = is_valid_address
+
+        if not is_valid_address or (address_extracted is False):
             reasons.append({
                 "code": KycReasonCode.MISSING_FIELD_ADDRESS.value,
                 "severity": KycSeverity.WARNING.value,
                 "field": "address",
                 "explanation_en": "Residential address is missing or incomplete in document extraction.",
                 "explanation_ar": "محل الإقامة مفقود أو غير مكتمل في البيانات المستخرجة للوثيقة.",
-                "details": {},
+                "details": {"raw_address": address},
             })
 
         # -------------------------------------------------------------
@@ -468,14 +486,28 @@ class KycCheckService:
                     })
 
         # -------------------------------------------------------------
-        # Check (d): Low OCR Confidence Below Configurable Thresholds
+        # Check (d): Low OCR Confidence Below Configurable Thresholds & Image Quality
         # -------------------------------------------------------------
         nid_thresh = self.thresholds.get("national_id", 0.85)
         name_thresh = self.thresholds.get("name", 0.70)
         addr_thresh = self.thresholds.get("address", 0.70)
 
+        prep_meta = extracted_fields.get("preprocessing_meta", {}) if isinstance(extracted_fields.get("preprocessing_meta"), dict) else {}
+        qa = (
+            extracted_fields.get("quality_metrics")
+            or extracted_fields.get("quality_assessment")
+            or prep_meta.get("quality_assessment")
+            or {}
+        )
+        is_dark_or_blurry = (
+            qa.get("contrast_std", 100.0) < 10.0
+            or qa.get("brightness_mean", 100.0) < 75.0
+            or (qa.get("sharpness_laplacian", 100.0) < 15.0 and qa.get("is_blurry", False))
+        )
+
         is_low_conf = (
             "OCR_LOW_CONFIDENCE" in pipeline_ocr_status
+            or is_dark_or_blurry
             or (has_nid and 0.0 < nid_conf < nid_thresh)
             or (has_name and 0.0 < name_conf < name_thresh)
             or (has_address and 0.0 < address_conf < addr_thresh)

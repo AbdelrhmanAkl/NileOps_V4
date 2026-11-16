@@ -17,14 +17,29 @@ from app.schemas.banking import AccountOut, TransactionOut
 from app.schemas.complaint import ComplaintCreate, ComplaintOut, CustomerComplaintOut
 from app.services.complaint_sla import calculate_sla_due_at
 from app.services.complaint_intelligence import classify_complaint_deterministically
+import json
+import os
+from app.core.rate_limit import limiter
+from app.models.kyc import KycVerification
+from app.schemas.kyc import CustomerKycOut
 from app.schemas.requests import (
     AccountOpeningRequestCreate,
     AccountOpeningRequestOut,
     CardRequestCreate,
     CardRequestOut,
 )
+from app.services.image_pipeline import ImageOCRPipeline, is_valid_image_header
+from app.services.kyc_checks import KycCheckService
+from fastapi import File, Request, UploadFile
 
 router = APIRouter(prefix="/customer", tags=["Customer Portal"])
+
+image_ocr_pipeline = ImageOCRPipeline()
+kyc_check_service = KycCheckService()
+
+UPLOAD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "data", "kyc_uploads"))
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+MAX_UPLOAD_SIZE = 10 * 1024 * 1024
 
 CATEGORY_AR_MAP = {
     "ATM_CARD": "بطاقات الصراف الآلي",
@@ -399,4 +414,157 @@ async def get_customer_card_request(
             detail="Access denied. Request does not belong to your customer profile.",
         )
     return serialize_card_request(record, current_user.full_name)
+
+
+@router.post("/kyc-update", response_model=CustomerKycOut)
+async def submit_customer_kyc_update(
+    request: Request,
+    file: UploadFile = File(..., description="Synthetic Egyptian National ID image (JPEG, PNG, WebP)"),
+    current_user: User = Depends(require_customer),
+    db: AsyncSession = Depends(get_db),
+):
+    """Customer self-service KYC document update flow.
+
+    Validates document image, extracts fields via Document AI OCR, executes deterministic
+    cross-field validation, and routes to compliance review queue.
+    National ID is strictly masked in responses and audit logs.
+    Identity verification status remains NOT_VERIFIED until explicit four-eyes compliance approval.
+    """
+    # 1. Rate Limiting (5 requests per 60 seconds per customer)
+    await limiter.check_rate_limit(
+        request,
+        endpoint_tag="customer_kyc_update",
+        max_requests=5,
+        window_seconds=60,
+        identifier_override=f"kyc_update_{current_user.id}",
+    )
+
+    # 2. File size and magic byte validation
+    content = await file.read()
+    if len(content) > MAX_UPLOAD_SIZE:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=f"File size exceeds maximum permitted limit of {MAX_UPLOAD_SIZE // (1024 * 1024)}MB.",
+        )
+
+    if len(content) < 12:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="File content is too small to be a valid image.",
+        )
+
+    if not is_valid_image_header(content):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid image format. Expected verified JPEG, PNG, or WebP magic bytes.",
+        )
+
+    # 3. Secure disk storage
+    record_id = str(uuid.uuid4())
+    img_ext = "png"
+    if content.startswith(b"\xFF\xD8\xFF"):
+        img_ext = "jpg"
+    elif content[:4] == b"RIFF" and content[8:12] == b"WEBP":
+        img_ext = "webp"
+
+    img_path = os.path.join(UPLOAD_DIR, f"{record_id}.{img_ext}")
+    with open(img_path, "wb") as f:
+        f.write(content)
+
+    # 4. OCR pipeline extraction
+    case_id = f"case-{uuid.uuid4().hex[:8]}"
+    ocr_result = image_ocr_pipeline.process_image(
+        image_input=content,
+        case_id=case_id,
+    )
+
+    if ocr_result.get("ingestion_status") == "FAIL":
+        err_msg = ocr_result.get("error", "Image decoding failed.")
+        if "dimensions" in err_msg.lower():
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=err_msg)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=err_msg)
+
+    # 5. Deterministic KYC Cross-Field Mismatch Evaluation
+    mismatch_eval = kyc_check_service.evaluate_case(ocr_result)
+    ocr_result["mismatch_evaluation"] = mismatch_eval
+    reasons_list = mismatch_eval.get("reasons", [])
+    mismatch_reasons_json_str = json.dumps(reasons_list, ensure_ascii=False)
+
+    tracking_num = f"KYC-{uuid.uuid4().hex[:8].upper()}"
+    extracted_nid_val = ocr_result.get("masked_national_id", "****")
+
+    ocr_result["uploader_id"] = current_user.id
+    ocr_result["image_url"] = f"/api/v1/employee/kyc-verifications/{record_id}/image"
+
+    # 6. Database record persistence
+    record = KycVerification(
+        id=record_id,
+        tracking_number=tracking_num,
+        customer_id=current_user.id,
+        synthetic_national_id=extracted_nid_val if extracted_nid_val != "****" else "29500000000000",
+        document_type="EGYPTIAN_NATIONAL_ID_SYNTHETIC",
+        status="PENDING_REVIEW",
+        extracted_data_json=json.dumps(ocr_result, ensure_ascii=False),
+        mismatch_reasons_json=mismatch_reasons_json_str,
+        reviewer_id=None,
+        reviewer_notes=None,
+    )
+    db.add(record)
+    await db.commit()
+    await db.refresh(record)
+
+    # 7. Audit log
+    await log_audit_event(
+        db,
+        action="CUSTOMER_KYC_UPDATE_SUBMITTED",
+        resource_type="KYC",
+        resource_id=record.id,
+        user=current_user,
+        details={
+            "tracking_number": record.tracking_number,
+            "status": record.status,
+            "identity_verification_status": "NOT_VERIFIED",
+            "is_escalated": mismatch_eval.get("is_escalated", False),
+        },
+    )
+
+    return CustomerKycOut(
+        id=record.id,
+        tracking_number=record.tracking_number,
+        synthetic_national_id=record.synthetic_national_id,
+        document_type=record.document_type,
+        status=record.status,
+        identity_verification_status="NOT_VERIFIED",
+        created_at=record.created_at,
+        updated_at=record.updated_at,
+    )
+
+
+@router.get("/kyc-status", response_model=Optional[CustomerKycOut])
+async def get_customer_kyc_status(
+    current_user: User = Depends(require_customer),
+    db: AsyncSession = Depends(get_db),
+):
+    """Retrieve current customer's latest KYC document verification status."""
+    stmt = (
+        select(KycVerification)
+        .where(KycVerification.customer_id == current_user.id)
+        .order_by(desc(KycVerification.created_at))
+        .limit(1)
+    )
+    result = await db.execute(stmt)
+    record = result.scalars().first()
+    if not record:
+        return None
+    return CustomerKycOut(
+        id=record.id,
+        tracking_number=record.tracking_number,
+        synthetic_national_id=record.synthetic_national_id,
+        document_type=record.document_type,
+        status=record.status,
+        identity_verification_status="NOT_VERIFIED",
+        created_at=record.created_at,
+        updated_at=record.updated_at,
+    )
+
 

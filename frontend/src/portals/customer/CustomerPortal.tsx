@@ -12,6 +12,8 @@ import {
   createCustomerAccountRequest,
   fetchCustomerCardRequests,
   createCustomerCardRequest,
+  fetchCustomerKycStatus,
+  submitCustomerKycUpdate,
 } from "../../api/client";
 import {
   BankAccount,
@@ -30,7 +32,7 @@ export const CustomerPortal: React.FC = () => {
   const { user } = useAuth();
 
   // Navigation tab
-  const [activeTab, setActiveTab] = useState<"overview" | "open_account" | "request_card" | "requests">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "open_account" | "request_card" | "requests" | "kyc_update">("overview");
 
   const [accounts, setAccounts] = useState<BankAccount[]>([]);
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
@@ -42,6 +44,11 @@ export const CustomerPortal: React.FC = () => {
   // Simulated Requests
   const [accountRequests, setAccountRequests] = useState<AccountOpeningRequest[]>([]);
   const [cardRequests, setCardRequests] = useState<CardRequest[]>([]);
+
+  // KYC Self-Service Update State
+  const [kycRecord, setKycRecord] = useState<any>(null);
+  const [kycFile, setKycFile] = useState<File | null>(null);
+  const [kycUploading, setKycUploading] = useState<boolean>(false);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -109,6 +116,13 @@ export const CustomerPortal: React.FC = () => {
       if (cardsRes.status === "fulfilled") setCards(cardsRes.value);
       if (accReqsRes.status === "fulfilled") setAccountRequests(accReqsRes.value);
       if (cardReqsRes.status === "fulfilled") setCardRequests(cardReqsRes.value);
+
+      try {
+        const kyc = await fetchCustomerKycStatus();
+        setKycRecord(kyc);
+      } catch (e) {
+        // Ignore if no prior kyc record
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -214,6 +228,31 @@ export const CustomerPortal: React.FC = () => {
       setFormError(err.message || "Failed to submit card request");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleKycSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!kycFile) {
+      setFormError(isArabic ? "يرجى اختيار صورة بطاقة الرقم القومي أولاً." : "Please select an ID card image first.");
+      return;
+    }
+    setKycUploading(true);
+    setFormError(null);
+    setFormSuccess(null);
+    try {
+      const res = await submitCustomerKycUpdate(kycFile);
+      setKycRecord(res);
+      setKycFile(null);
+      setFormSuccess(
+        isArabic
+          ? `تم رفع وثيقة الرقم القومي بنجاح (رقم التتبع: ${res.tracking_number}). تم توجيه الوثيقة لمراجعة الامتثال المصرفي.`
+          : `National ID document uploaded successfully (Tracking: ${res.tracking_number}). Routed to compliance review.`
+      );
+    } catch (err: any) {
+      setFormError(err.message || (isArabic ? "فشل رفع الوثيقة" : "Failed to upload document"));
+    } finally {
+      setKycUploading(false);
     }
   };
 
@@ -552,6 +591,23 @@ export const CustomerPortal: React.FC = () => {
             {isArabic ? "طلباتي ومتابعة الحالة" : "My Requests"} (
             {accountRequests.length + cardRequests.length})
           </span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("kyc_update")}
+          className={`px-4 py-2 text-xs font-bold rounded-lg transition flex items-center space-x-2 rtl:space-x-reverse ${
+            activeTab === "kyc_update"
+              ? "bg-nile-800 text-white shadow-sm"
+              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          }`}
+        >
+          <span>🆔</span>
+          <span>{isArabic ? "تحديث بيانات الهوية (KYC)" : "KYC ID Update"}</span>
+          {kycRecord && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-mono">
+              {kycRecord.status}
+            </span>
+          )}
         </button>
       </div>
 
@@ -1316,6 +1372,115 @@ export const CustomerPortal: React.FC = () => {
                 ))}
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: KYC ID UPDATE */}
+      {activeTab === "kyc_update" && (
+        <div className="space-y-6">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+            <h2 className="text-xl font-black text-gray-900 mb-1">
+              {isArabic ? "تحديث بيانات الهوية الوطنية (KYC)" : "National ID Self-Service Update (KYC)"}
+            </h2>
+            <p className="text-xs text-gray-500 mb-6">
+              {isArabic
+                ? "قم برفع صورة واضحة لبطاقة الرقم القومي (الوجه الأمامي) لتحديث بياناتك البنكية طبقاً لتعليمات البنك المركزي المصري."
+                : "Upload a clear synthetic Egyptian National ID card front image to update your profile under CBE regulations."}
+            </p>
+
+            {/* Current KYC Verification Status Card */}
+            {kycRecord ? (
+              <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider block">
+                      {isArabic ? "رقم تتبع طلب التحقق" : "Verification Tracking Number"}
+                    </span>
+                    <span className="font-mono font-bold text-gray-900 text-sm">{kycRecord.tracking_number}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+                      {kycRecord.status}
+                    </span>
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-gray-200 text-gray-700">
+                      {kycRecord.identity_verification_status || "NOT_VERIFIED"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                  <div>
+                    <span className="text-gray-400 block mb-0.5">{isArabic ? "الرقم القومي (محمي):" : "National ID (Masked):"}</span>
+                    <span className="font-mono font-bold text-gray-800">{kycRecord.synthetic_national_id}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-400 block mb-0.5">{isArabic ? "نوع الوثيقة:" : "Document Type:"}</span>
+                    <span className="font-medium text-gray-700">{kycRecord.document_type}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-400 block mb-0.5">{isArabic ? "تاريخ التقديم:" : "Submission Date:"}</span>
+                    <span className="font-medium text-gray-700">{formatCustomerTimestamp(kycRecord.created_at)}</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 text-xs text-blue-900">
+                ℹ️ {isArabic
+                  ? "لا يوجد سجل تحديث هوية مسجل لك حالياً. يمكنك رفع بطاقتك الآن لتنشيط المراجعة الدورية."
+                  : "No prior KYC update record found on file. You can upload an ID card below to trigger compliance review."}
+              </div>
+            )}
+
+            {/* Document Upload Form */}
+            <form onSubmit={handleKycSubmit} className="space-y-5">
+              <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-nile-600 transition">
+                <input
+                  type="file"
+                  id="kyc-file-input"
+                  accept="image/png,image/jpeg,image/webp"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setKycFile(e.target.files[0]);
+                    }
+                  }}
+                  className="hidden"
+                />
+                <label htmlFor="kyc-file-input" className="cursor-pointer block">
+                  <div className="text-3xl mb-2">📷</div>
+                  <span className="text-xs font-bold text-nile-800 hover:text-nile-900 block">
+                    {kycFile ? kycFile.name : (isArabic ? "اختر صورة بطاقة الرقم القومي (PNG, JPEG, WebP)" : "Select National ID Card Image (PNG, JPEG, WebP)")}
+                  </span>
+                  <span className="text-[11px] text-gray-400 mt-1 block">
+                    {isArabic ? "الحد الأقصى لحجم الملف: 10 ميجابايت" : "Max file size: 10 MB"}
+                  </span>
+                </label>
+              </div>
+
+              {/* Four-Eyes and NOT_VERIFIED Invariant Callout */}
+              <div className="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-xs text-amber-900 space-y-1">
+                <div className="font-bold flex items-center gap-1.5">
+                  <span>🔒</span>
+                  <span>{isArabic ? "ضوابط وسياسات الامتثال المصرفي (Four-Eyes & NOT_VERIFIED)" : "Banking Compliance Controls"}</span>
+                </div>
+                <p className="text-amber-800 text-[11px]">
+                  {isArabic
+                    ? "يتم فحص الوثيقة آلياً عبر محرك الذكاء الاصطناعي لاستخراج البيانات واكتشاف أي تعارض، وتظل حالة الهوية (NOT_VERIFIED) لحين مراجعتها واعتمادها بشرياً من قبل مسؤول الامتثال وفق مبدأ الرقابة الثنائية."
+                    : "Uploaded documents are processed by Document AI OCR with automated cross-field validation. Identity status strictly remains NOT_VERIFIED pending dual-control review by an authorized compliance officer."}
+                </p>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={!kycFile || kycUploading}
+                  className="px-6 py-2.5 bg-nile-800 hover:bg-nile-900 disabled:opacity-50 text-white font-bold text-xs rounded-lg shadow transition flex items-center gap-2"
+                >
+                  {kycUploading && <span className="inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>}
+                  <span>{isArabic ? "رفع الوثيقة وبدء التحقق" : "Upload Document & Verify"}</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
