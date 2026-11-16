@@ -16,6 +16,8 @@ from enum import Enum
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from app.core.config import settings
+
 from app.services.ocr import (
     FormatValidationStatus,
     GovernorateReferenceStatus,
@@ -41,12 +43,12 @@ class KycSeverity(str, Enum):
     INFO = "INFO"
 
 
-# Default confidence thresholds per field
+# Default confidence thresholds per field (derived from Central Bank KYC Handbook / Decision Table 7.1.1)
 DEFAULT_CONFIDENCE_THRESHOLDS = {
-    "national_id": 0.85,
-    "name": 0.70,
-    "address": 0.70,
-    "factory_code": 0.70,
+    "national_id": getattr(settings, "KYC_CONFIDENCE_NID_THRESHOLD", 0.85),
+    "name": getattr(settings, "KYC_CONFIDENCE_NAME_THRESHOLD", 0.70),
+    "address": getattr(settings, "KYC_CONFIDENCE_ADDRESS_THRESHOLD", 0.70),
+    "factory_code": getattr(settings, "KYC_CONFIDENCE_FACTORY_CODE_THRESHOLD", 0.70),
 }
 
 # Mapping of governorate code to primary Arabic names and key district/city keywords
@@ -500,9 +502,12 @@ class KycCheckService:
             or {}
         )
         is_dark_or_blurry = (
-            qa.get("contrast_std", 100.0) < 10.0
-            or qa.get("brightness_mean", 100.0) < 75.0
-            or (qa.get("sharpness_laplacian", 100.0) < 15.0 and qa.get("is_blurry", False))
+            qa.get("contrast_std", 100.0) < getattr(settings, "KYC_SEV_CONTRAST_STD_THRESHOLD", 10.0)
+            or qa.get("brightness_mean", 100.0) < getattr(settings, "KYC_SEV_BRIGHTNESS_MEAN_THRESHOLD", 75.0)
+            or (
+                qa.get("sharpness_laplacian", 100.0) < getattr(settings, "KYC_SEV_SHARPNESS_LAPLACIAN_THRESHOLD", 15.0)
+                and qa.get("is_blurry", False)
+            )
         )
 
         is_low_conf = (

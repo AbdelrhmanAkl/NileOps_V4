@@ -76,6 +76,9 @@ models/
 bin/
 data/*
 !data/rag_eval/
+!data/kyc_mismatch_evaluation_results.json
+!data/kyc_mismatch_evaluation_results_dev_60.json
+!data/kyc_mismatch_held_out_60_results.json
 scratch/
 *.exe
 *.zip

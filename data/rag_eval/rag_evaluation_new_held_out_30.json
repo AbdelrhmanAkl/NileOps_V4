@@ -1,0 +1,302 @@
+[
+  {
+    "id": "NHO-01",
+    "language": "ar",
+    "portal": "customer",
+    "question": "هو الحساب الجاري بياخد مصاريف كام كل شهر لو الفلوس قلت؟",
+    "category": "colloquial_customer",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-02",
+    "language": "ar",
+    "portal": "customer",
+    "question": "الحد الادنا لفتح حاسب التوفير كم جنية؟",
+    "category": "typo_customer",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-03",
+    "language": "ar",
+    "portal": "customer",
+    "question": "مصاريف صيانة الحساب الجاري",
+    "category": "fragment_customer",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-04",
+    "language": "ar",
+    "portal": "customer",
+    "question": "عايز اعرف الفايدة بتنزل شهري ولا سنوي في حساب التوفير",
+    "category": "colloquial_customer",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-05",
+    "language": "ar",
+    "portal": "customer",
+    "question": "شهاده الادخار بتجيب عائد كام فالميه؟",
+    "category": "typo_customer",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-06",
+    "language": "ar",
+    "portal": "customer",
+    "question": "الحد الادنى لفتح حساب جاري للأفراد",
+    "category": "fragment_customer",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-07",
+    "language": "ar",
+    "portal": "customer",
+    "question": "لو رصيدي نزل عن الفين ونص هيخصموا مني فلوس كام؟",
+    "category": "colloquial_customer",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-08",
+    "language": "ar",
+    "portal": "customer",
+    "question": "رسوم فتح الحساب البنكي الجديد للافراد",
+    "category": "typo_customer",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-09",
+    "language": "ar",
+    "portal": "customer",
+    "question": "شروط اصدار بطاقة الخصم المباشر",
+    "category": "fragment_customer",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-10",
+    "language": "ar",
+    "portal": "customer",
+    "question": "ممكن اطلع كارت خصم مباشر ديبت على حساب التوفير؟",
+    "category": "colloquial_customer",
+    "expected_policy": "POL-RETAIL-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-11",
+    "language": "ar",
+    "portal": "employee",
+    "question": "هو انهي رقم في البطاقة بيعرفنا نوع العميل ذكر ولا انثى؟",
+    "category": "colloquial_employee",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-12",
+    "language": "ar",
+    "portal": "employee",
+    "question": "كود محافظه القاهره فالبطاقه كام فالتحقق؟",
+    "category": "typo_employee",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-13",
+    "language": "ar",
+    "portal": "employee",
+    "question": "قواعد التحقق من الرقم القومي 14 رقم ومطابقة المحافظة",
+    "category": "fragment_employee",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-14",
+    "language": "ar",
+    "portal": "employee",
+    "question": "لو نسبة دقة الـ OCR اقل من تمانين في المية بنعمل ايه في المعاملة؟",
+    "category": "colloquial_employee",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-15",
+    "language": "ar",
+    "portal": "employee",
+    "question": "تاريخ ميلاد العميل فالبطاقه بيطلع من اني خانات بالتحديد؟",
+    "category": "typo_employee",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-16",
+    "language": "ar",
+    "portal": "employee",
+    "question": "الحد الادنى لدرجة الثقة لقبول استخراج OCR بدون مراجعة بشرية",
+    "category": "fragment_employee",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-17",
+    "language": "ar",
+    "portal": "employee",
+    "question": "ازاي بنعرف كود محافظة اسكندرية من الرقم القومي للمواطن في المنظومة؟",
+    "category": "colloquial_employee",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-18",
+    "language": "ar",
+    "portal": "employee",
+    "question": "معايير تصعيد طلب ال kyc للمراجعه اليدويه الالزامية",
+    "category": "typo_employee",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-19",
+    "language": "ar",
+    "portal": "employee",
+    "question": "رقم القرن في بطاقة الرقم القومي المصري 2 او 3",
+    "category": "fragment_employee",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-20",
+    "language": "ar",
+    "portal": "employee",
+    "question": "امتى بنحول ملف فحص الهوية لفريق مكافحة غسل الاموال والامتثال؟",
+    "category": "colloquial_employee",
+    "expected_policy": "POL-KYC-001",
+    "should_abstain": false,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-21",
+    "language": "ar",
+    "portal": "customer",
+    "question": "ازاي اعمل بيتزا في البيت بطريقة سهلة وسريعة؟",
+    "category": "out_of_domain",
+    "expected_policy": null,
+    "should_abstain": true,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-22",
+    "language": "en",
+    "portal": "employee",
+    "question": "write a python function to invert a binary tree recursively",
+    "category": "out_of_domain",
+    "expected_policy": null,
+    "should_abstain": true,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-23",
+    "language": "en",
+    "portal": "customer",
+    "question": "what is the current price of bitcoin in us dollars today?",
+    "category": "out_of_domain",
+    "expected_policy": null,
+    "should_abstain": true,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-24",
+    "language": "ar",
+    "portal": "customer",
+    "question": "طريقة علاج الصداع النصفي الشديد بدون تناول أدوية",
+    "category": "out_of_domain",
+    "expected_policy": null,
+    "should_abstain": true,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-25",
+    "language": "ar",
+    "portal": "employee",
+    "question": "من هو المنتخب الفائز ببطولة كأس العالم لكرة القدم سنة 1998؟",
+    "category": "out_of_domain",
+    "expected_policy": null,
+    "should_abstain": true,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-26",
+    "language": "en",
+    "portal": "customer",
+    "question": "how to diagnose check engine light error codes on a toyota car?",
+    "category": "out_of_domain",
+    "expected_policy": null,
+    "should_abstain": true,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-27",
+    "language": "ar",
+    "portal": "employee",
+    "question": "شرح معادلة شرودنجر وحالة تراكب الجسيمات في فيزياء الكم",
+    "category": "out_of_domain",
+    "expected_policy": null,
+    "should_abstain": true,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-28",
+    "language": "ar",
+    "portal": "customer",
+    "question": "افضل كورس مجاني لتعلم قواعد اللغة الألمانية من الصفر",
+    "category": "out_of_domain",
+    "expected_policy": null,
+    "should_abstain": true,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-29",
+    "language": "ar",
+    "portal": "customer",
+    "question": "توقعات اسعار الذهب عيار 21 في سوق الصاغة الاسبوع القادم",
+    "category": "out_of_domain",
+    "expected_policy": null,
+    "should_abstain": true,
+    "synthetic": true
+  },
+  {
+    "id": "NHO-30",
+    "language": "en",
+    "portal": "employee",
+    "question": "how to configure an ingress controller with nginx on kubernetes?",
+    "category": "out_of_domain",
+    "expected_policy": null,
+    "should_abstain": true,
+    "synthetic": true
+  }
+]

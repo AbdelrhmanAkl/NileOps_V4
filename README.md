@@ -368,38 +368,46 @@ For rapid local evaluation, NileOps provides convenient **1-click quick-login bu
 
 ---
 
-## 14. Transparent Architectural Limitations
+## 14. Transparent Architectural Limitations & Known Gaps
 
-NileOps is designed as an architectural reference implementation and simulator. In the interest of engineering transparency, the following technical limitations are explicitly documented:
+NileOps is designed as an architectural reference implementation and operations simulator. In the interest of engineering transparency and empirical honesty, the following technical limitations and benchmark results are explicitly documented:
 
 > [!IMPORTANT]
-> **Known Limitations & Simulation Scope Notice:**
+> **Simulation Scope & Known Limitations Notice:**
 > - **100% Synthetic Simulation:** All data within NileOps—including customer profiles, account balances, complaint tickets, transaction ledgers, and 14-digit Egyptian National IDs—is 100% synthetic mock data generated for developer simulation. The platform is an architectural prototype and is not a licensed financial institution.
+> - **Legal Disclaimer on Expiry Dates:** The 7-year National ID expiration rule implemented in the Document AI extraction pipeline is a **training assumption on synthetic data, not legal advice** or official Civil Status Ministry policy.
 > - **Local LLM & Deterministic Fallback:** If a local Ollama instance (`qwen3:8b`) is not running or times out (2.0s threshold), the platform automatically activates deterministic extractive quotation fallback (`fallback_used: true`). Answers are extracted verbatim from retrieved policy chunks, ensuring high availability and zero hallucinations without requiring active GPU/neural generation.
 
-1. **Hashing (Non-Semantic) Embeddings & Paraphrase Drop:**
-   - The active embedding pipeline (`backend/app/services/embedding.py`) utilizes sub-word character trigram feature hashing projected down to 384 dimensions rather than a deep contextual neural transformer (such as BGE-M3 or text-embedding-3).
-   - While lexical keyword queries achieve 100% Hit@1, colloquial Egyptian Arabic queries (paraphrased with dialectal variations) experience a drop to **60.0% Hit@1** at threshold 0.15 (and 33.3% at threshold 0.20) due to character trigram distance.
-2. **Deterministic Extractive Fallback vs. Generative LLM:**
-   - In offline local environments where Ollama is unavailable or times out, the platform deterministically falls back to extractive text quotation from the top-scoring policy chunk (`_synthesize_fallback_answer`).
-   - The reported **"0.0% Hallucination Rate" reflects deterministic text extraction without token generation**, rather than neural model alignment or reasoning capability.
-3. **OCR Performance vs. Egyptian Banking Handbook Target:**
-   - The Egyptian Banking Handbook specifies a target field $F_1 \ge 90\%$.
-   - Measured on our 40-card synthetic test set, this target is **NOT met**:
-     - **Name Field $F_1$:** **62.5%**
-     - **Address Field $F_1$:** **50.0%**
-     - **National ID Field $F_1$:** **87.5%**
-     - **Routed to Human Review:** **55.0%** of synthetic images.
-   - All evaluation was conducted strictly on synthetic test cards without access to real citizen cards.
-4. **Declarative Database Initialization without Alembic:**
-   - Relational schemas are initialized declaratively via SQLAlchemy `create_all` during startup.
-   - An incremental schema migration toolchain (such as Alembic) is not currently implemented; schema changes require declarative table updates or clean test resets.
-5. **Simulation Boundary — Not a Commercial Bank:**
-   - NileOps is a demonstration simulation platform and does not possess a CBE banking license.
-   - No connections exist to live interbank switches, CBE core settlement networks, or the Ministry of Interior Civil Status Organization.
-6. **Local Native Scope — Deployment Excluded:**
-   - The project is architected and verified for local native developer execution.
-   - Production cloud deployment, Kubernetes manifests, automated CI/CD pipelines, and public edge hosting are outside the scope of this project.
+1. **RAG Grounded-Answer Hit@1 Performance (NOT MET):**
+   - The platform utilizes `intfloat/multilingual-e5-small` (384 dimensions) for semantic policy retrieval in Qdrant with calibrated threshold 0.75.
+   - Measured against the Egyptian Banking Handbook target ($\ge 90.0\%$ Hit@1), this target is **NOT MET** across unconstrained colloquial phrasings without question-derived keyword expansion:
+     - **DEV Set (N=40, 25 in-domain):** **76.0% Hit@1**
+     - **Held-Out Set 1 (N=30, 25 in-domain):** **52.0% Hit@1**
+     - **Held-Out Set 2 (Colloquial / Typos / Fragments, N=30, 20 in-domain):** **45.0% Hit@1**
+   - General orthographic normalization strips Arabic diacritics and collapses whitespace, but semantic drift on short fragments and colloquial queries remains a known limitation.
+
+2. **OCR Performance & Absence of Image Preprocessing (NOT MET):**
+   - The Egyptian Banking Handbook specifies a target field $F_1 \ge 90.0\%$.
+   - Measured on our 40-card synthetic test set across Clean, Glare, Blur, and Shadow conditions, this target is **NOT MET** for cursive Arabic fields:
+     - **National ID Field $F_1$:** **87.5%** (NOT MET)
+     - **Citizen Name Field $F_1$:** **62.5%** (NOT MET)
+     - **Residential Address Field $F_1$:** **50.0%** (NOT MET)
+     - **Factory Code Field $F_1$:** **90.0%** (MET)
+     - **Routed to Human Review:** **55.0%** of degraded cards.
+   - **Statement on Preprocessing:** Advanced OCR image preprocessing (super-resolution, localized contrast equalization, or morphological binarization) was **not implemented**. Raw card images are passed to PaddleOCR, causing character recognition degradation on Arabic cursive handwriting and degraded text lines under glare and blur.
+
+3. **Deterministic Exception Detection & Escalation (MET):**
+   - **DEV Corpus (60 cards):** Exception Recall = **96.7%**, Escalation Correctness = **96.7%**, Precision = **100.0%**.
+   - **HELD-OUT Corpus (60 cards, fresh seed):** Exception Recall = **100.0%**, Escalation Correctness = **100.0%**, Precision = **83.3%**, Specificity = **80.0%**, False Negatives = **0**.
+
+4. **Permanent NOT_VERIFIED Identity Status:**
+   - In accordance with CBE compliance boundaries and the absence of live MOI Civil Status network connectivity, all identity verifications remain permanently marked as `NOT_VERIFIED`.
+
+5. **Declarative Database Initialization without Alembic:**
+   - Relational schemas are initialized declaratively via SQLAlchemy `create_all` during startup. An incremental migration toolchain is not currently active for automated schema diffs.
+
+6. **Local Native Scope — Cloud Deployment Excluded:**
+   - The project is architected and verified strictly for local developer native execution (Windows/Linux with Docker). Public cloud hosting, Kubernetes clusters, and external payment network bridges are out of scope.
 
 ---
 

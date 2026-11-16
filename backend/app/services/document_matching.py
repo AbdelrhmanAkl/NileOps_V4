@@ -14,6 +14,7 @@ from enum import Enum
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from app.core.config import settings
 from app.services.kyc_checks import GOVERNORATE_GEO_MAP
 from app.services.ocr import EASTERN_TO_WESTERN_DIGITS
 
@@ -133,9 +134,17 @@ def parse_bill_date(date_input: Any) -> Optional[date]:
 class DualDocumentMatcher:
     """Deterministic Cross-Document Verification Engine."""
 
-    def __init__(self, name_threshold: float = 0.85, max_bill_age_days: int = 90):
-        self.name_threshold = name_threshold
-        self.max_bill_age_days = max_bill_age_days
+    def __init__(self, name_threshold: Optional[float] = None, max_bill_age_days: Optional[int] = None):
+        self.name_threshold = (
+            name_threshold
+            if name_threshold is not None
+            else getattr(settings, "DOC_MATCH_NAME_SIMILARITY_THRESHOLD", 0.85)
+        )
+        self.max_bill_age_days = (
+            max_bill_age_days
+            if max_bill_age_days is not None
+            else getattr(settings, "DOC_MATCH_MAX_BILL_AGE_DAYS", 90)
+        )
 
     def cross_verify(
         self,

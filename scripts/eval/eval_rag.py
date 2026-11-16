@@ -25,6 +25,7 @@ from app.services.rag import rag_service
 
 DEV_DATA_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "rag_eval" / "rag_evaluation_set_40.json"
 HELD_OUT_DATA_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "rag_eval" / "rag_evaluation_held_out_30.json"
+NEW_HELD_OUT_DATA_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "rag_eval" / "rag_evaluation_new_held_out_30.json"
 OUTPUT_PATH = Path(__file__).resolve().parent.parent.parent / "scratch" / "eval_rag_results.json"
 
 
@@ -200,7 +201,11 @@ async def main():
         HELD_OUT_DATA_PATH,
         Path(__file__).resolve().parent.parent.parent / "scratch" / "eval_rag_held_out_results.json",
     )
-    return dev_summary, held_out_summary
+    new_held_out_summary = await run_evaluation(
+        NEW_HELD_OUT_DATA_PATH,
+        Path(__file__).resolve().parent.parent.parent / "scratch" / "eval_rag_new_held_out_results.json",
+    )
+    return dev_summary, held_out_summary, new_held_out_summary
 
 
 if __name__ == "__main__":

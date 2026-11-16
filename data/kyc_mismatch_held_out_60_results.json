@@ -1,0 +1,1645 @@
+{
+  "dataset_type": "HELD-OUT",
+  "timestamp": "2026-11-16T05:19:15Z",
+  "total_cards": 60,
+  "execution_duration_sec": 747.62,
+  "confusion_matrix": {
+    "TP": 30,
+    "FP": 6,
+    "TN": 24,
+    "FN": 0,
+    "total_positive_ground_truth": 30,
+    "total_negative_ground_truth": 30
+  },
+  "overall_metrics": {
+    "recall": 100.0,
+    "precision": 83.33,
+    "specificity": 80.0,
+    "f1_score": 90.91,
+    "accuracy": 90.0,
+    "escalation_correctness": 100.0,
+    "handbook_target_recall": 95.0,
+    "target_status": "MET"
+  },
+  "per_reason_code_metrics": {
+    "BIRTH_DATE_MISMATCH": {
+      "expected_count": 6,
+      "detected_count": 4,
+      "true_positives": 3,
+      "false_positives": 1,
+      "false_negatives": 3,
+      "recall": 50.0,
+      "precision": 75.0
+    },
+    "GOVERNORATE_MISMATCH": {
+      "expected_count": 6,
+      "detected_count": 5,
+      "true_positives": 5,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "recall": 83.3,
+      "precision": 100.0
+    },
+    "MISSING_FIELD_NATIONAL_ID": {
+      "expected_count": 2,
+      "detected_count": 19,
+      "true_positives": 2,
+      "false_positives": 17,
+      "false_negatives": 0,
+      "recall": 100.0,
+      "precision": 10.5
+    },
+    "MISSING_FIELD_NAME": {
+      "expected_count": 2,
+      "detected_count": 5,
+      "true_positives": 0,
+      "false_positives": 5,
+      "false_negatives": 2,
+      "recall": 0.0,
+      "precision": 0.0
+    },
+    "MISSING_FIELD_ADDRESS": {
+      "expected_count": 2,
+      "detected_count": 18,
+      "true_positives": 2,
+      "false_positives": 16,
+      "false_negatives": 0,
+      "recall": 100.0,
+      "precision": 11.1
+    },
+    "LOW_OCR_CONFIDENCE": {
+      "expected_count": 6,
+      "detected_count": 22,
+      "true_positives": 6,
+      "false_positives": 16,
+      "false_negatives": 0,
+      "recall": 100.0,
+      "precision": 27.3
+    },
+    "INVALID_ID_STRUCTURE": {
+      "expected_count": 6,
+      "detected_count": 5,
+      "true_positives": 5,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "recall": 83.3,
+      "precision": 100.0
+    }
+  },
+  "evaluated_records": [
+    {
+      "card_id": "ho_clean_01",
+      "filename": "ho_clean_01.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "FP",
+      "duration_sec": 13.36,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_02",
+      "filename": "ho_clean_02.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 9.74,
+      "extracted_fields": {
+        "national_id": "2910****3344",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_03",
+      "filename": "ho_clean_03.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "FP",
+      "duration_sec": 11.4,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_04",
+      "filename": "ho_clean_04.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.39,
+      "extracted_fields": {
+        "national_id": "2891****7788",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_05",
+      "filename": "ho_clean_05.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.35,
+      "extracted_fields": {
+        "national_id": "2960****9900",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_06",
+      "filename": "ho_clean_06.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.27,
+      "extracted_fields": {
+        "national_id": "2930****1122",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_07",
+      "filename": "ho_clean_07.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.11,
+      "extracted_fields": {
+        "national_id": "2950****2233",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_08",
+      "filename": "ho_clean_08.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "FP",
+      "duration_sec": 11.12,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_09",
+      "filename": "ho_clean_09.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.23,
+      "extracted_fields": {
+        "national_id": "2981****4455",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_10",
+      "filename": "ho_clean_10.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.0,
+      "extracted_fields": {
+        "national_id": "2900****5566",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_11",
+      "filename": "ho_clean_11.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 10.85,
+      "extracted_fields": {
+        "national_id": "2970****6677",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_12",
+      "filename": "ho_clean_12.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.23,
+      "extracted_fields": {
+        "national_id": "2931****7788",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_13",
+      "filename": "ho_clean_13.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.2,
+      "extracted_fields": {
+        "national_id": "2960****8899",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_14",
+      "filename": "ho_clean_14.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.06,
+      "extracted_fields": {
+        "national_id": "2910****1234",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_15",
+      "filename": "ho_clean_15.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.13,
+      "extracted_fields": {
+        "national_id": "2950****2345",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_16",
+      "filename": "ho_clean_16.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [
+        "MISSING_FIELD_NAME"
+      ],
+      "is_escalated": true,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "FP",
+      "duration_sec": 11.46,
+      "extracted_fields": {
+        "national_id": "2880****3456",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_17",
+      "filename": "ho_clean_17.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.44,
+      "extracted_fields": {
+        "national_id": "2941****4567",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_18",
+      "filename": "ho_clean_18.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.23,
+      "extracted_fields": {
+        "national_id": "2920****5678",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_19",
+      "filename": "ho_clean_19.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.11,
+      "extracted_fields": {
+        "national_id": "2990****6789",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_20",
+      "filename": "ho_clean_20.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.42,
+      "extracted_fields": {
+        "national_id": "2900****7890",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_21",
+      "filename": "ho_clean_21.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.31,
+      "extracted_fields": {
+        "national_id": "2970****8901",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_22",
+      "filename": "ho_clean_22.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 10.83,
+      "extracted_fields": {
+        "national_id": "2930****9012",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_23",
+      "filename": "ho_clean_23.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "FP",
+      "duration_sec": 11.16,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_24",
+      "filename": "ho_clean_24.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 12.41,
+      "extracted_fields": {
+        "national_id": "2911****2234",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_25",
+      "filename": "ho_clean_25.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "FP",
+      "duration_sec": 11.31,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_26",
+      "filename": "ho_clean_26.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.28,
+      "extracted_fields": {
+        "national_id": "2980****4456",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_27",
+      "filename": "ho_clean_27.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.44,
+      "extracted_fields": {
+        "national_id": "2891****5567",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_28",
+      "filename": "ho_clean_28.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.38,
+      "extracted_fields": {
+        "national_id": "3010****6678",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_29",
+      "filename": "ho_clean_29.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 11.16,
+      "extracted_fields": {
+        "national_id": "3020****7789",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_clean_30",
+      "filename": "ho_clean_30.png",
+      "condition": "CLEAN",
+      "is_ground_truth_anomaly": false,
+      "expected_reasons": [],
+      "detected_reasons": [],
+      "is_escalated": false,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TN",
+      "duration_sec": 12.79,
+      "extracted_fields": {
+        "national_id": "3001****8890",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_01",
+      "filename": "ho_mismatch_01.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 11.78,
+      "extracted_fields": {
+        "national_id": "2940****1567",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_02",
+      "filename": "ho_mismatch_02.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 13.24,
+      "extracted_fields": {
+        "national_id": "2910****1234",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_03",
+      "filename": "ho_mismatch_03.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 11.62,
+      "extracted_fields": {
+        "national_id": "2930****1122",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_04",
+      "filename": "ho_mismatch_04.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 10.79,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_05",
+      "filename": "ho_mismatch_05.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 11.15,
+      "extracted_fields": {
+        "national_id": "2970****5566",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_06",
+      "filename": "ho_mismatch_06.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "GOVERNORATE_MISMATCH"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 13.76,
+      "extracted_fields": {
+        "national_id": "2891****7788",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_07",
+      "filename": "ho_mismatch_07.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "BIRTH_DATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 14.88,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_08",
+      "filename": "ho_mismatch_08.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "BIRTH_DATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 14.27,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_09",
+      "filename": "ho_mismatch_09.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "BIRTH_DATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 14.59,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_10",
+      "filename": "ho_mismatch_10.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "BIRTH_DATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "BIRTH_DATE_MISMATCH"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 14.95,
+      "extracted_fields": {
+        "national_id": "2891****7788",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_11",
+      "filename": "ho_mismatch_11.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "BIRTH_DATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "BIRTH_DATE_MISMATCH"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 16.26,
+      "extracted_fields": {
+        "national_id": "2960****9900",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_12",
+      "filename": "ho_mismatch_12.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "BIRTH_DATE_MISMATCH"
+      ],
+      "detected_reasons": [
+        "BIRTH_DATE_MISMATCH"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 17.84,
+      "extracted_fields": {
+        "national_id": "2930****1122",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_13",
+      "filename": "ho_mismatch_13.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "INVALID_ID_STRUCTURE"
+      ],
+      "detected_reasons": [
+        "INVALID_ID_STRUCTURE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 16.2,
+      "extracted_fields": {
+        "national_id": "1940****1567",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_14",
+      "filename": "ho_mismatch_14.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "INVALID_ID_STRUCTURE"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 17.85,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_15",
+      "filename": "ho_mismatch_15.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "INVALID_ID_STRUCTURE"
+      ],
+      "detected_reasons": [
+        "INVALID_ID_STRUCTURE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 17.45,
+      "extracted_fields": {
+        "national_id": "2940****1567",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_16",
+      "filename": "ho_mismatch_16.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "INVALID_ID_STRUCTURE"
+      ],
+      "detected_reasons": [
+        "INVALID_ID_STRUCTURE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 17.56,
+      "extracted_fields": {
+        "national_id": "2940****1567",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_17",
+      "filename": "ho_mismatch_17.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "INVALID_ID_STRUCTURE"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NAME",
+        "INVALID_ID_STRUCTURE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 17.49,
+      "extracted_fields": {
+        "national_id": "2950****1567",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_18",
+      "filename": "ho_mismatch_18.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "INVALID_ID_STRUCTURE"
+      ],
+      "detected_reasons": [
+        "INVALID_ID_STRUCTURE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 15.08,
+      "extracted_fields": {
+        "national_id": "2940****1567",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_19",
+      "filename": "ho_mismatch_19.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "MISSING_FIELD_NAME"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 15.93,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_20",
+      "filename": "ho_mismatch_20.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "MISSING_FIELD_NAME"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 16.56,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_21",
+      "filename": "ho_mismatch_21.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "MISSING_FIELD_ADDRESS"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 16.04,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_22",
+      "filename": "ho_mismatch_22.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "MISSING_FIELD_ADDRESS"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 12.55,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_23",
+      "filename": "ho_mismatch_23.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 11.75,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_24",
+      "filename": "ho_mismatch_24.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 11.76,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_25",
+      "filename": "ho_mismatch_25.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_NAME",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 8.25,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_26",
+      "filename": "ho_mismatch_26.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_NAME",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 8.61,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_27",
+      "filename": "ho_mismatch_27.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "detected_reasons": [
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 11.02,
+      "extracted_fields": {
+        "national_id": "2981****4455",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_28",
+      "filename": "ho_mismatch_28.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "detected_reasons": [
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "PENDING_REVIEW",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 10.77,
+      "extracted_fields": {
+        "national_id": "2900****5566",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_29",
+      "filename": "ho_mismatch_29.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_NATIONAL_ID",
+        "MISSING_FIELD_NAME",
+        "MISSING_FIELD_ADDRESS",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 8.63,
+      "extracted_fields": {
+        "national_id": "****",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    },
+    {
+      "card_id": "ho_mismatch_30",
+      "filename": "ho_mismatch_30.png",
+      "condition": "PLANTED_EXCEPTION",
+      "is_ground_truth_anomaly": true,
+      "expected_reasons": [
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "detected_reasons": [
+        "MISSING_FIELD_ADDRESS",
+        "BIRTH_DATE_MISMATCH",
+        "LOW_OCR_CONFIDENCE"
+      ],
+      "is_escalated": true,
+      "recommended_status": "FLAGGED",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "classification": "TP",
+      "duration_sec": 8.81,
+      "extracted_fields": {
+        "national_id": "2901****7708",
+        "name": null,
+        "address": null,
+        "birth_date": null,
+        "governorate": null,
+        "nid_conf": null,
+        "name_conf": null,
+        "address_conf": null
+      }
+    }
+  ]
+}

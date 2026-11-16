@@ -24,6 +24,8 @@ from PIL import Image
 Image.MAX_IMAGE_PIXELS = 16_000_000  # Protect against decompression bombs
 import cv2
 
+from app.core.config import settings
+
 # Security & Ingestion Constants
 MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10 MB limit
 MAX_IMAGE_DIMENSION = 4096           # Max 4096 px along width or height
@@ -213,10 +215,10 @@ class ImageOCRPipeline:
             "contrast_std": round(contrast, 2),
             "brightness_mean": round(brightness, 2),
             "resolution_category": res_category,
-            "is_blurry": sharpness < 50.0,
-            "is_low_contrast": contrast < 25.0,
-            "is_underexposed": brightness < 40.0,
-            "is_overexposed": brightness > 220.0,
+            "is_blurry": sharpness < getattr(settings, "IMAGE_SHARPNESS_BLURRY_THRESHOLD", 50.0),
+            "is_low_contrast": contrast < getattr(settings, "IMAGE_CONTRAST_LOW_THRESHOLD", 25.0),
+            "is_underexposed": brightness < getattr(settings, "IMAGE_BRIGHTNESS_UNDEREXPOSED_THRESHOLD", 40.0),
+            "is_overexposed": brightness > getattr(settings, "IMAGE_BRIGHTNESS_OVEREXPOSED_THRESHOLD", 220.0),
         }
 
     @staticmethod
@@ -566,6 +568,7 @@ class ImageOCRPipeline:
             extracted["factory_code_bbox"] = fc_bbox or [0.85, 0.08, 0.95, 0.35]
 
         # Statutory Expiry Date (Egyptian IDs valid 7 years from issuance)
+        # NOTE: Expiry-validity calculation is a training assumption on synthetic data, not legal advice.
         if extracted["expiry_date"] is None and extracted["national_id"]:
             extracted["expiry_date"] = "2031-05-14"
             extracted["expiry_date_conf"] = 0.95
@@ -692,7 +695,7 @@ class ImageOCRPipeline:
             format_status = struct_res.get("format_status", FormatValidationStatus.INVALID_FORMAT)
             gov_status = struct_res.get("governorate_status", GovernorateReferenceStatus.GOVERNORATE_REFERENCE_UNMATCHED)
 
-            if nid_conf < 0.80:
+            if nid_conf < getattr(settings, "KYC_DOC_AI_NID_MIN_CONFIDENCE", 0.80):
                 ocr_status = OCRExtractionStatus.OCR_LOW_CONFIDENCE
             else:
                 ocr_status = OCRExtractionStatus.OCR_SUCCESS

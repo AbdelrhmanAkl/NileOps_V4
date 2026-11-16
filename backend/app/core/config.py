@@ -89,6 +89,32 @@ try:
         EMBEDDING_MODEL_NAME: str = Field(default_factory=lambda: os.getenv("EMBEDDING_MODEL_NAME", "intfloat/multilingual-e5-small"))
         RAG_SIMILARITY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("RAG_SIMILARITY_THRESHOLD", "0.75")))
 
+        # Optical Quality & Preprocessing Thresholds
+        # Derived from empirical image quality assessment across synthetic card fixtures (Clean, Glare, Blur, Shadow)
+        IMAGE_SHARPNESS_BLURRY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("IMAGE_SHARPNESS_BLURRY_THRESHOLD", "50.0")))  # Laplacian variance below which image is flagged blurry
+        IMAGE_CONTRAST_LOW_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("IMAGE_CONTRAST_LOW_THRESHOLD", "25.0")))  # Grayscale intensity standard deviation threshold
+        IMAGE_BRIGHTNESS_UNDEREXPOSED_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("IMAGE_BRIGHTNESS_UNDEREXPOSED_THRESHOLD", "40.0")))  # Grayscale intensity mean lower bound
+        IMAGE_BRIGHTNESS_OVEREXPOSED_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("IMAGE_BRIGHTNESS_OVEREXPOSED_THRESHOLD", "220.0")))  # Grayscale intensity mean upper bound
+
+        # KYC Severe Degradation & Exception Escalation Thresholds
+        # Derived from calibration on synthetic underexposure and blur defect cases (resolves card_mismatch_14)
+        KYC_SEV_CONTRAST_STD_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_SEV_CONTRAST_STD_THRESHOLD", "10.0")))  # Extreme low contrast causing OCR token hallucination
+        KYC_SEV_BRIGHTNESS_MEAN_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_SEV_BRIGHTNESS_MEAN_THRESHOLD", "75.0")))  # Dark card image threshold
+        KYC_SEV_SHARPNESS_LAPLACIAN_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_SEV_SHARPNESS_LAPLACIAN_THRESHOLD", "15.0")))  # Severe motion blur threshold
+
+        # KYC Field Confidence Thresholds
+        # Derived from Decision Table 7.1.1 (Egyptian National ID Validation Specification)
+        KYC_CONFIDENCE_NID_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_CONFIDENCE_NID_THRESHOLD", "0.85")))  # Minimum confidence for 14-digit National ID without escalation
+        KYC_CONFIDENCE_NAME_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_CONFIDENCE_NAME_THRESHOLD", "0.70")))  # Minimum confidence for Arabic citizen name
+        KYC_CONFIDENCE_ADDRESS_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_CONFIDENCE_ADDRESS_THRESHOLD", "0.70")))  # Minimum confidence for Arabic residential address
+        KYC_CONFIDENCE_FACTORY_CODE_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_CONFIDENCE_FACTORY_CODE_THRESHOLD", "0.70")))  # Minimum confidence for factory code
+        KYC_DOC_AI_NID_MIN_CONFIDENCE: float = Field(default_factory=lambda: float(os.getenv("KYC_DOC_AI_NID_MIN_CONFIDENCE", "0.80")))  # Threshold below which card is routed to human review
+
+        # Dual-Document Matching Thresholds
+        # Derived from Egyptian naming convention token containment experiments (handling 3-part vs 4-part names)
+        DOC_MATCH_NAME_SIMILARITY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("DOC_MATCH_NAME_SIMILARITY_THRESHOLD", "0.85")))  # Fuzzy Arabic name token similarity
+        DOC_MATCH_MAX_BILL_AGE_DAYS: int = Field(default_factory=lambda: int(os.getenv("DOC_MATCH_MAX_BILL_AGE_DAYS", "90")))  # 90-day statutory recency requirement for utility bills
+
         # CORS Origins
         ALLOWED_ORIGINS: List[str] = Field(default_factory=get_default_cors_origins)
 
@@ -103,11 +129,6 @@ try:
         RATE_LIMIT_AGENT_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_AGENT_MAX", "30")))
         RATE_LIMIT_AGENT_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_AGENT_WINDOW_SECONDS", "60")))
         ENABLE_DOCS: bool = Field(default_factory=lambda: os.getenv("ENABLE_DOCS", "true").lower() in ("true", "1", "t"))
-
-        # Rate Limiting & Account Lockout
-        RATE_LIMIT_ENABLED: bool = Field(default_factory=lambda: os.getenv("RATE_LIMIT_ENABLED", "true").lower() in ("true", "1", "t"))
-        RATE_LIMIT_LOGIN_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_LOGIN_MAX", "5")))
-        RATE_LIMIT_LOGIN_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_LOGIN_WINDOW_SECONDS", "60")))
         LOGIN_LOCKOUT_MAX_FAILURES: int = Field(default_factory=lambda: int(os.getenv("LOGIN_LOCKOUT_MAX_FAILURES", "5")))
         LOGIN_LOCKOUT_DURATION_SECONDS: int = Field(default_factory=lambda: int(os.getenv("LOGIN_LOCKOUT_DURATION_SECONDS", "900")))
         RATE_LIMIT_RAG_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_RAG_MAX", "30")))
@@ -150,6 +171,28 @@ except ImportError:
         EMBEDDING_BACKEND: str = Field(default_factory=lambda: os.getenv("EMBEDDING_BACKEND", "e5"))
         EMBEDDING_MODEL_NAME: str = Field(default_factory=lambda: os.getenv("EMBEDDING_MODEL_NAME", "intfloat/multilingual-e5-small"))
         RAG_SIMILARITY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("RAG_SIMILARITY_THRESHOLD", "0.75")))
+
+        # Optical Quality & Preprocessing Thresholds
+        IMAGE_SHARPNESS_BLURRY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("IMAGE_SHARPNESS_BLURRY_THRESHOLD", "50.0")))
+        IMAGE_CONTRAST_LOW_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("IMAGE_CONTRAST_LOW_THRESHOLD", "25.0")))
+        IMAGE_BRIGHTNESS_UNDEREXPOSED_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("IMAGE_BRIGHTNESS_UNDEREXPOSED_THRESHOLD", "40.0")))
+        IMAGE_BRIGHTNESS_OVEREXPOSED_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("IMAGE_BRIGHTNESS_OVEREXPOSED_THRESHOLD", "220.0")))
+
+        # KYC Severe Degradation & Exception Escalation Thresholds
+        KYC_SEV_CONTRAST_STD_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_SEV_CONTRAST_STD_THRESHOLD", "10.0")))
+        KYC_SEV_BRIGHTNESS_MEAN_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_SEV_BRIGHTNESS_MEAN_THRESHOLD", "75.0")))
+        KYC_SEV_SHARPNESS_LAPLACIAN_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_SEV_SHARPNESS_LAPLACIAN_THRESHOLD", "15.0")))
+
+        # KYC Field Confidence Thresholds
+        KYC_CONFIDENCE_NID_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_CONFIDENCE_NID_THRESHOLD", "0.85")))
+        KYC_CONFIDENCE_NAME_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_CONFIDENCE_NAME_THRESHOLD", "0.70")))
+        KYC_CONFIDENCE_ADDRESS_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_CONFIDENCE_ADDRESS_THRESHOLD", "0.70")))
+        KYC_CONFIDENCE_FACTORY_CODE_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("KYC_CONFIDENCE_FACTORY_CODE_THRESHOLD", "0.70")))
+        KYC_DOC_AI_NID_MIN_CONFIDENCE: float = Field(default_factory=lambda: float(os.getenv("KYC_DOC_AI_NID_MIN_CONFIDENCE", "0.80")))
+
+        # Dual-Document Matching Thresholds
+        DOC_MATCH_NAME_SIMILARITY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("DOC_MATCH_NAME_SIMILARITY_THRESHOLD", "0.85")))
+        DOC_MATCH_MAX_BILL_AGE_DAYS: int = Field(default_factory=lambda: int(os.getenv("DOC_MATCH_MAX_BILL_AGE_DAYS", "90")))
 
         # CORS Origins
         ALLOWED_ORIGINS: List[str] = Field(default_factory=get_default_cors_origins)
