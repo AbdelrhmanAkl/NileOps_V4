@@ -28,6 +28,16 @@ INSECURE_SECRET_KEYS = {
 }
 
 
+def validate_secret_key(key: str, env: str = "development", is_testing: bool = False) -> str:
+    if not is_testing and env.lower() == "production":
+        if not key or key in INSECURE_SECRET_KEYS or len(key) < 32:
+            raise ValueError(
+                "CRITICAL SECURITY CONFIGURATION ERROR: Weak, default, or undersized 'SECRET_KEY' detected in production environment! "
+                "Production requires a cryptographically secure random secret of at least 32 characters (256 bits)."
+            )
+    return key
+
+
 def get_secret_key() -> str:
     key = os.getenv("SECRET_KEY", "change-this-insecure-key-to-a-secure-256-bit-random-secret").strip()
     env = os.getenv("ENVIRONMENT", "development").lower()
@@ -36,13 +46,7 @@ def get_secret_key() -> str:
         or os.getenv("PYTEST_CURRENT_TEST") is not None
         or os.getenv("NILEOPS_TEST_MODE") == "1"
     )
-    if not is_testing and env == "production":
-        if not key or key in INSECURE_SECRET_KEYS or len(key) < 32:
-            raise ValueError(
-                "CRITICAL SECURITY CONFIGURATION ERROR: Weak, default, or undersized 'SECRET_KEY' detected in production environment! "
-                "Production requires a cryptographically secure random secret of at least 32 characters (256 bits)."
-            )
-    return key
+    return validate_secret_key(key, env=env, is_testing=is_testing)
 
 
 def get_database_url() -> str:
@@ -85,6 +89,30 @@ try:
         # CORS Origins
         ALLOWED_ORIGINS: List[str] = Field(default_factory=get_default_cors_origins)
 
+        # Rate Limiting & Account Lockout
+        RATE_LIMIT_ENABLED: bool = Field(default_factory=lambda: os.getenv("RATE_LIMIT_ENABLED", "true").lower() in ("true", "1", "t"))
+        RATE_LIMIT_LOGIN_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_LOGIN_MAX", "5")))
+        RATE_LIMIT_LOGIN_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_LOGIN_WINDOW_SECONDS", "60")))
+        LOGIN_LOCKOUT_MAX_FAILURES: int = Field(default_factory=lambda: int(os.getenv("LOGIN_LOCKOUT_MAX_FAILURES", "5")))
+        LOGIN_LOCKOUT_DURATION_SECONDS: int = Field(default_factory=lambda: int(os.getenv("LOGIN_LOCKOUT_DURATION_SECONDS", "900")))
+        RATE_LIMIT_RAG_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_RAG_MAX", "30")))
+        RATE_LIMIT_RAG_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_RAG_WINDOW_SECONDS", "60")))
+        RATE_LIMIT_AGENT_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_AGENT_MAX", "30")))
+        RATE_LIMIT_AGENT_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_AGENT_WINDOW_SECONDS", "60")))
+        ENABLE_DOCS: bool = Field(default_factory=lambda: os.getenv("ENABLE_DOCS", "true").lower() in ("true", "1", "t"))
+
+        # Rate Limiting & Account Lockout
+        RATE_LIMIT_ENABLED: bool = Field(default_factory=lambda: os.getenv("RATE_LIMIT_ENABLED", "true").lower() in ("true", "1", "t"))
+        RATE_LIMIT_LOGIN_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_LOGIN_MAX", "5")))
+        RATE_LIMIT_LOGIN_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_LOGIN_WINDOW_SECONDS", "60")))
+        LOGIN_LOCKOUT_MAX_FAILURES: int = Field(default_factory=lambda: int(os.getenv("LOGIN_LOCKOUT_MAX_FAILURES", "5")))
+        LOGIN_LOCKOUT_DURATION_SECONDS: int = Field(default_factory=lambda: int(os.getenv("LOGIN_LOCKOUT_DURATION_SECONDS", "900")))
+        RATE_LIMIT_RAG_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_RAG_MAX", "30")))
+        RATE_LIMIT_RAG_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_RAG_WINDOW_SECONDS", "60")))
+        RATE_LIMIT_AGENT_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_AGENT_MAX", "30")))
+        RATE_LIMIT_AGENT_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_AGENT_WINDOW_SECONDS", "60")))
+        ENABLE_DOCS: bool = Field(default_factory=lambda: os.getenv("ENABLE_DOCS", "true").lower() in ("true", "1", "t"))
+
         class Config:
             env_file = ".env"
             case_sensitive = True
@@ -119,6 +147,18 @@ except ImportError:
 
         # CORS Origins
         ALLOWED_ORIGINS: List[str] = Field(default_factory=get_default_cors_origins)
+
+        # Rate Limiting & Account Lockout
+        RATE_LIMIT_ENABLED: bool = Field(default_factory=lambda: os.getenv("RATE_LIMIT_ENABLED", "true").lower() in ("true", "1", "t"))
+        RATE_LIMIT_LOGIN_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_LOGIN_MAX", "5")))
+        RATE_LIMIT_LOGIN_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_LOGIN_WINDOW_SECONDS", "60")))
+        LOGIN_LOCKOUT_MAX_FAILURES: int = Field(default_factory=lambda: int(os.getenv("LOGIN_LOCKOUT_MAX_FAILURES", "5")))
+        LOGIN_LOCKOUT_DURATION_SECONDS: int = Field(default_factory=lambda: int(os.getenv("LOGIN_LOCKOUT_DURATION_SECONDS", "900")))
+        RATE_LIMIT_RAG_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_RAG_MAX", "30")))
+        RATE_LIMIT_RAG_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_RAG_WINDOW_SECONDS", "60")))
+        RATE_LIMIT_AGENT_MAX: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_AGENT_MAX", "30")))
+        RATE_LIMIT_AGENT_WINDOW_SECONDS: int = Field(default_factory=lambda: int(os.getenv("RATE_LIMIT_AGENT_WINDOW_SECONDS", "60")))
+        ENABLE_DOCS: bool = Field(default_factory=lambda: os.getenv("ENABLE_DOCS", "true").lower() in ("true", "1", "t"))
 
 
 settings = Settings()

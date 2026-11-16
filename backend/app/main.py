@@ -32,8 +32,8 @@ def create_application() -> FastAPI:
         title=settings.PROJECT_NAME,
         version="1.0.0",
         description="Bilingual Intelligent Digital Banking Operations Platform (Simulation: NileOps Demo Bank)",
-        docs_url="/docs" if settings.DEBUG else None,
-        redoc_url="/redoc" if settings.DEBUG else None,
+        docs_url="/docs" if (settings.DEBUG and settings.ENABLE_DOCS) else None,
+        redoc_url="/redoc" if (settings.DEBUG and settings.ENABLE_DOCS) else None,
         lifespan=lifespan,
     )
 
@@ -66,7 +66,7 @@ def create_application() -> FastAPI:
             "platform": settings.PROJECT_NAME,
             "version": "1.0.0",
             "status": "running",
-            "docs": "/docs" if settings.DEBUG else "disabled",
+            "docs": "/docs" if (settings.DEBUG and settings.ENABLE_DOCS) else "disabled",
         }
 
     # Mount API v1 router

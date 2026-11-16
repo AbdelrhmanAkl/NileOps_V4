@@ -43,6 +43,7 @@ import {
   getCategoryLabel,
 } from "../../utils/complaintTranslations";
 import { RAGAssistant } from "../../components/RAGAssistant";
+import { OpsAgentPanel } from "../../components/OpsAgentPanel";
 
 function formatAuditTimestamp(isoString: string): string {
   try {
@@ -113,6 +114,7 @@ export const EmployeePortal: React.FC = () => {
 
   // Active Tab
   const [activeTab, setActiveTab] = useState<"dashboard" | "complaints" | "policies" | "kyc" | "customers" | "audit" | "requests" | "assistant">("dashboard");
+  const [assistantSubTab, setAssistantSubTab] = useState<"copilot" | "rag">("copilot");
 
   // Dashboard Metrics & Operational KPIs
   const [, setMetrics] = useState<any>(null);
@@ -3081,29 +3083,68 @@ export const EmployeePortal: React.FC = () => {
         </div>
       )}
 
-      {/* TAB 8: AI BANKING POLICY ASSISTANT */}
+      {/* TAB 8: AI BANKING POLICY ASSISTANT & OPS AGENT */}
       {activeTab === "assistant" && (
         <div className="space-y-4">
-          <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl text-white flex items-center justify-between">
-            <div>
-              <h2 className="text-base font-bold flex items-center gap-2">
-                <span>🤖</span>
-                <span>{isArabic ? "المساعد الذكي للسياسات المصرفية ومكافحة غسل الأموال" : "Staff AI Policy & Regulatory Assistant"}</span>
-              </h2>
-              <p className="text-xs text-slate-400 mt-1">
-                {isArabic
-                  ? "استرجاع فوري ومؤصل من لوائح البنك المعتمدة، معايير فحص الهوية (POL-KYC-001)، وإرشادات الحسابات (POL-RETAIL-001)"
-                  : "Grounded semantic retrieval across approved policy corpus, KYC standards (POL-KYC-001), and retail rules (POL-RETAIL-001)"}
-              </p>
-            </div>
+          {/* Sub-navigation Toggle */}
+          <div className="flex items-center justify-between bg-white border border-gray-200 p-2.5 rounded-xl shadow-2xs">
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono font-medium px-2.5 py-1 rounded bg-teal-500/20 text-teal-300 border border-teal-500/40">
-                PORTAL: EMPLOYEE
-              </span>
+              <button
+                onClick={() => setAssistantSubTab("copilot")}
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition flex items-center gap-1.5 ${
+                  assistantSubTab === "copilot"
+                    ? "bg-indigo-600 text-white shadow-xs"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+                id="tab-ops-assistant-copilot"
+              >
+                <span>🛡️</span>
+                <span>{isArabic ? "مساعد العمليات الاستشاري (Ops Copilot)" : "Ops Assistant Copilot"}</span>
+              </button>
+              <button
+                onClick={() => setAssistantSubTab("rag")}
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition flex items-center gap-1.5 ${
+                  assistantSubTab === "rag"
+                    ? "bg-indigo-600 text-white shadow-xs"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+                id="tab-policy-rag-search"
+              >
+                <span>📖</span>
+                <span>{isArabic ? "استرجاع لوائح البنك (RAG Search)" : "Policy Knowledge Base"}</span>
+              </button>
+            </div>
+            <div className="text-[11px] font-mono text-gray-400">
+              ROLE: {user?.role || "EMPLOYEE"}
             </div>
           </div>
 
-          <RAGAssistant portalType="employee" mode="embedded" />
+          {assistantSubTab === "copilot" ? (
+            <OpsAgentPanel />
+          ) : (
+            <div className="space-y-4">
+              <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl text-white flex items-center justify-between">
+                <div>
+                  <h2 className="text-base font-bold flex items-center gap-2">
+                    <span>🤖</span>
+                    <span>{isArabic ? "المساعد الذكي للسياسات المصرفية ومكافحة غسل الأموال" : "Staff AI Policy & Regulatory Assistant"}</span>
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-1">
+                    {isArabic
+                      ? "استرجاع فوري ومؤصل من لوائح البنك المعتمدة، معايير فحص الهوية (POL-KYC-001)، وإرشادات الحسابات (POL-RETAIL-001)"
+                      : "Grounded semantic retrieval across approved policy corpus, KYC standards (POL-KYC-001), and retail rules (POL-RETAIL-001)"}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-mono font-medium px-2.5 py-1 rounded bg-teal-500/20 text-teal-300 border border-teal-500/40">
+                    PORTAL: EMPLOYEE
+                  </span>
+                </div>
+              </div>
+
+              <RAGAssistant portalType="employee" mode="embedded" />
+            </div>
+          )}
         </div>
       )}
 

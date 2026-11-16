@@ -10,6 +10,15 @@ Validates:
 
 import pytest
 from starlette.testclient import TestClient
+from app.core.rate_limit import limiter
+
+
+@pytest.fixture(autouse=True)
+def reset_rate_limits():
+    """Reset limiter state before each test in test_rag.py."""
+    limiter.reset_for_tests()
+    yield
+    limiter.reset_for_tests()
 
 
 def get_auth_token(client: TestClient, email: str, password: str) -> str:
@@ -101,7 +110,7 @@ def test_rag_abstention_on_off_topic_query(client: TestClient):
     assert data["abstained"] is True
     assert data["confidence_score"] == 0.0
     assert len(data["citations"]) == 0
-    assert "لم أتمكن من العثور على معلومات كافية" in data["answer"]
+    assert "لم يتم العثور على سياسة مطابقة" in data["answer"] or "لم أتمكن من العثور" in data["answer"]
     assert data["fallback_used"] is False
 
 

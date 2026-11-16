@@ -1,12 +1,14 @@
 """Authentication Endpoints & Demo Seeder."""
 
 from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user, get_db, log_audit_event
+from app.core.config import settings
 from app.core.exceptions import AuthenticationException
+from app.core.rate_limit import limiter
 from app.core.security import create_access_token, get_password_hash, verify_password
 from app.models.banking import Account, Transaction
 from app.models.complaint import Complaint
@@ -19,17 +21,33 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(credentials: LoginRequest, db: AsyncSession = Depends(get_db)):
+async def login(credentials: LoginRequest, request: Request, db: AsyncSession = Depends(get_db)):
     """Authenticate with email and password, returning JWT and user profile."""
-    stmt = select(User).where(User.email == credentials.email.lower().strip())
+    # 1. Check Rate Limit & Account Lockout Guard
+    clean_email = credentials.email.lower().strip()
+    await limiter.check_rate_limit(
+        request,
+        endpoint_tag="auth_login",
+        max_requests=settings.RATE_LIMIT_LOGIN_MAX,
+        window_seconds=settings.RATE_LIMIT_LOGIN_WINDOW_SECONDS,
+        identifier_override=f"{clean_email}_{limiter._get_client_ip(request)}",
+    )
+    await limiter.check_login_lockout(clean_email)
+
+    stmt = select(User).where(User.email == clean_email)
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
 
     if not user or not verify_password(credentials.password, user.hashed_password):
+        await limiter.record_login_attempt(clean_email, success=False)
         raise AuthenticationException("Invalid email address or password.")
 
     if not user.is_active:
+        await limiter.record_login_attempt(clean_email, success=False)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account is deactivated.")
+
+    # Successful login: reset lockout counters
+    await limiter.record_login_attempt(clean_email, success=True)
 
     # Create signed JWT token
     token = create_access_token(

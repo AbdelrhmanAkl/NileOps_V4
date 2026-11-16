@@ -1,11 +1,13 @@
 """NileOps RAG & Knowledge Base Retrieval Endpoints."""
 
 from typing import Any, Dict, List, Optional
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user, get_db_session, get_optional_user
+from app.core.config import settings
+from app.core.rate_limit import limiter
 from app.models.user import User
 from app.services.rag import rag_service
 from app.services.vector_store import qdrant_service
@@ -44,9 +46,18 @@ class RAGQueryResponse(BaseModel):
 @router.post("/ask", response_model=RAGQueryResponse)
 async def ask_banking_assistant(
     payload: RAGQueryRequest,
+    request: Request,
     current_user: Optional[User] = Depends(get_optional_user),
 ):
     """Ask the NileOps RAG banking assistant with strict portal isolation, RBAC, and citations."""
+    # Rate limit RAG queries
+    await limiter.check_rate_limit(
+        request,
+        endpoint_tag="rag_ask",
+        max_requests=settings.RATE_LIMIT_RAG_MAX,
+        window_seconds=settings.RATE_LIMIT_RAG_WINDOW_SECONDS,
+    )
+
     # RBAC: Access to internal employee policies strictly requires employee authentication
     if payload.portal_type == "employee":
         if not current_user:

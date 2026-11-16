@@ -125,3 +125,13 @@ def setup_test_database():
 def client() -> TestClient:
     """Synchronous test client fixture for FastAPI app."""
     return TestClient(fastapi_app)
+
+
+@pytest.fixture(autouse=True)
+def reset_limiter_each_test():
+    """Reset rate limiter and account lockout state before each test to prevent cross-test interference."""
+    from app.core.rate_limit import limiter
+    limiter.reset_for_tests()
+    yield
+    limiter.reset_for_tests()
+

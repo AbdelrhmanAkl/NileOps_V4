@@ -482,3 +482,54 @@ export async function fetchKpiSummary(): Promise<KpiSummary> {
   }
   return res.json();
 }
+
+// 9. Ops Assistant Agent (Advisory Copilot)
+export interface AgentToolTrace {
+  tool: string;
+  status: "ALLOWED" | "DENIED" | "ERROR" | "INTERCEPTED" | "ESCALATED";
+  result?: any;
+  error?: string;
+  pattern?: string;
+  details?: any;
+}
+
+export interface AgentChatResponse {
+  reply: string;
+  tool_trace: AgentToolTrace[];
+  draft?: {
+    status: string;
+    ticket_number: string;
+    draft_text: string;
+    disclaimer: string;
+    disclaimer_ar: string;
+    requires_human_approval: boolean;
+  } | null;
+  review_flag?: {
+    flagged: boolean;
+    reason: string;
+    details?: string;
+  } | null;
+  fallback_used: boolean;
+  injection_detected: boolean;
+}
+
+export async function sendOpsAgentChat(params: {
+  message: string;
+  context_reference?: string;
+  language?: "ar" | "en";
+}): Promise<AgentChatResponse> {
+  const res = await fetch(`${API_BASE}/agent/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...getAuthHeader() },
+    body: JSON.stringify(params),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    if (res.status === 429) {
+      const retryAfter = res.headers.get("Retry-After") || "30";
+      throw new Error(`RATE_LIMIT:${retryAfter}:${err.detail || "Rate limit exceeded"}`);
+    }
+    throw new Error(err.detail || "Failed to communicate with Ops Assistant Agent.");
+  }
+  return res.json();
+}

@@ -10,13 +10,14 @@ import time
 import httpx
 
 from app.core.config import settings
+from app.services.query_normalizer import normalize_colloquial_query
 from app.services.vector_store import qdrant_service
 
 DEFAULT_SIMILARITY_THRESHOLD = 0.15
 
 ABSTENTION_MESSAGES = {
-    "ar": "عذراً، لم أتمكن من العثور على معلومات كافية في السياسات البنكية المعتمدة للإجابة على استفسارك بدقة. يرجى التواصل مع موظف خدمة العملاء أو فرع البنك.",
-    "en": "I apologize, but I could not find sufficient information in the approved banking policies to answer your inquiry accurately. Please contact customer support or visit your nearest branch.",
+    "ar": "لم يتم العثور على سياسة مطابقة. يرجى محاولة إعادة صياغة سؤالك.",
+    "en": "No matching policy found. Try rephrasing your question.",
 }
 
 
@@ -90,9 +91,10 @@ class RAGService:
         threshold: float = DEFAULT_SIMILARITY_THRESHOLD,
     ) -> Dict[str, Any]:
         """Execute end-to-end RAG with thresholding, portal isolation, and citations."""
-        # 1. Semantic retrieval from Qdrant
+        # 1. Colloquial query normalization & semantic retrieval from Qdrant
+        normalized_query = normalize_colloquial_query(query)
         hits = await qdrant_service.search(
-            query=query,
+            query=normalized_query,
             portal_type=portal_type,
             limit=3,
             score_threshold=threshold,
