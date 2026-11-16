@@ -9,9 +9,9 @@ This index catalogues all visual inspection screenshots captured across the Nile
 | Classification | Location | Image Count | Description |
 |---|---|:---:|---|
 | **FINAL** | `docs/screenshots/` | 14 | Canonical browser E2E test suite captures covering English (LTR) and Arabic (RTL) journeys for retail customer and employee personas. |
-| **EVIDENCE** | `docs/screenshots/` | 18 | Target phase test verification evidence (Phase 1b Document AI, Phase 3b Account/Card Workflows, Phase 4b Complaints, and RAG Governance). |
+| **EVIDENCE** | `docs/screenshots/` | 25 | Target phase test verification evidence (Phase 1b Document AI, Phase 3b Account/Card Workflows, Phase 4b Complaints, Phase 6 RAG Governance, Phase 8b KPIs/Mismatch, and Phase 8c Ops Assistant & Rate Limiting). |
 | **ARCHIVED** | `docs/screenshots/archive/` | 28 | Deprecated or superseded screenshots from earlier development phases (duplicate test tickets, initial baseline captures, intermediate debug captures). |
-| **TOTAL** | — | **60** | **100% accounted for (32 kept in root, 28 moved to archive, 0 deleted).** |
+| **TOTAL** | — | **67** | **100% accounted for (39 kept in root, 28 moved to archive, 0 deleted).** |
 
 ---
 
@@ -53,6 +53,13 @@ This index catalogues all visual inspection screenshots captured across the Nile
 | `phase4b_customer_complaints_en.png` | Phase 4b Complaints | 1920×1080 | English (LTR) | Customer complaints view confirming exact 2 production complaints displayed with strict filtering of synthetic test batch tickets (`is_test=False`). | `EVIDENCE` |
 | `phase4b_employee_complaints_en.png` | Phase 4b Complaints | 1920×1080 | English (LTR) | Staff complaint management table showing SLA indicators, category badges, priority levels, and the "Show Test Tickets" toggle. | `EVIDENCE` |
 | `phase4b_employee_complaints_ar.png` | Phase 4b Complaints | 1920×1080 | Arabic (RTL) | Arabic RTL complaint management table with translated SLA statuses (`ضمن المهلة`, `تجاوزت المهلة`), categories, and internal priority tags. | `EVIDENCE` |
+| `15_employee_kpi_dashboard_en.png` | Phase 8b Handbook KPIs | 1920×1080 | English (LTR) | Employee Operations KPI Dashboard displaying real operational metrics, compliance audit scores, and synthetic seeded workload notice. | `EVIDENCE` |
+| `16_employee_kpi_dashboard_ar.png` | Phase 8b Handbook KPIs | 1920×1080 | Arabic (RTL) | Localized Arabic RTL operations KPI dashboard showing compliance SLA breaches, audit coverage metrics, and status badges. | `EVIDENCE` |
+| `17_employee_kyc_mismatch_inspector_en.png` | Phase 8b KYC Checks | 1920×1080 | English (LTR) | Document AI KYC Inspector displaying deterministic cross-field mismatch rules (birthdate vs ID, governorate match, OCR confidence thresholds). | `EVIDENCE` |
+| `18_ops_assistant_normal_en.png` | Phase 8c Ops Assistant | 1920×1080 | English (LTR) | Allowlisted Ops Assistant copilot answering request status inquiry with grounded policy citations and allowlisted tool traces (`read_request_status [ALLOWED]`). | `EVIDENCE` |
+| `19_ops_assistant_draft_human_review_en.png` | Phase 8c Ops Assistant | 1920×1080 | English (LTR) | Allowlisted Ops Assistant retrieving customer complaint and generating draft reply card with "MANDATORY HUMAN REVIEW" badge and AI suggestion disclaimer. | `EVIDENCE` |
+| `20_ops_assistant_injection_denied_en.png` | Phase 8c Adversarial Defense | 1920×1080 | English (LTR) | Security guardrail intercepting adversarial prompt injection ("Ignore previous instructions"), denying unauthorized action, and escalating to human review. | `EVIDENCE` |
+| `21_ops_assistant_rate_limited_ar.png` | Phase 8c Rate Limiting | 1920×1080 | Arabic (RTL) | Localized Arabic RTL rate-limiting alert banner (`HTTP 429 Too Many Requests`) displaying `Retry-After: 30s` with sliding-window protection. | `EVIDENCE` |
 | `rag_customer_en.png` | Phase 6 RAG Governance | 1920×1080 | English (LTR) | Customer portal RAG assistant answering retail banking inquiry with extractive policy snippets and citation chips. | `EVIDENCE` |
 | `rag_employee_en.png` | Phase 6 RAG Governance | 1920×1080 | English (LTR) | Employee portal Policy Assistant tab answering staff compliance inquiry with verified internal policy citations. | `EVIDENCE` |
 | `rag_arabic_portal_ar.png` | Phase 6 RAG Governance | 1920×1080 | Arabic (RTL) | Arabic RTL employee Policy Assistant query interface showing bilingual policy search and citation grounding. | `EVIDENCE` |

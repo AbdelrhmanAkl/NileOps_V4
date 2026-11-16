@@ -197,3 +197,62 @@ The `nileops` development database row counts remain completely undisturbed:
 - `audit_logs`: **343** (no rows deleted; only login audit logs appended)
 - `account_opening_requests`: **1**
 - `card_requests`: **1**
+
+---
+
+## 6. Phase 9 Dense Embedding Upgrade Plan (`bge-m3` / `multilingual-e5-large`)
+
+### 6.1 Architectural Justification & Held-Out Evidence
+While the sub-word token feature hashing scheme with random orthonormal projection (`backend/app/services/embedding.py`) achieved high precision on lexical queries (Hit@1 = 92.0%, Hit@3 = 100%) and, when combined with the Egyptian colloquial synonym normalizer, reached 86.67% Hit@1 on known colloquial patterns, empirical evaluation on the **10-question held-out colloquial benchmark** demonstrated its structural limitation:
+- **Held-Out Colloquial Benchmark:** Hit@1 = **25.0%** (2/8 in-domain), MRR = **0.2500**.
+- **Root Cause:** Feature hashing relies on sub-word $N$-gram overlap. When a customer or staff member phrases a query using colloquial Egyptian idioms or syntactic transformations absent from the static synonym dictionary, the bag-of-features vector exhibits near-orthogonal cosine distance ($\text{sim} < 0.15$), triggering false-positive abstention.
+
+To achieve enterprise-grade banking retrieval ($F_1 \ge 95\%$), NileOps will transition to a pre-trained multilingual dense neural embedding model in Phase 9.
+
+### 6.2 Target Candidate Models & Specifications
+
+| Dimension / Spec | Current Baseline (Feature Hashing) | Candidate A: `BAAI/bge-m3` (Recommended) | Candidate B: `intfloat/multilingual-e5-large` |
+| :--- | :--- | :--- | :--- |
+| **Model Type** | Trigram MD5 Hashing + QR Projection | Multi-Granular Dense Transformer | Multilingual BERT Transformer |
+| **Embedding Dimension** | 384 | **1,024** | **1,024** |
+| **Max Sequence Length** | 500 chars (heuristic) | **8,192 tokens** | **512 tokens** |
+| **Arabic Dialect Support** | Lexical trigrams only | Deep MSA + Egyptian Colloquial (Fine-tuned) | Strong MSA + Colloquial |
+| **Multi-Vector / Hybrid** | Dense cosine only | Dense + Sparse (Lexical) + ColBERT Multi-vector | Dense cosine only |
+| **Inference Runtime** | Pure Python / NumPy (<1ms) | ONNX Runtime / Hugging Face (CPU ~25ms, GPU ~4ms) | ONNX Runtime (CPU ~30ms, GPU ~5ms) |
+
+### 6.3 Zero-Downtime Blue/Green Migration Procedure
+
+```mermaid
+flowchart TD
+    A["Active Production: nileops_kb (384-dim)"] --> B["Step 1: Provision Blue Collection nileops_kb_v2 (1024-dim)"]
+    B --> C["Step 2: Batch Embed All Active Policies with bge-m3"]
+    C --> D["Step 3: Run Dual-Run Shadow Validation (40-Lexical + 20-Paraphrase + 10-Held-Out)"]
+    D -->|Target Hit@1 >= 95% Verified| E["Step 4: Atomic Cutover (Update QDRANT_COLLECTION=nileops_kb_v2)"]
+    D -->|Failure / Regression Detected| F["Step 5: Abort & Rollback (Retain nileops_kb without downtime)"]
+    E --> G["Step 6: Maintain nileops_kb Read-Only for 14-Day Rollback Window"]
+```
+
+#### Detailed Execution Steps:
+1. **Provision Blue Collection (`nileops_kb_v2`):**
+   - Create collection in Qdrant with `vectors_size = 1024`, `distance = Cosine`, and payload indexes on `is_active`, `portal_access`, `code`, `domain`, `language`.
+   - Maintain production `nileops_kb` (384-dim) completely undisturbed in read-only mode.
+2. **Offline Re-Embedding & Hydration:**
+   - Run batch re-embedding script `scratch/migrate_to_bge_m3.py` on all 21 approved policy documents in PostgreSQL.
+   - Soft-deactivate any legacy test documents (`is_active = false`).
+3. **Automated Shadow Verification:**
+   - Execute the 3-tier benchmark against `nileops_kb_v2`:
+     - 40-question lexical benchmark (Target: Hit@1 $\ge 98\%$)
+     - 20-question colloquial paraphrase benchmark (Target: Hit@1 $\ge 95\%$)
+     - 10-question held-out colloquial benchmark (Target: Hit@1 $\ge 90\%$)
+     - Strict abstention on negative controls (Target: $100\%$)
+4. **Zero-Downtime Atomic Cutover:**
+   - Update environment configuration:
+     ```env
+     QDRANT_COLLECTION=nileops_kb_v2
+     EMBEDDING_PROVIDER=bge_m3
+     EMBEDDING_DIMENSION=1024
+     ```
+   - Restart FastAPI backend workers with rolling restart (zero dropped connections).
+5. **Rollback Guarantee:**
+   - If unexpected latency, memory regression, or retrieval degradation is observed, reverting `QDRANT_COLLECTION=nileops_kb` and `EMBEDDING_PROVIDER=hashing` restores immediate full functionality in $< 5$ seconds without re-indexing.
+

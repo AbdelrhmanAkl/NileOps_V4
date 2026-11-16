@@ -120,9 +120,9 @@ REFRESH_TOKEN_EXPIRE_DAYS=7
 POSTGRES_SERVER=localhost
 POSTGRES_PORT=5432
 POSTGRES_USER=nileops_app
-POSTGRES_PASSWORD=nileops_dev_pass
+POSTGRES_PASSWORD=<POSTGRES_PASSWORD>
 POSTGRES_DB=nileops_db
-DATABASE_URL=postgresql+asyncpg://nileops_app:nileops_dev_pass@localhost:5432/nileops_db
+DATABASE_URL=postgresql+asyncpg://nileops_app:<POSTGRES_PASSWORD>@localhost:5432/nileops_db
 
 # Vector Database (Qdrant)
 QDRANT_HOST=localhost

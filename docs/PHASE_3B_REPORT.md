@@ -157,7 +157,7 @@ In earlier planning notes, hypothetical codes `POL-AML-002` and `POL-OPS-003` we
   - **Size:** **114,140 bytes**
   - **Timestamp:** 2026-11-08 08:02:41 AM (verified via filesystem attributes)
 - **Explanation of Earlier Failed Command:**
-  When executing `pg_dump`, the web application demo password (`NileOps2026!`) was mistakenly passed in the terminal command. PostgreSQL rejected the connection (`FATAL: password authentication failed for user "nileops_app"`). Upon extracting the correct database password configured in `backend/.env` for `nileops_app`, the backup completed with exit code 0.
+  When executing `pg_dump`, the web application demo password (`[REDACTED_DEMO_PASSWORD]`) was mistakenly passed in the terminal command. PostgreSQL rejected the connection (`FATAL: password authentication failed for user "nileops_app"`). Upon extracting the correct database password configured in `backend/.env` for `nileops_app`, the backup completed with exit code 0.
 
 ---
 

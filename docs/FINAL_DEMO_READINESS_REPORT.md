@@ -155,12 +155,12 @@ To execute manual verification in a standard browser (Chrome, Edge, Firefox):
    - Navigate to `http://localhost:5173`
    - Verify the login screen renders with bilingual toggle (English / العربية) and "NileOps Demo Bank" simulation banner.
 3. **Customer Journey:**
-   - Click **Quick Demo Login → Customer** (`customer@nileops.demo` / `demo123`).
+   - Click **Quick Demo Login → Customer** (uses 1-click persona authentication button).
    - Confirm customer accounts (3 accounts) and transaction history render.
    - Click **Submit Complaint**, select `ATM_CARD`, enter complaint details, and submit.
    - Verify tracking ticket (`CMP-2026-XXXXXX`) appears in the complaint list.
 4. **Employee Journey & Governance:**
-   - Click **Sign Out**, then select **Quick Demo Login → Compliance Officer** (`compliance@nileops.demo` / `demo123`).
+   - Click **Sign Out**, then select **Quick Demo Login → Compliance Officer** (uses 1-click persona authentication button).
    - Switch to **Policy Governance** tab.
    - Verify existing approved policies (`POL-KYC-001`, `POL-RETAIL-001`).
    - Switch to **Complaints** tab and update the status of the customer ticket to `IN_PROGRESS`.

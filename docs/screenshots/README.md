@@ -22,8 +22,8 @@ docs/screenshots/
 ```
 
 ### Inventory Counts
-- **Total Audited PNG Images:** 60
-- **Kept in `docs/screenshots/`:** 32 (14 Final E2E + 18 Phase Evidence)
+- **Total Audited PNG Images:** 67
+- **Kept in `docs/screenshots/`:** 39 (14 Final E2E + 25 Phase Evidence)
 - **Moved to `docs/screenshots/archive/`:** 28 (0 deleted)
 - **Files Flagged for Manual Review:** 5 (synthetic test vector ID on card preview canvas)
 
@@ -82,6 +82,12 @@ These screenshots provide technical verification for core milestones and edge ca
 - `rag_arabic_portal_ar.png` — Arabic RTL employee Policy Assistant query interface showing bilingual policy search and citation grounding.
 - `rag_fallback_state.png` — RAG assistant extractive fallback state triggered on LLM generation timeout, returning verified grounding excerpts without hallucination.
 - `rag_abstention_state.png` — RAG assistant abstention state triggered when similarity threshold is not met (score < 0.15), displaying safe out-of-scope guidance.
+
+### Phase 8c: Allowlisted Ops Assistant, Prompt Injection & Rate Limiting
+- `18_ops_assistant_normal_en.png` — Internal Ops Assistant copilot answering request status query with grounded policy citations and allowlisted tool traces (`read_request_status [ALLOWED]`).
+- `19_ops_assistant_draft_human_review_en.png` — Allowlisted Ops Assistant generating draft customer reply with prominent "MANDATORY HUMAN REVIEW" badge and AI suggestion disclaimer.
+- `20_ops_assistant_injection_denied_en.png` — Security guardrail intercepting adversarial prompt injection ("Ignore previous instructions"), refusing unauthorized execution, and routing to human review.
+- `21_ops_assistant_rate_limited_ar.png` — Localized Arabic RTL rate-limiting alert banner (`HTTP 429 Too Many Requests`) displaying `Retry-After: 30s` with sliding-window protection.
 
 ---
 
