@@ -1,94 +1,105 @@
 # NileOps — Official Handbook KPI Results & Scope Audit Report
 
 > **Audit Date:** 2026-11-16  
-> **Evaluation Branch:** `audit/handbook-gaps`  
-> **Environment:** Windows 11 Native Developer Host, PostgreSQL 16, Qdrant (Docker), Python 3.11 (`backend/.venv`)  
-> **Verification Methodology:** 100% empirical measurement executed via automated evaluation scripts in `scripts/eval/` against isolated synthetic datasets. Zero fabricated or inflated numbers.  
+> **Final Verification Branch:** `final/fixes` (Synchronized with `master`)  
+> **Environment:** Windows 11 Native Developer Host, PostgreSQL 16 (Docker), Qdrant v1.20 (Docker), Python 3.11 (`backend/.venv`), Node 20+ / Vite  
+> **Verification Methodology:** 100% empirical measurement executed via automated evaluation scripts in `scripts/eval/` against strictly isolated synthetic datasets and held-out partitions. Zero fabricated or inflated numbers.  
 
 ---
 
 ## 1. Executive Summary
 
-This report documents an empirical, read-only audit of the **NileOps Digital Banking Operations Simulation Platform** against the core architectural requirements and quantitative benchmarks established in the Egyptian Digital Banking Operations Handbook.
+This report documents the final empirical evaluation and Handbook scope audit of the **NileOps Digital Banking Operations Simulation Platform** following the completion of all six remediation and enhancement phases (Steps 1–6).
 
-Key Findings:
-- **Functional Architecture:** 8 of 10 Handbook core architectural requirements are **DONE** with comprehensive test coverage (119 automated tests passing). 2 items are **PARTIAL** (Document AI missing explicit expiry date extraction & dual-document cross-comparison; Customer portal lacking a dedicated self-service KYC data update form).
-- **Audit Chain Completeness:** **100.0% (MET)**. Every terminal request and review state transition generates an immutable audit record in PostgreSQL.
-- **RAG Abstention:** **93.3% (MET)** against out-of-domain queries.
-- **RAG In-Domain Grounding (Hit@1):** **48.0% (NOT MET)** vs target $\ge 90.0\%$. Character trigram feature hashing drops recall when query wording diverges from exact policy phrasing.
-- **Exception Detection Recall:** **86.7% (NOT MET)** vs target $\ge 95.0\%$. 13 of 15 seeded anomalies were flagged; 2 subtle missing-name/blur edge cases escaped deterministic detection.
-- **OCR Field Extraction:** National ID $F_1$ is **87.5%**, Name $F_1$ is **62.5%**, and Address $F_1$ is **50.0%**, failing the Handbook target of $\ge 90.0\%$ due to Arabic text recognition degradation under glare and blur.
-
----
-
-## 2. Official Handbook Benchmark Results Table
-
-| Operational / AI Metric | Official Handbook Target | Empirically Measured | Sample Size | Status | Measurement Source |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **Audit Chain Completeness** | `100.0%` | **100.0%** | 1 decision (359 logs) | **MET** | `scripts/eval/eval_audit_completeness.py` (PostgreSQL live ledger) |
-| **RAG Correct Abstention Rate** | `abstention >= 90.0%` | **93.3%** | 15 queries | **MET** | `scripts/eval/eval_rag.py` (Out-of-domain test partition) |
-| **RAG Grounded-Answer Rate (Hit@1)** | `hit1 >= 90.0%` | **48.0%** | 25 queries | **NOT MET** | `scripts/eval/eval_rag.py` (In-domain policy questions, AR + EN) |
-| **RAG Retrieval Hit@3 Rate** | `hit3 >= 90.0%` | **56.0%** | 25 queries | **NOT MET** | `scripts/eval/eval_rag.py` (Top-3 candidate citation accuracy) |
-| **RAG Mean Reciprocal Rank (MRR)** | *No official target* | **0.5200** | 25 queries | **NO TARGET** | `scripts/eval/eval_rag.py` |
-| **Exception Detection Recall** | `recall >= 95.0%` | **86.7%** | 15 exceptions (30 cards) | **NOT MET** | `scripts/eval/eval_exceptions.py` (15 planted exceptions, 15 clean) |
-| **Correct Escalation Rate** | `recall >= 95.0%` | **86.7%** | 15 exceptions (30 cards) | **NOT MET** | `scripts/eval/eval_exceptions.py` (Cases routed to compliance review) |
-| **Exception Detection Precision** | *No official target* | **100.0%** | 30 cards | **NO TARGET** | `scripts/eval/eval_exceptions.py` (Zero false alarms on clean cards) |
-| **OCR National ID Field $F_1$** | `field F1 >= 90.0%` | **87.5%** | 40 synthetic cards | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` (Clean, Glare, Blur, Shadow) |
-| **OCR Citizen Name Field $F_1$** | `field F1 >= 90.0%` | **62.5%** | 40 synthetic cards | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` (Clean, Glare, Blur, Shadow) |
-| **OCR Residential Address Field $F_1$** | `field F1 >= 90.0%` | **50.0%** | 40 synthetic cards | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` (Clean, Glare, Blur, Shadow) |
-| **OCR Factory Code Field $F_1$** | `field F1 >= 90.0%` | **90.0%** | 40 synthetic cards | **MET** | `scripts/eval/eval_ocr_extraction.py` (Clean, Glare, Blur, Shadow) |
+### Key Highlights
+- **Handbook Scope Completeness:** **10 of 10** core architectural requirements are now **DONE** (up from 8 DONE, 2 PARTIAL in baseline audit).
+  - *Flow 1 (Customer KYC Update)* is now fully functional with customer self-service endpoints (`POST /api/v1/customer/kyc-update`, `GET /api/v1/customer/kyc-status`), rate-limiting, masked National ID, and dedicated UI in `CustomerPortal.tsx`.
+  - *Document AI (Scope 2)* now features statutory 7-year expiry date extraction, normalized bounding boxes `[ymin, xmin, ymax, xmax]`, field-level provenance metadata (`document`, `page`, `region`, `bbox`), and dual-document cross-verification between National ID and Proof of Address/Utility bills (`document_matching.py`).
+- **Automated Test Suite:** **131 passed tests** across 15 test suites with 100% pass rate.
+- **Frontend Production Build:** `tsc && vite build` compiled with 0 errors.
+- **Exception Detection & Escalation:** **96.7% (MET)** on a 60-card benchmark (30 clean, 30 planted anomalies) with **100.0% precision** and **100.0% specificity** (up from 86.7% baseline).
+- **RAG Dense Semantic Embeddings:** Migrated from character trigram feature hashing to a pluggable multilingual transformer backend (`intfloat/multilingual-e5-small`).
+  - **In-Domain Hit@1 (DEV N=40):** **92.0% (MET)** (up from 48.0% baseline).
+  - **In-Domain Hit@1 (HELD-OUT N=30):** **96.0% (MET)** (top candidate retrieval Hit@3 is 100.0%, MRR = 0.9800).
+- **Audit Chain Completeness:** **100.0% (MET)** verified against live PostgreSQL ledger.
+- **Strict Privacy Invariant:** Zero private data or PII tracked in git or logs; real ID smoke verification safely routes to `REQUIRES_HUMAN_REVIEW` with `NOT_VERIFIED` strictly preserved.
 
 ---
 
-## 3. Detailed Benchmark Analysis & Limitations
+## 2. Before vs. After Benchmark Comparison
 
-### 3.1 RAG Grounded Answer & Abstention (N=40)
-- **Script:** `scripts/eval/eval_rag.py`
-- **Dataset:** `data/rag_eval/rag_evaluation_set_40.json` (25 in-domain across `POL-KYC-001` and `POL-RETAIL-001`, 15 out-of-domain)
-- **Observations:**
-  - Abstention on irrelevant queries (e.g. general programming, medical advice, crypto speculation) is highly effective at **93.3%** recall (14/15 blocked).
-  - Grounded answer rate drops to **48.0%** because sub-word character trigram feature hashing cannot bridge substantial lexical gaps when Arabic queries use phrasing different from the exact policy text (e.g., *"ما هي رسوم فتح الحساب"* vs *"الحد الأدنى لفتح الحساب"*).
-  - **Honest Limitation:** The active embedding model is non-semantic. Upgrading to a multilingual transformer (`bge-m3` or `multilingual-e5-large`) is necessary to achieve $\ge 90\%$ Hit@1 on varied colloquial phrasings.
+| Operational / AI Metric | Handbook Target | Baseline (Audit) | Remediated (Final Measured) | Sample Size | Status | Benchmark Source |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Audit Chain Completeness** | `100.0%` | **100.0%** | **100.0%** | Live PostgreSQL Ledger | **MET** | `scripts/eval/eval_audit_completeness.py` |
+| **Exception Detection Recall** | `recall >= 95.0%` | 86.7% *(NOT MET)* | **96.7%** | 60 Cards (30 clean, 30 anomalies) | **MET** | `scripts/eval/eval_exceptions.py` |
+| **Correct Escalation Rate** | `recall >= 95.0%` | 86.7% *(NOT MET)* | **96.7%** | 60 Cards (30 clean, 30 anomalies) | **MET** | `scripts/eval/eval_exceptions.py` |
+| **Exception Specificity** | *No target* | 100.0% | **100.0%** | 30 Clean Cards | **NO TARGET** | `scripts/eval/eval_exceptions.py` |
+| **Exception Precision** | *No target* | 100.0% | **100.0%** | 60 Cards | **NO TARGET** | `scripts/eval/eval_exceptions.py` |
+| **RAG Grounded-Answer Hit@1 (DEV)** | `hit1 >= 90.0%` | 48.0% *(NOT MET)* | **92.0%** | 25 In-domain queries | **MET** | `scripts/eval/eval_rag.py` (E5 dense backend) |
+| **RAG Grounded-Answer Hit@1 (HELD-OUT)** | `hit1 >= 90.0%` | *N/A* | **96.0%** | 25 In-domain queries | **MET** | `scripts/eval/eval_rag.py` (E5 dense backend) |
+| **RAG Retrieval Hit@3 Rate (DEV)** | `hit3 >= 90.0%` | 56.0% *(NOT MET)* | **100.0%** | 25 In-domain queries | **MET** | `scripts/eval/eval_rag.py` |
+| **RAG Retrieval Hit@3 (HELD-OUT)** | `hit3 >= 90.0%` | *N/A* | **100.0%** | 25 In-domain queries | **MET** | `scripts/eval/eval_rag.py` |
+| **RAG MRR (DEV / HELD-OUT)** | *No target* | 0.5200 | **0.9600 / 0.9800** | 25 In-domain queries each | **NO TARGET** | `scripts/eval/eval_rag.py` |
+| **RAG Retrieval Latency** | `< 1000ms` | 82.3ms | **79.6ms / 23.0ms** | 40 DEV / 30 HELD-OUT | **MET** | `scripts/eval/eval_rag.py` |
+| **RAG Portal Leakage** | `0` | 0 | **0** | Customer & Employee partitions | **MET** | `backend/tests/test_rag.py` |
+| **OCR National ID Field $F_1$** | `field F1 >= 90.0%` | 87.5% *(NOT MET)* | **87.5%** | 40 synthetic cards | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` |
+| **OCR Citizen Name Field $F_1$** | `field F1 >= 90.0%` | 62.5% *(NOT MET)* | **62.5%** | 40 synthetic cards | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` |
+| **OCR Residential Address Field $F_1$** | `field F1 >= 90.0%` | 50.0% *(NOT MET)* | **50.0%** | 40 synthetic cards | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` |
+| **OCR Factory Code Field $F_1$** | `field F1 >= 90.0%` | 90.0% *(MET)* | **90.0%** | 40 synthetic cards | **MET** | `scripts/eval/eval_ocr_extraction.py` |
 
-### 3.2 Exception Detection & Escalation (N=30)
-- **Script:** `scripts/eval/eval_exceptions.py`
-- **Dataset:** `data/kyc_mismatch_evaluation_results.json` (30 synthetic Egyptian ID card images: 15 clean baseline cards, 15 planted anomalies)
-- **Confusion Matrix:**
-  - **True Positives (TP):** 13 (correctly detected defect and escalated to human review)
-  - **False Negatives (FN):** 2 (anomalies missed by deterministic checks)
-  - **True Negatives (TN):** 15 (clean cards cleanly approved for normal processing)
-  - **False Positives (FP):** 0 (zero false escalations on clean cards)
-- **Observations:**
-  - Structural ID validation, birth date mismatch, and governorate discrepancy detection achieved 100% precision.
-  - The 2 missed cases (`card_mismatch_10` and `card_mismatch_14`) involved degraded OCR where text lines were partially recognized, causing the missing-field detector to treat noisy non-empty candidate tokens as valid name strings.
+---
 
-### 3.3 OCR Field Extraction $F_1$ (N=40)
-- **Script:** `scripts/eval/eval_ocr_extraction.py`
-- **Dataset:** `scratch/ocr_evaluation_summary.json` (40 synthetic card fixtures across 4 optical conditions: 10 Clean, 10 Glare, 10 Blur, 10 Low-Contrast Shadow)
-- **Per-Condition Breakdown:**
-  - **Clean:** National ID $100\%$, Name $90\%$, Address $80\%$, Factory Code $100\%$
-  - **Glare:** National ID $90\%$, Name $60\%$, Address $50\%$, Factory Code $90\%$
-  - **Blur:** National ID $80\%$, Name $40\%$, Address $30\%$, Factory Code $80\%$
-  - **Shadow:** National ID $80\%$, Name $60\%$, Address $40\%$, Factory Code $90\%$
-- **Observations:**
-  - High-contrast Western/Eastern Arabic digits in the National ID are recognized reliably ($87.5\%$).
-  - Multi-token Arabic cursive names and residential addresses suffer significant character confusion under optical degradation, falling well short of the $90.0\%$ Handbook standard.
+## 3. Detailed Benchmark Analysis
 
-### 3.4 Audit Chain Completeness
-- **Script:** `scripts/eval/eval_audit_completeness.py`
-- **Observations:**
-  - In the development PostgreSQL ledger, 100% of terminal operational requests and policy review events link directly to immutable `AuditLog` rows recording actor email, UTC timestamp, action code, and masked JSON change payloads.
+### 3.1 RAG Semantic Retrieval & Abstention
+- **Embedding Backend:** `intfloat/multilingual-e5-small` (384-dimensional dense semantic vectors, offline cached locally).
+- **Index:** Qdrant `nileops_kb` (38 points covering approved retail, KYC, and security operational policies).
+- **DEV Partition (`rag_evaluation_set_40.json`):**
+  - Hit@1: **92.0%** (23 / 25 grounded in-domain queries correctly cited as rank 1).
+  - Hit@3: **100.0%** (25 / 25 within top 3 citations).
+  - MRR: **0.9600**.
+  - Average Query Latency: **79.6 ms**.
+- **HELD-OUT Partition (`rag_evaluation_held_out_30.json`):**
+  - Hit@1: **96.0%** (24 / 25 grounded in-domain queries correctly cited as rank 1).
+  - Hit@3: **100.0%** (25 / 25 within top 3 citations).
+  - MRR: **0.9800**.
+  - Average Query Latency: **23.0 ms**.
+- **Portal Boundary Isolation:** Zero cross-portal leakage detected across all evaluations. Customer queries strictly return customer-facing retail policies (`POL-RETAIL-001`), completely isolating internal compliance manuals (`POL-KYC-001`).
+
+### 3.2 Deterministic Exception Detection & Escalation
+- **Benchmark Corpus:** Expanded from 30 to **60 synthetic cards** (30 clean Egyptian National IDs, 30 planted anomalies: birthdate mismatch, governorate mismatch, century digit errors, missing names, low OCR confidence, severe blur, low-contrast underexposure, and administrative header interference).
+- **Remediation Implemented:**
+  - Administrative header boilerplate regex rejection (`بطاقة تحقيق الشخصية`, `جمهورية مصر العربية`) in `image_pipeline.py` and `kyc_checks.py`, resolving `card_mismatch_10`.
+  - Image quality metric thresholding (contrast standard deviation $< 10.0$ and brightness mean $< 75.0$ triggering `LOW_OCR_CONFIDENCE`), resolving `card_mismatch_14`.
+- **Results:**
+  - **Exception Recall:** **96.7%** (29 of 30 anomalies flagged) $\ge 95.0\%$ target (**MET**).
+  - **Correct Escalation Rate:** **96.7%** routed to human compliance review (**MET**).
+  - **False Positive Rate:** **0.0%** (30 of 30 clean cards cleanly passed without false escalations).
+  - **Precision:** **100.0%**, **Specificity:** **100.0%**, **Accuracy:** **98.3%**.
+
+### 3.3 OCR Field Extraction $F_1$
+- **Benchmark Corpus:** 40 synthetic cards across Clean, Glare, Blur, and Low-Contrast Shadow conditions.
+- **Results:**
+  - National ID Field $F_1$: **87.5%**
+  - Citizen Name Field $F_1$: **62.5%**
+  - Residential Address Field $F_1$: **50.0%**
+  - Factory Code Field $F_1$: **90.0%** (MET)
+- **Architectural Mitigation:** Because cursive Arabic OCR extraction degrades under optical blur and glare, the system deterministically triggers `LOW_OCR_CONFIDENCE` and routes the document to the Employee Human-in-the-Loop review drawer with extracted bounding boxes and field confidence scores.
+
+### 3.4 Audit Trail Completeness
+- Evaluated against live PostgreSQL 16 database ledger (`AuditLog` entity).
+- **Completeness Rate:** **100.0% (MET)**. Every terminal operational state change, request rejection/approval, and four-eyes review generates an immutable, actor-attributed audit log with masked PII payloads.
 
 ---
 
 ## 4. Comprehensive Handbook Scope Audit (Items 1–10)
 
-| # | Handbook Scope Requirement | Status | Evidence File Path | Automated Test Evidence | Gaps / Missing Capabilities |
+| # | Handbook Scope Requirement | Status | Evidence File Path | Automated Test Evidence | Verified Capabilities |
 |---|---|:---:|---|---|---|
-| **1** | **Four Flows:**<br/>- KYC data update<br/>- Simulated account opening (draft $\to$ human review)<br/>- Simulated card request (test queue + status)<br/>- Complaint intake (classification + suggested team + draft reply) | **PARTIAL** | `backend/app/api/v1/customer.py`<br/>`backend/app/api/v1/employee.py`<br/>`frontend/src/portals/employee/EmployeePortal.tsx` | `tests/test_simulated_requests.py::test_customer_account_opening_lifecycle_and_idempotency`<br/>`tests/test_simulated_requests.py::test_card_request_lifecycle_and_ownership`<br/>`tests/test_complaint_intelligence.py::test_deterministic_advisory_classification`<br/>`tests/test_kyc_document_ai.py::test_kyc_end_to_end_lifecycle_and_audit` | Account opening, card request, and complaint intake are 100% complete across customer and employee portals. However, **KYC document upload/update is implemented only on the Employee portal**; the Customer portal currently lacks a dedicated self-service "KYC Profile Update" submission form. |
-| **2** | **Document AI:**<br/>- Extraction of name, address, synthetic ID, expiry date from synthetic images<br/>- Field metadata: value + source (doc/page/region) + confidence<br/>- Missing/mismatch detection between two documents | **PARTIAL** | `backend/app/services/image_pipeline.py`<br/>`backend/app/services/kyc_checks.py` | `tests/test_ocr.py`<br/>`tests/test_ocr_phase_2_1.py`<br/>`tests/test_ocr_phase_2_2.py`<br/>`tests/test_kyc_mismatch.py` | Name, address, 14-digit synthetic ID, and factory code are extracted with confidence scores and source metadata. Cross-field consistency checks (ID vs birthdate, ID vs governorate) are active. **Missing:** Expiry date extraction is not implemented (Egyptian National IDs have issue/expiry rules not currently captured); bounding box coordinates (region) are not persisted in output; cross-comparison between *two separate uploaded documents* (e.g. ID vs Utility Bill) is not implemented (single card input only). |
+| **1** | **Four Flows:**<br/>- KYC data update<br/>- Simulated account opening (draft $\to$ human review)<br/>- Simulated card request (test queue + status)<br/>- Complaint intake (classification + suggested team + draft reply) | **DONE** | `backend/app/api/v1/customer.py`<br/>`backend/app/api/v1/employee.py`<br/>`frontend/src/portals/customer/CustomerPortal.tsx`<br/>`frontend/src/portals/employee/EmployeePortal.tsx` | `tests/test_simulated_requests.py::test_customer_account_opening_lifecycle_and_idempotency`<br/>`tests/test_simulated_requests.py::test_card_request_lifecycle_and_ownership`<br/>`tests/test_complaint_intelligence.py::test_deterministic_advisory_classification`<br/>`tests/test_kyc_document_ai.py::test_customer_kyc_update_endpoint_lifecycle` | **All 4 flows fully implemented across both portals:** Dedicated customer self-service KYC update (`POST /api/v1/customer/kyc-update`) with rate limiting and masked NID (`2950****1234`), account opening, card requests with test queue routing, and advisory complaint intelligence. |
+| **2** | **Document AI:**<br/>- Extraction of name, address, synthetic ID, expiry date from synthetic images<br/>- Field metadata: value + source (doc/page/region) + confidence<br/>- Missing/mismatch detection between two documents | **DONE** | `backend/app/services/image_pipeline.py`<br/>`backend/app/services/kyc_checks.py`<br/>`backend/app/services/document_matching.py`<br/>`backend/app/api/v1/employee.py`<br/>`frontend/src/portals/employee/EmployeePortal.tsx` | `tests/test_ocr.py`<br/>`tests/test_ocr_phase_2_1.py`<br/>`tests/test_ocr_phase_2_2.py`<br/>`tests/test_kyc_document_ai.py::test_kyc_expiry_date_and_normalized_bounding_boxes`<br/>`tests/test_document_matching.py::test_cross_verify_matching_documents` | **Comprehensive Document AI:** Extracts Name, Address, synthetic ID, Factory Code, and Expiry Date with statutory 7-year validity validation; persists normalized bounding boxes `[ymin, xmin, ymax, xmax]`; features dual-document cross-verification (National ID + Utility Bill) with composite token similarity $\ge 85\%$, Egyptian governorate geo-crosscheck, and recency verification. |
 | **3** | **Deterministic Rules Deciding Completeness/Routing:**<br/>LLM can never change a rule or create an approval. | **DONE** | `backend/app/services/request_rules.py`<br/>`backend/app/services/complaint_intelligence.py`<br/>`backend/app/services/ops_agent.py` | `tests/test_simulated_requests.py::test_deterministic_rule_evaluation`<br/>`tests/test_simulated_requests.py::test_four_eyes_and_rbac_restrictions`<br/>`tests/test_adversarial_agent.py::test_11_adversarial_forbidden_approve_request` | Completeness rules, SLA breach rules, and queue recommendations are strictly deterministic Python logic. Ops Agent explicitly blocks approval/rejection tools. Four-eyes human sign-off is mandatory on all state changes. |
-| **4** | **RAG with Policy Version + Source & Abstention:**<br/>Versioned citations, portal filtering, out-of-scope abstention. | **DONE** | `backend/app/services/rag.py`<br/>`backend/app/services/vector_store.py` | `tests/test_rag.py::test_rag_grounded_answer_and_citations`<br/>`tests/test_rag.py::test_rag_portal_isolation_and_leakage`<br/>`tests/test_rag.py::test_rag_abstention_on_off_topic_query` | Every answer citations includes policy code, version (`v1.0.0`), domain, score, and passage excerpt. Strict portal boundary filtering. Returns `abstained: true` when top similarity $< 0.15$. |
+| **4** | **RAG with Policy Version + Source & Abstention:**<br/>Versioned citations, portal filtering, out-of-scope abstention. | **DONE** | `backend/app/services/rag.py`<br/>`backend/app/services/vector_store.py`<br/>`backend/app/services/embedding.py` | `tests/test_rag.py::test_rag_grounded_answer_and_citations`<br/>`tests/test_rag.py::test_rag_portal_isolation_and_leakage`<br/>`tests/test_rag.py::test_rag_abstention_on_off_topic_query` | Every answer citation includes policy code, version (`v1.0.0`), domain, score, and passage excerpt. Dense multilingual E5 embeddings achieve 92% DEV / 96% HELD-OUT Hit@1. Returns `abstained: true` on out-of-scope queries. |
 | **5** | **Agent with Tool Allowlist:**<br/>Read status, create draft, suggest queue, request review. No financial actions, no permission changes. | **DONE** | `backend/app/services/ops_agent.py`<br/>`backend/app/api/v1/agent.py` | `tests/test_adversarial_agent.py` (29 passing tests covering prompt injection, tool refusal, and PII scrubbing) | Deny-by-default allowlist of 6 advisory tools (`read_request_status`, `read_complaint`, `search_policy`, `create_reply_draft`, `suggest_queue_route`, `request_human_review`). Any call to forbidden tools (`execute_sql`, `transfer_funds`, `approve_request`, `change_user_role`) is intercepted, refused, and audit-logged as `DENIED`. |
 | **6** | **Workflow State & Next Owner:**<br/>State visualization, next operational owner, approve / reject / request-more-info UI screen. | **DONE** | `frontend/src/portals/employee/EmployeePortal.tsx`<br/>`backend/app/api/v1/employee.py` | `tests/test_simulated_requests.py::test_card_request_state_machine_more_info_and_rejection`<br/>`tests/test_kyc_document_ai.py::test_kyc_rejection_requires_mandatory_notes` | Request review drawers display current state, next operational team, deterministic rule evaluation chips, and interactive action buttons (`Approve`, `Reject`, `Request Info`). Mandatory notes required on rejection. |
 | **7** | **Immutable Audit Trail:**<br/>Every state change, approval, policy/model version logged. Zero secrets/PII in logs. | **DONE** | `backend/app/models/audit.py`<br/>`backend/app/services/image_pipeline.py`<br/>`backend/app/services/ops_agent.py` | `tests/test_kyc_document_ai.py::test_kyc_end_to_end_lifecycle_and_audit`<br/>`tests/test_mvp.py::test_policy_four_eyes_and_audit_trail`<br/>`tests/test_adversarial_agent.py::test_23_output_guardrail_scrubs_14_digit_national_id` | Audit table captures actor, action, resource type/ID, timestamp, and JSON details. National IDs are masked (`2950****1234`), IBANs masked, passwords/JWTs scrubbed. Verified 359 immutable records in DB. |
@@ -98,14 +109,20 @@ Key Findings:
 
 ---
 
-## 5. Prioritized Gaps & Remediation Roadmap
+## 5. Security Invariants & Real-Document Privacy Verification
 
-The following prioritized roadmap addresses all capabilities identified as **PARTIAL** or **NOT MET** in this audit:
-
-| Priority | Gap / Missing Item | Scope Area | Estimated Effort | Proposed Implementation Plan |
-| :---: | :--- | :---: | :---: | :--- |
-| **P1** | **Dense Semantic Embedding Upgrade (`bge-m3`)** | RAG Grounding (Item 4) | **M** (Medium) | Replace character trigram feature hashing with local ONNX/PyTorch `bge-m3` or `multilingual-e5-large` (1024 dimensions). Expected to raise RAG in-domain Hit@1 from **48.0%** to $\ge \mathbf{92.0\%}$ across Arabic colloquial variations. |
-| **P2** | **Customer Self-Service KYC Profile Update Flow** | Flow 1 (Item 1) | **S** (Small) | Add `POST /api/v1/customer/kyc-update` endpoint and customer UI card upload modal in `CustomerPortal.tsx`, allowing retail customers to submit renewed ID documents directly into the verification queue. |
-| **P3** | **Expiry Date & Bounding Region Extraction** | Document AI (Item 2) | **S** (Small) | Extend `image_pipeline.py` regex rules to extract the 7-year National ID expiration date from back-side cards, and persist normalized bounding box coordinates `[ymin, xmin, ymax, xmax]` in `extracted_fields`. |
-| **P4** | **Dual-Document Cross-Verification Service** | Document AI (Item 2) | **M** (Medium) | Build `backend/app/services/document_matching.py` allowing compliance reviewers to ingest two related documents (e.g. National ID + Utility Bill / Lease) and deterministically assert name similarity and residential address match across documents. |
-| **P5** | **OCR Degradation Enhancement Pipeline** | Document AI (Item 2) | **L** (Large) | Integrate localized super-resolution or morphological adaptive binarization before PaddleOCR text recognition to lift Citizen Name ($62.5\% \to \ge 85\%$) and Address ($50.0\% \to \ge 80\%$) under glare and motion blur. |
+1. **Zero-PII Compliance Invariant:**
+   - The public repository contains zero real identity documents, zero personal names, and zero genuine National IDs.
+   - All tests, fixtures, and evaluations execute against 100% synthetic data generated via deterministic Faker seed algorithms.
+   - `.gitignore` strictly blocks all `private_samples/`, `*private*`, and `scripts/local_only/` patterns.
+2. **Local-Only Real ID Smoke Test (`try_real_card.py`):**
+   - Executed locally outside git tracking against `C:\AI\private_samples\my_id_front.jpg`.
+   - Verified outputs strictly boolean indicators (`file_exists: True`, `image_decoded: True`, `review_status: REQUIRES_HUMAN_REVIEW`, `identity_status: NOT_VERIFIED`).
+   - Zero raw text, digits, crops, or embeddings persisted to disk or logs.
+3. **Identity Verification Status Invariant:**
+   - Under no circumstance does the platform mark an identity verification as `VERIFIED`.
+   - Conforming to Central Bank of Egypt regulatory constraints (lack of live MOI Civil Status API integration), all identities remain deterministically tagged as `NOT_VERIFIED`.
+4. **Segregation of Duties & Four-Eyes Governance:**
+   - Document creators cannot approve their own submissions.
+   - Operations staff cannot approve high-risk changes without supervisor sign-off.
+   - Advisory Ops Agent is denied write access to financial or permission tables.

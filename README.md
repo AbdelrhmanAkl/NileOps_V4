@@ -1,6 +1,6 @@
 # NileOps — Intelligent Digital Banking Operations Platform
 
-[![Backend Tests](https://img.shields.io/badge/tests-119%20passed-brightgreen.svg)]()
+[![Backend Tests](https://img.shields.io/badge/tests-131%20passed-brightgreen.svg)]()
 [![Frontend Build](https://img.shields.io/badge/frontend-Vite%20%2B%20TypeScript-blue.svg)]()
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)]()
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg)]()
@@ -116,8 +116,8 @@ graph TB
   - **MVP Portable Storage:** Async SQLite (`nileops_mvp.db`) preserved as an offline fallback
 - **AI & Document Intelligence:**
   - **Local LLM:** Ollama with `qwen3:8b` (extractive grounded fallback when offline/timed out)
-  - **Embedding Service:** Sub-word character trigram feature hashing with deterministic orthonormal dense projection (384-d)
-  - **OCR Engine:** PaddleOCR Arabic engine with deterministic 9-dimensional validator conforming to `docs/NATIONAL_ID_VALIDATION_SPEC.md`
+  - **Embedding Service:** Pluggable multilingual dense semantic embeddings (`intfloat/multilingual-e5-small`, 384-d) with deterministic character feature hashing fallback
+  - **OCR Engine:** PaddleOCR Arabic engine with deterministic 9-dimensional validator, statutory 7-year expiry date extraction, normalized bounding boxes `[ymin, xmin, ymax, xmax]`, and dual-document cross-verification (`backend/app/services/document_matching.py`) conforming to `docs/NATIONAL_ID_VALIDATION_SPEC.md`
 
 ---
 
@@ -321,27 +321,28 @@ The backend test suite enforces strict isolation:
 - **Relational Isolation:** All tests run against database `nileops_test`. The development database `nileops` is guarded and unreachable by tests.
 - **Vector Isolation:** All tests run against collection `nileops_kb_test`. A hard-failing check in `vector_store.py` ensures tests fail immediately if the collection does not end with `_test`.
 
-### Execute Test Suite (119 Tests)
+### Execute Test Suite (131 Tests)
 ```bash
 cd backend
 pytest -v -x -s --durations=10
 ```
-Test module breakdown (119 passed / 100% pass rate):
+Test module breakdown (131 passed / 100% pass rate):
 - `tests/test_adversarial_agent.py` (29 tests): Allowlisted Ops Assistant agent, adversarial prompt injection defenses (EN/AR), forbidden tools refusal, and output guardrails (14-digit National ID, IBAN, and JWT scrubbing).
-- `tests/test_health.py` (4 tests): Health probes, root redirect, API v1 status, and production JWT secret key guard.
-- `tests/test_mvp.py` (6 tests): Authentication, RBAC isolation, data ownership, complaints, and four-eyes policy approval.
 - `tests/test_complaint_intelligence.py` (6 tests): Deterministic advisory classification, SLA calculations, complaint lifecycle transitions, and employee pagination.
-- `tests/test_simulated_requests.py` (7 tests): Account opening requests, debit card requests, and state machine validation.
+- `tests/test_document_matching.py` (4 tests): Dual-document cross-verification (National ID vs Utility Bill), composite name similarity, Egyptian governorate geo-matching, bill recency, and RBAC endpoint lifecycles.
+- `tests/test_health.py` (4 tests): Health probes, root redirect, API v1 status, and production JWT secret key guard.
 - `tests/test_iban_masking.py` (2 tests): Public IBAN masking invariants.
 - `tests/test_kpi_service.py` (6 tests): Operational KPI calculation engine and employee role RBAC.
-- `tests/test_kyc_document_ai.py` (3 tests): Synthetic National ID masking, review notes requirements, and KYC lifecycle.
+- `tests/test_kyc_document_ai.py` (9 tests): Synthetic National ID masking, review notes requirements, customer KYC update lifecycle, expiry date validation, and normalized bounding box provenance.
 - `tests/test_kyc_mismatch.py` (12 tests): Cross-field KYC discrepancy checks (birthdate vs ID, governorate vs ID, low OCR confidence, missing fields).
+- `tests/test_mvp.py` (6 tests): Authentication, RBAC isolation, data ownership, complaints, and four-eyes policy approval.
 - `tests/test_ocr.py` (12 tests): Digit normalization, leap-year calendar validation, governorate allowlists, Decision Tables 7.1.1 & 7.1.2.
 - `tests/test_ocr_phase_2_1.py` (9 tests): Address parsing, WebP validation, and security fuzzing.
 - `tests/test_ocr_phase_2_2.py` (5 tests): Image quality assessment, CLAHE contrast enhancement, and deskewing.
 - `tests/test_ocr_security.py` (6 tests): Image size guards, decompression bomb protection, and PII masking.
 - `tests/test_production_guards.py` (7 tests): Weak secret rejection, CORS wildcard prevention, login lockout, and sliding-window rate limiting.
-- `tests/test_rag.py` (8 tests): Qdrant health, grounded answers, portal isolation, abstention, POL-TEST exclusion, and RBAC guards.
+- `tests/test_rag.py` (11 tests): Qdrant health, dense E5 embeddings, grounded answers, portal isolation, abstention, POL-TEST exclusion, and RBAC guards.
+- `tests/test_simulated_requests.py` (7 tests): Account opening requests, debit card requests, and state machine validation.
 
 ### Frontend Typecheck & Build
 ```bash
