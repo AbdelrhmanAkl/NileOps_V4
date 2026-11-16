@@ -225,6 +225,19 @@ export async function updateKycStatus(id: string, status: string, notes?: string
   return res.json();
 }
 
+export async function crossVerifyKycDocument(kycId: string, billData: any) {
+  const res = await fetch(`${API_BASE}/employee/kyc-verifications/${kycId}/cross-verify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...getAuthHeader() },
+    body: JSON.stringify(billData),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || "Failed to execute cross-verification.");
+  }
+  return res.json();
+}
+
 export async function submitCustomerKycUpdate(file: File) {
   const formData = new FormData();
   formData.append("file", file);

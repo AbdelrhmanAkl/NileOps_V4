@@ -15,6 +15,7 @@ import {
   fetchKycVerifications,
   uploadKycDocument,
   updateKycStatus,
+  crossVerifyKycDocument,
   fetchAuditLogs,
   fetchEmployeeAccountRequests,
   evaluateAccountRequest,
@@ -2176,6 +2177,88 @@ export const EmployeePortal: React.FC = () => {
                         );
                       })()}
                     </div>
+
+                    {/* DUAL-DOCUMENT CROSS-VERIFICATION (National ID + Proof of Address / Utility Bill) */}
+                    {(() => {
+                      const dual = parsedData.dual_document_verification;
+                      return (
+                        <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-3">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                              <span className="text-base">📑</span>
+                              <div>
+                                <h4 className="text-xs font-black text-gray-900 uppercase tracking-wider">
+                                  {isArabic ? "المطابقة الثنائية مع إثبات السكن (Dual-Document Cross-Verification)" : "Dual-Document Cross-Verification (Utility Bill)"}
+                                </h4>
+                                <p className="text-[10px] text-gray-500">
+                                  {isArabic ? "مطابقة الاسم (>= 85%)، وتوافق المحافظة، وحداثة الفاتورة (<= 90 يوماً)" : "Name fuzzy match (>= 85%), locality agreement, and bill recency (<= 90 days)"}
+                                </p>
+                              </div>
+                            </div>
+                            {dual ? (
+                              <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full font-mono ${
+                                dual.is_cross_verified ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"
+                              }`}>
+                                {dual.is_cross_verified ? "✓ CROSS_VERIFIED" : "✕ DISCREPANCIES_DETECTED"}
+                              </span>
+                            ) : (
+                              <button
+                                onClick={async () => {
+                                  try {
+                                    const defaultBill = {
+                                      utility_type: "ELECTRICITY_BILL",
+                                      consumer_name: extracted.name || "محمود عادل إبراهيم حسن",
+                                      service_address: extracted.address || "15 شارع النيل، المعادي، القاهرة",
+                                      issue_date: new Date(Date.now() - 25 * 86400000).toISOString().split("T")[0],
+                                      account_number: "ELEC-CAI-984210",
+                                    };
+                                    await crossVerifyKycDocument(currentCase.id, defaultBill);
+                                    await loadInitialData();
+                                  } catch (e: any) {
+                                    alert(e.message || "Cross-verify failed");
+                                  }
+                                }}
+                                className="px-3 py-1.5 bg-nile-800 hover:bg-nile-900 text-white font-bold text-[11px] rounded shadow-xs"
+                              >
+                                {isArabic ? "مطابقة مع فاتورة مرافق تجريبية" : "Verify with Utility Bill"}
+                              </button>
+                            )}
+                          </div>
+
+                          {dual && (
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs pt-1">
+                              <div className="bg-white p-2.5 rounded border border-gray-200">
+                                <span className="text-gray-400 text-[10px] block">{isArabic ? "نسبة تطابق الاسم:" : "Name Match Score:"}</span>
+                                <span className="font-mono font-bold text-gray-800">
+                                  {(dual.name_cross_match?.similarity_score * 100).toFixed(1)}%
+                                </span>
+                                <span className={`ml-2 text-[10px] font-bold ${dual.name_cross_match?.is_match ? "text-emerald-600" : "text-rose-600"}`}>
+                                  {dual.name_cross_match?.is_match ? "MATCH >= 85%" : "MISMATCH"}
+                                </span>
+                              </div>
+                              <div className="bg-white p-2.5 rounded border border-gray-200">
+                                <span className="text-gray-400 text-[10px] block">{isArabic ? "توافق المحافظة / العنوان:" : "Address Locality:"}</span>
+                                <span className="font-semibold text-gray-800 text-[11px]">
+                                  {dual.address_cross_match?.id_governorate || "القاهرة"}
+                                </span>
+                                <span className={`ml-2 text-[10px] font-bold ${dual.address_cross_match?.is_match ? "text-emerald-600" : "text-rose-600"}`}>
+                                  {dual.address_cross_match?.is_match ? "CONSISTENT" : "CONFLICT"}
+                                </span>
+                              </div>
+                              <div className="bg-white p-2.5 rounded border border-gray-200">
+                                <span className="text-gray-400 text-[10px] block">{isArabic ? "عمر الفاتورة (أيام):" : "Bill Age (Recency):"}</span>
+                                <span className="font-mono font-bold text-gray-800">
+                                  {dual.recency_check?.bill_age_days !== null ? `${dual.recency_check?.bill_age_days}d` : "Recent"}
+                                </span>
+                                <span className={`ml-2 text-[10px] font-bold ${dual.recency_check?.is_recent ? "text-emerald-600" : "text-rose-600"}`}>
+                                  {dual.recency_check?.is_recent ? "<= 90d (VALID)" : "EXPIRED"}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
 
                     {/* COMPLIANCE REVIEW ACTION BAR (RBAC ENFORCED) */}
                     <div className="pt-4 border-t border-gray-200">

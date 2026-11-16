@@ -40,6 +40,8 @@ from app.schemas.requests import (
     RequestRuleEvaluationResult,
 )
 from app.services.kyc_checks import kyc_check_service
+from app.services.document_matching import dual_document_matcher
+from pydantic import BaseModel
 from app.services.request_rules import (
     evaluate_account_opening_rules,
     validate_transition,
@@ -551,6 +553,75 @@ async def upload_kyc_verification(
     out = KycVerificationOut.model_validate(record)
     out.image_url = f"/api/v1/employee/kyc-verifications/{record.id}/image"
     return out
+
+
+class CrossVerifyRequest(BaseModel):
+    utility_type: str = "ELECTRICITY_BILL"
+    consumer_name: str
+    service_address: str
+    issue_date: str
+    account_number: Optional[str] = None
+    meter_number: Optional[str] = None
+
+
+@router.post("/kyc-verifications/{kyc_id}/cross-verify")
+async def cross_verify_kyc_with_utility_bill(
+    kyc_id: str,
+    bill_data: CrossVerifyRequest,
+    current_user: User = Depends(
+        require_roles(["compliance_reviewer", "operations_officer", "branch_manager", "admin"])
+    ),
+    db: AsyncSession = Depends(get_db),
+):
+    """Execute dual-document cross-verification (National ID vs Utility Bill).
+
+    Cross-checks citizen name (>= 85%), residential governorate, and bill recency (<= 90 days).
+    Stores cross-verification results in KYC extracted data.
+    Identity verification status remains NOT_VERIFIED.
+    """
+    stmt = select(KycVerification).where(KycVerification.id == kyc_id)
+    result = await db.execute(stmt)
+    record = result.scalar_one_or_none()
+
+    if not record:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="KYC record not found.")
+
+    try:
+        parsed_data = json.loads(record.extracted_data_json or "{}")
+    except Exception:
+        parsed_data = {}
+
+    extracted_fields = parsed_data.get("extracted_fields", {})
+    id_data = {
+        "name": extracted_fields.get("name") or parsed_data.get("name"),
+        "address": extracted_fields.get("address") or parsed_data.get("address"),
+        "national_id": record.synthetic_national_id,
+        "derived_governorate": parsed_data.get("derived_governorate"),
+    }
+
+    match_result = dual_document_matcher.cross_verify(id_data, bill_data.model_dump())
+
+    # Store cross-verification results in extracted_data_json
+    parsed_data["dual_document_verification"] = match_result
+    record.extracted_data_json = json.dumps(parsed_data, ensure_ascii=False)
+    await db.commit()
+    await db.refresh(record)
+
+    await log_audit_event(
+        db,
+        action="DUAL_DOCUMENT_CROSS_VERIFICATION",
+        resource_type="KYC",
+        resource_id=record.id,
+        user=current_user,
+        details={
+            "tracking_number": record.tracking_number,
+            "is_cross_verified": match_result["is_cross_verified"],
+            "discrepancy_codes": match_result["discrepancy_codes"],
+            "name_similarity": match_result["name_cross_match"]["similarity_score"],
+        },
+    )
+
+    return match_result
 
 
 @router.patch("/kyc-verifications/{kyc_id}", response_model=KycVerificationOut)
