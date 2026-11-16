@@ -100,5 +100,9 @@ desktop.ini
 *.log
 tests/ocr/fixtures/
 tests/ocr/fixtures/*
+private_samples/
+*private*
+scripts/local_only/
+
 
 
