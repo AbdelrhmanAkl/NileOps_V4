@@ -25,29 +25,30 @@ if not os.environ.get("PADDLE_PDX_CACHE_HOME"):
 if not os.environ.get("PADDLE_HOME"):
     os.environ["PADDLE_HOME"] = os.path.join(WORKSPACE_DATA, "paddle")
 
-# 2. Provide lightweight shim for pandas if native .pyd extensions are blocked by Windows Smart App Control
-try:
-    import pandas  # noqa: F401
-except (ImportError, Exception):
-    from unittest.mock import MagicMock
-    from importlib.machinery import ModuleSpec
+# 2. Provide lightweight shim for pandas ONLY on Windows and only if importing native pandas fails
+if sys.platform == "win32":
+    try:
+        import pandas  # noqa: F401
+    except (ImportError, Exception):
+        from unittest.mock import MagicMock
+        from importlib.machinery import ModuleSpec
 
-    class _PandasShimFinder:
-        def find_spec(self, fullname, path, target=None):
-            if fullname == "pandas" or fullname.startswith("pandas."):
-                return ModuleSpec(fullname, self, is_package=True)
-            return None
+        class _PandasShimFinder:
+            def find_spec(self, fullname, path, target=None):
+                if fullname == "pandas" or fullname.startswith("pandas."):
+                    return ModuleSpec(fullname, self, is_package=True)
+                return None
 
-        def create_module(self, spec):
-            mod = MagicMock()
-            mod.__file__ = "<mock>"
-            mod.__path__ = []
-            return mod
+            def create_module(self, spec):
+                mod = MagicMock()
+                mod.__file__ = "<mock>"
+                mod.__path__ = []
+                return mod
 
-        def exec_module(self, module):
-            pass
+            def exec_module(self, module):
+                pass
 
-    sys.meta_path.insert(0, _PandasShimFinder())
+        sys.meta_path.insert(0, _PandasShimFinder())
 
 # 3. Ensure torch DLL directory is available on Windows before model imports
 if hasattr(os, "add_dll_directory"):

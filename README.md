@@ -1,6 +1,6 @@
 # NileOps — Intelligent Digital Banking Operations Platform
 
-[![Backend Tests](https://img.shields.io/badge/tests-131%20passed-brightgreen.svg)]()
+[![Backend Tests](https://img.shields.io/badge/tests-134%20passed-brightgreen.svg)]()
 [![Frontend Build](https://img.shields.io/badge/frontend-Vite%20%2B%20TypeScript-blue.svg)]()
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)]()
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg)]()
@@ -26,12 +26,13 @@
 - [9. Native Setup Guide](#9-native-setup-guide)
 - [10. Environment Configuration](#10-environment-configuration)
 - [11. Service Startup Instructions](#11-service-startup-instructions)
-- [12. Running Automated Tests & Isolation](#12-running-automated-tests--isolation)
-- [13. Demo Authentication & Seed Profiles](#13-demo-authentication--seed-profiles)
-- [14. Transparent Architectural Limitations](#14-transparent-architectural-limitations)
-- [15. User Interface & Screenshot Index](#15-user-interface--screenshot-index)
-- [16. Technical Documentation & Reports](#16-technical-documentation--reports)
-- [17. License](#17-license)
+- [12. Online Demo (Single-Port & Cloudflare Tunnel)](#12-online-demo-single-port--cloudflare-tunnel)
+- [13. Running Automated Tests & Isolation](#13-running-automated-tests--isolation)
+- [14. Demo Authentication & Seed Profiles](#14-demo-authentication--seed-profiles)
+- [15. Transparent Architectural Limitations](#15-transparent-architectural-limitations)
+- [16. User Interface & Screenshot Index](#16-user-interface--screenshot-index)
+- [17. Technical Documentation & Reports](#17-technical-documentation--reports)
+- [18. License](#18-license)
 
 ---
 
@@ -315,18 +316,63 @@ npm run dev
 
 ---
 
-## 12. Running Automated Tests & Isolation
+## 12. Online Demo (Single-Port & Cloudflare Tunnel)
+
+NileOps can be exposed to remote reviewers in **2 commands** without port forwarding or creating an account:
+
+### 1. Launch Unified Single-Port Server (Terminal 1)
+```powershell
+.\scripts\start_demo.ps1
+```
+This script:
+- Verifies Docker and starts PostgreSQL 16 & Qdrant vector database.
+- Pre-flights offline AI model caches (`intfloat/multilingual-e5-small` & PaddleOCR).
+- Resets and seeds the synthetic demo database and reconciles Qdrant embeddings.
+- Configures an ephemeral 256-bit `SECRET_KEY` in memory with `ENVIRONMENT=production`.
+- Starts the unified server at `http://127.0.0.1:8000` (serving both the React SPA and `/api/v1` backend endpoints on one port).
+
+### 2. Launch Cloudflare Quick Tunnel (Terminal 2)
+```powershell
+.\scripts\start_tunnel.ps1
+```
+*(If `cloudflared` is not installed, the script suggests: `winget install --id Cloudflare.cloudflared`)*
+The script launches a free Cloudflare tunnel and outputs a public temporary URL:
+```text
+https://<random-subdomain>.trycloudflare.com
+```
+
+### Self-Check & Demo Reset
+- **Automated Health & Smoke Check:** Run `.\scripts\demo_selfcheck.ps1` to verify health, authentication, RAG question answering, Document AI OCR upload, Ops Assistant, and Ollama latency.
+- **Demo Data Reset:** Run `.\scripts\reset_demo.ps1` at any time to return the synthetic demo database, audit logs, and uploads to their initial pristine state.
+
+### Test Credentials
+| Portal / Role | Email | Password | Allowed Capabilities |
+| :--- | :--- | :--- | :--- |
+| **Retail Customer** | `customer1@nileops.demo` | `Customer2026!` | View balances, transactions, submit requests, ask customer RAG |
+| **Operations Officer** | `ops@nileops.demo` | `NileOps2026!` | Review queues, Ops Assistant chat, card requests |
+| **Compliance Reviewer** | `compliance@nileops.demo` | `NileOps2026!` | Document AI KYC verification, audit trails, policy checks |
+| **Branch Manager** | `manager@nileops.demo` | `NileOps2026!` | 4-Eyes dual approvals, high-limit overrides |
+| **System Admin** | `admin@nileops.demo` | `NileOps2026!` | Configuration, role assignments, system overview |
+
+### What is Mocked vs. Simulated vs. Real
+- **Real:** PostgreSQL 16 relational ledger, Qdrant vector retrieval, multilingual E5 embeddings, PaddleOCR document intelligence with 9-dimensional Egyptian National ID math, JWT authentication, sliding-window rate limiters, and prompt injection defenses.
+- **Simulated:** Digital banking operations workflows (account opening drafts, card routing, customer complaint advisory, human-in-the-loop compliance review queues).
+- **Mocked / Air-Gapped:** Zero external financial network connections. Core banking ledgers, CBE clearing rails, and SMS gateways are mocked in-memory. Ollama LLM (`qwen3:8b`) runs 100% locally with an instant deterministic fallback mode when offline.
+
+---
+
+## 13. Running Automated Tests & Isolation
 
 The backend test suite enforces strict isolation:
 - **Relational Isolation:** All tests run against database `nileops_test`. The development database `nileops` is guarded and unreachable by tests.
 - **Vector Isolation:** All tests run against collection `nileops_kb_test`. A hard-failing check in `vector_store.py` ensures tests fail immediately if the collection does not end with `_test`.
 
-### Execute Test Suite (131 Tests)
+### Execute Test Suite (134 Tests)
 ```bash
 cd backend
 pytest -v -x -s --durations=10
 ```
-Test module breakdown (131 passed / 100% pass rate):
+Test module breakdown (134 passed / 100% pass rate):
 - `tests/test_adversarial_agent.py` (29 tests): Allowlisted Ops Assistant agent, adversarial prompt injection defenses (EN/AR), forbidden tools refusal, and output guardrails (14-digit National ID, IBAN, and JWT scrubbing).
 - `tests/test_complaint_intelligence.py` (6 tests): Deterministic advisory classification, SLA calculations, complaint lifecycle transitions, and employee pagination.
 - `tests/test_document_matching.py` (4 tests): Dual-document cross-verification (National ID vs Utility Bill), composite name similarity, Egyptian governorate geo-matching, bill recency, and RBAC endpoint lifecycles.
@@ -340,7 +386,7 @@ Test module breakdown (131 passed / 100% pass rate):
 - `tests/test_ocr_phase_2_1.py` (9 tests): Address parsing, WebP validation, and security fuzzing.
 - `tests/test_ocr_phase_2_2.py` (5 tests): Image quality assessment, CLAHE contrast enhancement, and deskewing.
 - `tests/test_ocr_security.py` (6 tests): Image size guards, decompression bomb protection, and PII masking.
-- `tests/test_production_guards.py` (7 tests): Weak secret rejection, CORS wildcard prevention, login lockout, and sliding-window rate limiting.
+- `tests/test_production_guards.py` (10 tests): Weak secret rejection, CORS wildcard prevention, login lockout, sliding-window rate limiting, production Swagger /docs and /openapi.json disabling, trusted-peer-only client IP header forwarding guard, and SPA fallback routing.
 - `tests/test_rag.py` (11 tests): Qdrant health, dense E5 embeddings, grounded answers, portal isolation, abstention, POL-TEST exclusion, and RBAC guards.
 - `tests/test_simulated_requests.py` (7 tests): Account opening requests, debit card requests, and state machine validation.
 
@@ -352,7 +398,7 @@ npm run build
 
 ---
 
-## 13. Demo Authentication & Seed Profiles
+## 14. Demo Authentication & Seed Profiles
 
 For rapid local evaluation, NileOps provides convenient **1-click quick-login buttons** on the login screen (`http://localhost:5173`) that pre-fill synthetic development credentials for each supported role:
 
@@ -368,7 +414,7 @@ For rapid local evaluation, NileOps provides convenient **1-click quick-login bu
 
 ---
 
-## 14. Transparent Architectural Limitations & Known Gaps
+## 15. Transparent Architectural Limitations & Known Gaps
 
 NileOps is designed as an architectural reference implementation and operations simulator. In the interest of engineering transparency and empirical honesty, the following technical limitations and benchmark results are explicitly documented:
 
@@ -411,7 +457,7 @@ NileOps is designed as an architectural reference implementation and operations 
 
 ---
 
-## 15. User Interface & Screenshot Index
+## 16. User Interface & Screenshot Index
 
 Comprehensive visual evidence for all bilingual dual-portal workflows is indexed in [`docs/screenshots/SCREENSHOT_INDEX.md`](file:///c:/AI/NileOps_V4/docs/screenshots/SCREENSHOT_INDEX.md):
 
@@ -428,7 +474,7 @@ Comprehensive visual evidence for all bilingual dual-portal workflows is indexed
 
 ---
 
-## 16. Technical Documentation & Reports
+## 17. Technical Documentation & Reports
 
 Detailed technical reports and evaluation benchmarks are maintained in `docs/`:
 - [`docs/CURRENT_PROJECT_STATE_REPORT.md`](file:///c:/AI/NileOps_V4/docs/CURRENT_PROJECT_STATE_REPORT.md): Complete feature implementation matrix, test metrics, and known defect audit.
@@ -440,6 +486,6 @@ Detailed technical reports and evaluation benchmarks are maintained in `docs/`:
 
 ---
 
-## 17. License
+## 18. License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.

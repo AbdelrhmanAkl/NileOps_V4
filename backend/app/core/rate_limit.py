@@ -33,10 +33,26 @@ class RateLimiter:
         self._lock = asyncio.Lock()
 
     def _get_client_ip(self, request: Request) -> str:
-        forwarded = request.headers.get("x-forwarded-for")
-        if forwarded:
-            return forwarded.split(",")[0].strip()
-        return request.client.host if request.client else "127.0.0.1"
+        """Resolve client IP safely for rate limiting and audit logging.
+        
+        Reads CF-Connecting-IP (or X-Forwarded-For) ONLY when the direct peer
+        is 127.0.0.1 (e.g. behind local Cloudflare quick tunnel).
+        If the direct peer is any other address, proxy headers are strictly
+        ignored to prevent IP spoofing attacks.
+        """
+        direct_peer = request.client.host if request.client else "127.0.0.1"
+
+        if direct_peer == "127.0.0.1":
+            cf_ip = request.headers.get("cf-connecting-ip")
+            if cf_ip and cf_ip.strip():
+                return cf_ip.strip()
+            forwarded = request.headers.get("x-forwarded-for")
+            if forwarded and forwarded.strip():
+                return forwarded.split(",")[0].strip()
+            return "127.0.0.1"
+
+        # Direct external peer: ignore proxy headers completely
+        return direct_peer
 
     async def check_rate_limit(
         self,

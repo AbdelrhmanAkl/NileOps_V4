@@ -5,7 +5,7 @@ import { KpiSummary } from "../types";
  */
 
 const SERVER_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
-const API_BASE = `${SERVER_URL}/api/v1`;
+const API_BASE = SERVER_URL ? `${SERVER_URL}/api/v1` : "/api/v1";
 
 function getAuthHeader(): Record<string, string> {
   const token = localStorage.getItem("nileops_token");
@@ -14,7 +14,8 @@ function getAuthHeader(): Record<string, string> {
 
 // 1. Health & Status
 export async function fetchHealth() {
-  const res = await fetch(`${SERVER_URL}/health`);
+  const url = SERVER_URL ? `${SERVER_URL}/health` : "/health";
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`Health check failed: ${res.status}`);
   return res.json();
 }

@@ -151,3 +151,78 @@ def test_rag_ask_rate_limiting_http_429(client: TestClient):
     assert res3.status_code == 429
     assert "Rate limit exceeded" in res3.text
     assert "Retry-After" in res3.headers
+
+
+def test_production_mode_disables_docs_and_openapi(monkeypatch):
+    """When ENVIRONMENT=production, /docs, /redoc, and /openapi.json must all be disabled (None)."""
+    from app.main import create_application
+
+    orig_env = settings.ENVIRONMENT
+    try:
+        settings.ENVIRONMENT = "production"
+        app_prod = create_application()
+        assert app_prod.docs_url is None
+        assert app_prod.redoc_url is None
+        assert app_prod.openapi_url is None
+    finally:
+        settings.ENVIRONMENT = orig_env
+
+
+def test_client_ip_trusted_peer_forwarding_guard():
+    """Verify CF-Connecting-IP / X-Forwarded-For are trusted ONLY when direct peer is 127.0.0.1."""
+    from starlette.datastructures import Headers
+    from starlette.requests import Request
+
+    class DummyClient:
+        def __init__(self, host: str):
+            self.host = host
+
+    # Helper to construct dummy Request
+    def make_request(peer_ip: str, headers_dict: dict) -> Request:
+        scope = {
+            "type": "http",
+            "method": "GET",
+            "path": "/api/v1/rag/ask",
+            "headers": [(k.lower().encode(), v.encode()) for k, v in headers_dict.items()],
+            "client": (peer_ip, 12345),
+        }
+        return Request(scope)
+
+    # 1. Direct peer is 127.0.0.1 with CF-Connecting-IP -> trusts CF-Connecting-IP
+    req_cf = make_request("127.0.0.1", {"cf-connecting-ip": "203.0.113.195", "x-forwarded-for": "198.51.100.1"})
+    assert limiter._get_client_ip(req_cf) == "203.0.113.195"
+
+    # 2. Direct peer is 127.0.0.1 with X-Forwarded-For only -> trusts X-Forwarded-For
+    req_xff = make_request("127.0.0.1", {"x-forwarded-for": "198.51.100.42, 10.0.0.1"})
+    assert limiter._get_client_ip(req_xff) == "198.51.100.42"
+
+    # 3. Direct peer is 127.0.0.1 with neither header -> returns 127.0.0.1
+    req_local = make_request("127.0.0.1", {})
+    assert limiter._get_client_ip(req_local) == "127.0.0.1"
+
+    # 4. Direct peer is external (192.168.1.50) -> IGNORES CF-Connecting-IP and X-Forwarded-For
+    req_spoof = make_request(
+        "192.168.1.50",
+        {"cf-connecting-ip": "203.0.113.195", "x-forwarded-for": "198.51.100.1"},
+    )
+    assert limiter._get_client_ip(req_spoof) == "192.168.1.50"
+
+
+def test_spa_browser_serving_and_api_fallback(client: TestClient):
+    """Verify SPA index.html is served for browser navigation while API 404s stay JSON."""
+    # 1. Browser navigation to root (Accept: text/html)
+    browser_resp = client.get("/", headers={"accept": "text/html,application/xhtml+xml"})
+    assert browser_resp.status_code == 200
+    assert "<!doctype html" in browser_resp.text.lower() or "<html" in browser_resp.text.lower()
+
+    # 2. Browser navigation to SPA client route (/customer)
+    spa_resp = client.get("/customer", headers={"accept": "text/html"})
+    assert spa_resp.status_code == 200
+    assert "<!doctype html" in spa_resp.text.lower() or "<html" in spa_resp.text.lower()
+
+    # 3. Unknown API route returns 404 JSON, NOT index.html
+    api_resp = client.get("/api/v1/nonexistent-endpoint")
+    assert api_resp.status_code == 404
+    assert api_resp.headers.get("content-type", "").startswith("application/json")
+    assert "detail" in api_resp.json()
+
