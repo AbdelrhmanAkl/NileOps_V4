@@ -10,6 +10,7 @@ import time
 import httpx
 
 from app.core.config import settings
+from app.services.lexical_support import compute_lexical_containment
 from app.services.query_normalizer import normalize_colloquial_query
 from app.services.vector_store import qdrant_service
 
@@ -103,18 +104,17 @@ class RAGService:
         language: str = "ar",
         threshold: Optional[float] = None,
     ) -> Dict[str, Any]:
-        """Execute end-to-end RAG with thresholding, portal isolation, and citations."""
-        effective_threshold = map_similarity_threshold(threshold)
-        # 1. Colloquial query normalization & semantic retrieval from Qdrant
+        """Execute end-to-end RAG with multi-signal gating, thresholding, portal isolation, and citations."""
+        # 1. Colloquial query normalization & semantic candidate retrieval from Qdrant
         normalized_query = normalize_colloquial_query(query)
         hits = await qdrant_service.search(
             query=normalized_query,
             portal_type=portal_type,
-            limit=3,
-            score_threshold=effective_threshold,
+            limit=10,
+            score_threshold=0.0,
         )
 
-        # 2. Check for abstention condition
+        # 2. Check for empty retrieval
         if not hits:
             return {
                 "query": query,
@@ -127,12 +127,55 @@ class RAGService:
                 "citations": [],
             }
 
-        # 3. Construct structured citations
+        top_score = hits[0]["score"]
+        top2_score = hits[1]["score"] if len(hits) > 1 else 0.0
+        margin1_2 = top_score - top2_score
+        scores = [h["score"] for h in hits]
+        mean_score = sum(scores) / len(scores) if scores else 0.0
+        margin1_mean10 = top_score - mean_score
+
+        # Compute lexical containment against top candidate policy content
+        top1_code = hits[0].get("code")
+        top_doc_content = " ".join([h.get("content", "") for h in hits if h.get("code") == top1_code])
+        lex_support = compute_lexical_containment(query, top_doc_content)
+
+        # Multi-signal abstention gating
+        # Calibrated via 5-fold CV on DEV pool: answer if high confidence with clear margin OR modest confidence with strong lexical containment
+        t_high = getattr(settings, "RAG_ABSTENTION_T_HIGH", 0.80)
+        m12_min = getattr(settings, "RAG_ABSTENTION_M12_MIN", 0.010)
+        m10_min = getattr(settings, "RAG_ABSTENTION_M10_MIN", 0.015)
+        t_low = getattr(settings, "RAG_ABSTENTION_T_LOW", 0.76)
+        l_min = getattr(settings, "RAG_ABSTENTION_L_MIN", 0.06)
+
+        is_supported = (top_score >= t_high and margin1_2 >= m12_min and margin1_mean10 >= m10_min) or (
+            top_score >= t_low and lex_support >= l_min
+        )
+
+        # If caller passed explicit custom threshold, enforce it in addition
+        if threshold is not None:
+            effective_threshold = map_similarity_threshold(threshold)
+            if top_score < effective_threshold:
+                is_supported = False
+
+        if not is_supported:
+            return {
+                "query": query,
+                "portal_type": portal_type,
+                "language": language,
+                "answer": ABSTENTION_MESSAGES.get(language, ABSTENTION_MESSAGES["en"]),
+                "confidence_score": 0.0,
+                "abstained": True,
+                "fallback_used": False,
+                "citations": [],
+            }
+
+        # 3. Construct structured citations from top candidate hits
+        selected_hits = hits[:3]
         seen_codes = set()
         citations = []
         context_snippets = []
 
-        for h in hits:
+        for h in selected_hits:
             code = h["code"]
             if code not in seen_codes:
                 seen_codes.add(code)
@@ -150,7 +193,6 @@ class RAGService:
             context_snippets.append(f"[{code}] {h['title']}:\n{h['content']}")
 
         combined_context = "\n\n---\n\n".join(context_snippets)
-        top_score = hits[0]["score"]
 
         # 4. Prompt Construction
         if language == "ar":
@@ -170,7 +212,7 @@ class RAGService:
         fallback_used = False
         llm_answer = await self._query_llm(prompt, system_prompt)
         if not llm_answer:
-            llm_answer = self._synthesize_fallback_answer(hits, language)
+            llm_answer = self._synthesize_fallback_answer(selected_hits, language)
             fallback_used = True
 
         return {

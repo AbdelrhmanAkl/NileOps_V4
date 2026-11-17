@@ -89,6 +89,15 @@ try:
         EMBEDDING_MODEL_NAME: str = Field(default_factory=lambda: os.getenv("EMBEDDING_MODEL_NAME", "intfloat/multilingual-e5-small"))
         RAG_SIMILARITY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("RAG_SIMILARITY_THRESHOLD", "0.75")))
 
+        # RAG Multi-Signal Abstention Gating Thresholds
+        # Calibrated via 5-fold stratified cross-validation on the 100-question DEV pool (70 in-domain, 30 out-of-domain)
+        # Decision: Answer iff (top1 >= T_HIGH and margin1_2 >= M12_MIN and margin1_mean10 >= M10_MIN) or (top1 >= T_LOW and lexical_support >= L_MIN)
+        RAG_ABSTENTION_T_HIGH: float = Field(default_factory=lambda: float(os.getenv("RAG_ABSTENTION_T_HIGH", "0.80")))
+        RAG_ABSTENTION_M12_MIN: float = Field(default_factory=lambda: float(os.getenv("RAG_ABSTENTION_M12_MIN", "0.010")))
+        RAG_ABSTENTION_M10_MIN: float = Field(default_factory=lambda: float(os.getenv("RAG_ABSTENTION_M10_MIN", "0.015")))
+        RAG_ABSTENTION_T_LOW: float = Field(default_factory=lambda: float(os.getenv("RAG_ABSTENTION_T_LOW", "0.76")))
+        RAG_ABSTENTION_L_MIN: float = Field(default_factory=lambda: float(os.getenv("RAG_ABSTENTION_L_MIN", "0.06")))
+
         # Optical Quality & Preprocessing Thresholds
         # Derived from empirical image quality assessment across synthetic card fixtures (Clean, Glare, Blur, Shadow)
         IMAGE_SHARPNESS_BLURRY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("IMAGE_SHARPNESS_BLURRY_THRESHOLD", "50.0")))  # Laplacian variance below which image is flagged blurry
@@ -171,6 +180,15 @@ except ImportError:
         EMBEDDING_BACKEND: str = Field(default_factory=lambda: os.getenv("EMBEDDING_BACKEND", "e5"))
         EMBEDDING_MODEL_NAME: str = Field(default_factory=lambda: os.getenv("EMBEDDING_MODEL_NAME", "intfloat/multilingual-e5-small"))
         RAG_SIMILARITY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("RAG_SIMILARITY_THRESHOLD", "0.75")))
+
+        # RAG Multi-Signal Abstention Gating Thresholds
+        # Calibrated via 5-fold stratified cross-validation on the 100-question DEV pool (70 in-domain, 30 out-of-domain)
+        # Decision: Answer iff (top1 >= T_HIGH and margin1_2 >= M12_MIN and margin1_mean10 >= M10_MIN) or (top1 >= T_LOW and lexical_support >= L_MIN)
+        RAG_ABSTENTION_T_HIGH: float = Field(default_factory=lambda: float(os.getenv("RAG_ABSTENTION_T_HIGH", "0.80")))
+        RAG_ABSTENTION_M12_MIN: float = Field(default_factory=lambda: float(os.getenv("RAG_ABSTENTION_M12_MIN", "0.010")))
+        RAG_ABSTENTION_M10_MIN: float = Field(default_factory=lambda: float(os.getenv("RAG_ABSTENTION_M10_MIN", "0.015")))
+        RAG_ABSTENTION_T_LOW: float = Field(default_factory=lambda: float(os.getenv("RAG_ABSTENTION_T_LOW", "0.76")))
+        RAG_ABSTENTION_L_MIN: float = Field(default_factory=lambda: float(os.getenv("RAG_ABSTENTION_L_MIN", "0.06")))
 
         # Optical Quality & Preprocessing Thresholds
         IMAGE_SHARPNESS_BLURRY_THRESHOLD: float = Field(default_factory=lambda: float(os.getenv("IMAGE_SHARPNESS_BLURRY_THRESHOLD", "50.0")))

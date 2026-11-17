@@ -243,3 +243,35 @@ def test_embedding_backend_graceful_fallback():
     vec = svc._generate_dense_vector("test banking policy query")
     assert len(vec) == 384
     assert isinstance(vec[0], float)
+
+
+def test_rag_abstention_arabic_off_topic_pizza(client: TestClient):
+    """Verify system strictly abstains on off-topic Arabic culinary inquiry without threshold override."""
+    payload = {
+        "query": "ما هي طريقة عمل البيتزا في المنزل؟",
+        "portal_type": "customer",
+        "language": "ar",
+    }
+    resp = client.post("/api/v1/rag/ask", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["abstained"] is True
+    assert data["confidence_score"] == 0.0
+    assert len(data["citations"]) == 0
+    assert "لم يتم العثور على سياسة مطابقة" in data["answer"] or "لم أتمكن من العثور" in data["answer"]
+
+
+def test_rag_abstention_english_off_topic_cookies(client: TestClient):
+    """Verify system strictly abstains on off-topic English inquiry without threshold override."""
+    payload = {
+        "query": "How do I bake chocolate chip cookies at home?",
+        "portal_type": "customer",
+        "language": "en",
+    }
+    resp = client.post("/api/v1/rag/ask", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["abstained"] is True
+    assert data["confidence_score"] == 0.0
+    assert len(data["citations"]) == 0
+    assert "No matching policy found" in data["answer"]
