@@ -17,7 +17,30 @@ if (-not (Test-Path $venvPython)) {
     exit 1
 }
 
-# 2. Check Docker Daemon
+# 2. Check and Build Frontend Distribution if Missing
+$distIndex = Join-Path $repoRoot "frontend\dist\index.html"
+if (-not (Test-Path $distIndex)) {
+    Write-Host "[Frontend] Missing frontend\dist\index.html. Running npm install and npm run build..." -ForegroundColor Yellow
+    Push-Location (Join-Path $repoRoot "frontend")
+    try {
+        if (-not (Test-Path "node_modules")) {
+            & npm.cmd install
+            if ($LASTEXITCODE -ne 0) {
+                Write-Error "npm install failed in frontend."
+                exit $LASTEXITCODE
+            }
+        }
+        & npm.cmd run build
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "npm run build failed in frontend."
+            exit $LASTEXITCODE
+        }
+    } finally {
+        Pop-Location
+    }
+}
+
+# 3. Check Docker Daemon
 Write-Host "[1/6] Checking Docker infrastructure..." -ForegroundColor Yellow
 try {
     $dockerCheck = docker info 2>&1

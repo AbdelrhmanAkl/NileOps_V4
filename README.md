@@ -23,16 +23,18 @@
 - [6. Qdrant & Grounded RAG Architecture](#6-qdrant--grounded-rag-architecture)
 - [7. Egyptian National ID 9D Intelligence (OCR)](#7-egyptian-national-id-9d-intelligence-ocr)
 - [8. Installation Prerequisites](#8-installation-prerequisites)
-- [9. Native Setup Guide](#9-native-setup-guide)
-- [10. Environment Configuration](#10-environment-configuration)
-- [11. Service Startup Instructions](#11-service-startup-instructions)
-- [12. Online Demo (Single-Port & Cloudflare Tunnel)](#12-online-demo-single-port--cloudflare-tunnel)
-- [13. Running Automated Tests & Isolation](#13-running-automated-tests--isolation)
-- [14. Demo Authentication & Seed Profiles](#14-demo-authentication--seed-profiles)
-- [15. Transparent Architectural Limitations](#15-transparent-architectural-limitations)
-- [16. User Interface & Screenshot Index](#16-user-interface--screenshot-index)
-- [17. Technical Documentation & Reports](#17-technical-documentation--reports)
-- [18. License](#18-license)
+- [9. Run Locally for Teammates](#run-locally-for-teammates)
+- [10. Reproduce the Results](#reproduce-the-results)
+- [11. Native Architecture & Component Setup](#11-native-architecture--component-setup)
+- [12. Environment Configuration](#12-environment-configuration)
+- [13. Service Startup Instructions](#13-service-startup-instructions)
+- [14. Online Demo (Single-Port & Cloudflare Tunnel)](#14-online-demo-single-port--cloudflare-tunnel)
+- [15. Running Automated Tests & Isolation](#15-running-automated-tests--isolation)
+- [16. Demo Authentication & Seed Profiles](#16-demo-authentication--seed-profiles)
+- [17. Transparent Architectural Limitations](#17-transparent-architectural-limitations)
+- [18. User Interface & Screenshot Index](#18-user-interface--screenshot-index)
+- [19. Technical Documentation & Reports](#19-technical-documentation--reports)
+- [20. License](#20-license)
 
 ---
 
@@ -197,13 +199,79 @@ Every ID input or document scan is evaluated independently across 9 dimensions:
 - **Operating System:** Windows 10/11 (or Linux/macOS)
 - **Python:** 3.11.x (tested on Python 3.11.9)
 - **Node.js:** v20.x or v22.x LTS (with npm)
-- **PostgreSQL:** Version 16.x (installed locally or via service)
-- **Qdrant:** Version 1.12.x+ standalone executable or Python service (port 6333)
+- **PostgreSQL:** Version 16.x (installed locally or via service / Docker)
+- **Qdrant:** Version 1.12.x+ standalone executable or Docker (port 6333)
 - **Ollama (Optional):** Running locally with `qwen3:8b` (extractive fallback operates autonomously when offline)
 
 ---
 
-## 9. Native Setup Guide
+## 9. Run Locally for Teammates
+
+Follow these exact steps to run the complete NileOps application locally:
+
+### Prerequisites
+- Docker Desktop running (or native PostgreSQL 16 & Qdrant)
+- Python 3.11+
+- Node.js 20+
+
+### Step-by-Step Setup (PowerShell)
+```powershell
+# 1. Clone repository
+git clone https://github.com/AbdelrhmanAkl/NileOps_V4.git
+cd NileOps_V4
+
+# 2. Setup backend virtual environment and install dependencies
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+cd ..
+
+# 3. Start Docker services (PostgreSQL 16 & Qdrant vector database)
+docker compose up -d postgres qdrant
+
+# 4. Pre-cache offline AI models (Multilingual-E5-Small & PaddleOCR)
+.\scripts\download_models.ps1
+
+# 5. Launch the unified single-port application (auto-builds frontend if dist/ is missing)
+.\scripts\start_demo.ps1
+```
+The application will be live at `http://127.0.0.1:8000` with the Customer Portal, Employee Portal, and FastAPI backend all unified behind a single port.
+
+---
+
+## 10. Reproduce the Results
+
+To deterministically reproduce all Handbook operational and AI evaluation benchmarks reported in [`docs/KPI_RESULTS.md`](docs/KPI_RESULTS.md):
+
+```powershell
+# 1. Activate backend environment
+.\backend\.venv\Scripts\Activate.ps1
+
+# 2. Ensure Docker containers are running
+docker compose up -d postgres qdrant
+
+# 3. Regenerate all synthetic evaluation datasets (cards, utility bills, RAG evaluation sets)
+.\scripts\prepare_eval_data.ps1
+
+# 4. Run backend test suite (134 tests)
+python -m pytest backend/tests -q
+
+# 5. Run the master KPI evaluation suite
+python scripts/eval/run_all.py
+```
+
+This single evaluation runner executes and compares:
+- **RAG Semantic Retrieval:** Hit@1, Hit@3, MRR, Abstention Precision/Recall, and Portal Leakage across DEV (40 questions), HELD-OUT 1 (30 questions), and HELD-OUT 2 (30 questions).
+- **KYC Exception Detection & Escalation:** Recall, Escalation Rate, Precision, and Specificity across DEV (60 cards) and HELD-OUT (60 cards).
+- **OCR Field Extraction:** Field-level F1 scores across Clean, Glare, Blur, and Shadow synthetic cards.
+- **Audit Completeness:** Relational audit trail completeness across state transitions and dual-control approvals.
+
+Outputs a consolidated KPI results table matching `docs/KPI_RESULTS.md` exactly.
+
+---
+
+## 11. Native Setup Guide
 
 ### 1. Clone the Repository
 ```bash
@@ -252,7 +320,7 @@ python scratch/run_qdrant_service.py
 
 ---
 
-## 10. Environment Configuration
+## 12. Environment Configuration
 
 Copy `.env.example` to `.env` in both the repository root and `backend/`:
 ```bash
@@ -281,7 +349,7 @@ OLLAMA_MODEL=qwen3:8b
 
 ---
 
-## 11. Service Startup Instructions
+## 13. Service Startup Instructions
 
 Run the complete platform natively in separate terminals:
 
@@ -316,7 +384,7 @@ npm run dev
 
 ---
 
-## 12. Online Demo (Single-Port & Cloudflare Tunnel)
+## 14. Online Demo (Single-Port & Cloudflare Tunnel)
 
 NileOps can be exposed to remote reviewers in **2 commands** without port forwarding or creating an account:
 
@@ -361,7 +429,7 @@ https://<random-subdomain>.trycloudflare.com
 
 ---
 
-## 13. Running Automated Tests & Isolation
+## 15. Running Automated Tests & Isolation
 
 The backend test suite enforces strict isolation:
 - **Relational Isolation:** All tests run against database `nileops_test`. The development database `nileops` is guarded and unreachable by tests.
@@ -398,7 +466,7 @@ npm run build
 
 ---
 
-## 14. Demo Authentication & Seed Profiles
+## 16. Demo Authentication & Seed Profiles
 
 For rapid local evaluation, NileOps provides convenient **1-click quick-login buttons** on the login screen (`http://localhost:5173`) that pre-fill synthetic development credentials for each supported role:
 
@@ -414,7 +482,7 @@ For rapid local evaluation, NileOps provides convenient **1-click quick-login bu
 
 ---
 
-## 15. Transparent Architectural Limitations & Known Gaps
+## 17. Transparent Architectural Limitations & Known Gaps
 
 NileOps is designed as an architectural reference implementation and operations simulator. In the interest of engineering transparency and empirical honesty, the following technical limitations and benchmark results are explicitly documented:
 
@@ -457,7 +525,7 @@ NileOps is designed as an architectural reference implementation and operations 
 
 ---
 
-## 16. User Interface & Screenshot Index
+## 18. User Interface & Screenshot Index
 
 Comprehensive visual evidence for all bilingual dual-portal workflows is indexed in [`docs/screenshots/SCREENSHOT_INDEX.md`](file:///c:/AI/NileOps_V4/docs/screenshots/SCREENSHOT_INDEX.md):
 
@@ -474,7 +542,7 @@ Comprehensive visual evidence for all bilingual dual-portal workflows is indexed
 
 ---
 
-## 17. Technical Documentation & Reports
+## 19. Technical Documentation & Reports
 
 Detailed technical reports and evaluation benchmarks are maintained in `docs/`:
 - [`docs/CURRENT_PROJECT_STATE_REPORT.md`](file:///c:/AI/NileOps_V4/docs/CURRENT_PROJECT_STATE_REPORT.md): Complete feature implementation matrix, test metrics, and known defect audit.
@@ -486,6 +554,6 @@ Detailed technical reports and evaluation benchmarks are maintained in `docs/`:
 
 ---
 
-## 18. License
+## 20. License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.

@@ -76,9 +76,27 @@ backend/uploads/*
 bin/
 data/*
 !data/rag_eval/
+!data/ocr_batch_eval.json
+!data/ocr_evaluation_summary.json
 !data/kyc_mismatch_evaluation_results.json
 !data/kyc_mismatch_evaluation_results_dev_60.json
 !data/kyc_mismatch_held_out_60_results.json
+!data/synthetic_cards/
+data/synthetic_cards/*
+!data/synthetic_cards/manifest.json
+!data/synthetic_cards/eval_b1/
+data/synthetic_cards/eval_b1/*
+!data/synthetic_cards/eval_b1/manifest.json
+!data/synthetic_cards/eval_held_out_60/
+data/synthetic_cards/eval_held_out_60/*
+!data/synthetic_cards/eval_held_out_60/manifest.json
+!data/synthetic_bills/
+data/synthetic_bills/*
+!data/synthetic_bills/synthetic_utility_bills.json
+data/**/*.png
+data/**/*.jpg
+data/**/*.jpeg
+data/**/*.webp
 scratch/
 *.exe
 *.zip
@@ -112,4 +130,6 @@ scripts/local_only/
 
 
 !backend/app/models/
-!backend/app/models/**
+!backend/app/models/*.py
+!backend/app/models/__init__.py
+backend/app/models/**/__pycache__/

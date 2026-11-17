@@ -1,0 +1,764 @@
+[
+  {
+    "card_id": "card_01_clean",
+    "filename": "card_01_clean.png",
+    "file_path": "data/synthetic_cards/card_01_clean.png",
+    "condition": "clean",
+    "condition_details": {
+      "type": "pristine"
+    },
+    "ground_truth": {
+      "national_id": "28804150101234",
+      "masked_id": "2880415****234",
+      "name": "طارق محمود حسن علي",
+      "address": "١٢ شارع قصر العيني - السيدة زينب - القاهرة",
+      "factory_code": "TK8472910",
+      "governorate": "القاهرة",
+      "birth_date": "1988-04-15",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_02_clean",
+    "filename": "card_02_clean.png",
+    "file_path": "data/synthetic_cards/card_02_clean.png",
+    "condition": "clean",
+    "condition_details": {
+      "type": "pristine"
+    },
+    "ground_truth": {
+      "national_id": "29210200201856",
+      "masked_id": "2921020****856",
+      "name": "مصطفى كمال إبراهيم الشناوي",
+      "address": "٤٥ طريق الجيش - محطة الرمل - الإسكندرية",
+      "factory_code": "MK3910248",
+      "governorate": "الإسكندرية",
+      "birth_date": "1992-10-20",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_03_clean",
+    "filename": "card_03_clean.png",
+    "file_path": "data/synthetic_cards/card_03_clean.png",
+    "condition": "clean",
+    "condition_details": {
+      "type": "pristine"
+    },
+    "ground_truth": {
+      "national_id": "29505140101234",
+      "masked_id": "2950514****234",
+      "name": "أحمد منصور إبراهيم عبد الله",
+      "address": "١٥ شارع طلعت حرب - قصر النيل - القاهرة",
+      "factory_code": "ED2676749",
+      "governorate": "القاهرة",
+      "birth_date": "1995-05-14",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_04_clean",
+    "filename": "card_04_clean.png",
+    "file_path": "data/synthetic_cards/card_04_clean.png",
+    "condition": "clean",
+    "condition_details": {
+      "type": "pristine"
+    },
+    "ground_truth": {
+      "national_id": "29003102102456",
+      "masked_id": "2900310****456",
+      "name": "فاطمة الزهراء علي حسن",
+      "address": "٨ شارع التحرير - الدقي - الجيزة",
+      "factory_code": "FZ5820194",
+      "governorate": "الجيزة",
+      "birth_date": "1990-03-10",
+      "gender": "FEMALE"
+    }
+  },
+  {
+    "card_id": "card_05_clean",
+    "filename": "card_05_clean.png",
+    "file_path": "data/synthetic_cards/card_05_clean.png",
+    "condition": "clean",
+    "condition_details": {
+      "type": "pristine"
+    },
+    "ground_truth": {
+      "national_id": "30107250103789",
+      "masked_id": "3010725****789",
+      "name": "عمر خالد يوسف النجار",
+      "address": "٢٢ شارع عباس العقاد - مدينة نصر - القاهرة",
+      "factory_code": "OK9103847",
+      "governorate": "القاهرة",
+      "birth_date": "2001-07-25",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_06_clean",
+    "filename": "card_06_clean.png",
+    "file_path": "data/synthetic_cards/card_06_clean.png",
+    "condition": "clean",
+    "condition_details": {
+      "type": "pristine"
+    },
+    "ground_truth": {
+      "national_id": "28512051201923",
+      "masked_id": "2851205****923",
+      "name": "سعيد عبد الرحمن محمد خليل",
+      "address": "١٠ شارع الجمهورية - المنصورة - الدقهلية",
+      "factory_code": "SR4729105",
+      "governorate": "الدقهلية",
+      "birth_date": "1985-12-05",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_07_clean",
+    "filename": "card_07_clean.png",
+    "file_path": "data/synthetic_cards/card_07_clean.png",
+    "condition": "clean",
+    "condition_details": {
+      "type": "pristine"
+    },
+    "ground_truth": {
+      "national_id": "29402181401345",
+      "masked_id": "2940218****345",
+      "name": "إسلام مدحت صابر غنيم",
+      "address": "٥ شارع سعد زغلول - بنها - القليوبية",
+      "factory_code": "IM8201948",
+      "governorate": "القليوبية",
+      "birth_date": "1994-02-18",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_08_clean",
+    "filename": "card_08_clean.png",
+    "file_path": "data/synthetic_cards/card_08_clean.png",
+    "condition": "clean",
+    "condition_details": {
+      "type": "pristine"
+    },
+    "ground_truth": {
+      "national_id": "29709121601789",
+      "masked_id": "2970912****789",
+      "name": "حسام عادل لطفي البنا",
+      "address": "١٨ شارع الجيش - طنطا - الغربية",
+      "factory_code": "HA4920183",
+      "governorate": "الغربية",
+      "birth_date": "1997-09-12",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_09_clean",
+    "filename": "card_09_clean.png",
+    "file_path": "data/synthetic_cards/card_09_clean.png",
+    "condition": "clean",
+    "condition_details": {
+      "type": "pristine"
+    },
+    "ground_truth": {
+      "national_id": "28911221301456",
+      "masked_id": "2891122****456",
+      "name": "وليد شريف فهمي رضوان",
+      "address": "٣٠ شارع الجلاء - الزقازيق - الشرقية",
+      "factory_code": "WS9384720",
+      "governorate": "الشرقية",
+      "birth_date": "1989-11-22",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_10_clean",
+    "filename": "card_10_clean.png",
+    "file_path": "data/synthetic_cards/card_10_clean.png",
+    "condition": "clean",
+    "condition_details": {
+      "type": "pristine"
+    },
+    "ground_truth": {
+      "national_id": "29306141801678",
+      "masked_id": "2930614****678",
+      "name": "عمرو جلال توفيق البدري",
+      "address": "٧ شارع عبد السلام عارف - دمنهور - البحيرة",
+      "factory_code": "AJ5839201",
+      "governorate": "البحيرة",
+      "birth_date": "1993-06-14",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_11_blur_r10",
+    "filename": "card_11_blur_r10.png",
+    "file_path": "data/synthetic_cards/card_11_blur_r10.png",
+    "condition": "blur",
+    "condition_details": {
+      "radius": 1.0
+    },
+    "ground_truth": {
+      "national_id": "29308180104567",
+      "masked_id": "2930818****567",
+      "name": "حازم شريف إسماعيل بركات",
+      "address": "١٤ شارع النصر - المعادي - القاهرة",
+      "factory_code": "HS1928374",
+      "governorate": "القاهرة",
+      "birth_date": "1993-08-18",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_12_blur_r18",
+    "filename": "card_12_blur_r18.png",
+    "file_path": "data/synthetic_cards/card_12_blur_r18.png",
+    "condition": "blur",
+    "condition_details": {
+      "radius": 1.8
+    },
+    "ground_truth": {
+      "national_id": "29702220202345",
+      "masked_id": "2970222****345",
+      "name": "كريم مدحت سامي الجوهري",
+      "address": "٧ شارع بورسعيد - سيدي جابر - الإسكندرية",
+      "factory_code": "KM8273645",
+      "governorate": "الإسكندرية",
+      "birth_date": "1997-02-22",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_13_blur_r25",
+    "filename": "card_13_blur_r25.png",
+    "file_path": "data/synthetic_cards/card_13_blur_r25.png",
+    "condition": "blur",
+    "condition_details": {
+      "radius": 2.5
+    },
+    "ground_truth": {
+      "national_id": "29111112101456",
+      "masked_id": "2911111****456",
+      "name": "وليد عادل شكري فودة",
+      "address": "٣٠ شارع فيصل - العشرين - الجيزة",
+      "factory_code": "WA9384720",
+      "governorate": "الجيزة",
+      "birth_date": "1991-11-11",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_14_blur_r32",
+    "filename": "card_14_blur_r32.png",
+    "file_path": "data/synthetic_cards/card_14_blur_r32.png",
+    "condition": "blur",
+    "condition_details": {
+      "radius": 3.2
+    },
+    "ground_truth": {
+      "national_id": "28906300103210",
+      "masked_id": "2890630****210",
+      "name": "ياسر جلال توفيق البدري",
+      "address": "٥ شارع الأهرام - مصر الجديدة - القاهرة",
+      "factory_code": "YJ5839201",
+      "governorate": "القاهرة",
+      "birth_date": "1989-06-30",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_15_blur_r40",
+    "filename": "card_15_blur_r40.png",
+    "file_path": "data/synthetic_cards/card_15_blur_r40.png",
+    "condition": "blur",
+    "condition_details": {
+      "radius": 4.0
+    },
+    "ground_truth": {
+      "national_id": "28604052601234",
+      "masked_id": "2860405****234",
+      "name": "محمود صفوت خيري النحاس",
+      "address": "١٢ شارع أسيوط سوهاج - مركز طهطا - سوهاج",
+      "factory_code": "MS4820194",
+      "governorate": "سوهاج",
+      "birth_date": "1986-04-05",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_16_blur_r50",
+    "filename": "card_16_blur_r50.png",
+    "file_path": "data/synthetic_cards/card_16_blur_r50.png",
+    "condition": "blur",
+    "condition_details": {
+      "radius": 5.0
+    },
+    "ground_truth": {
+      "national_id": "29809152701890",
+      "masked_id": "2980915****890",
+      "name": "عاطف نبيل كمال الأبنودي",
+      "address": "٣ شارع المحطة - نجع حمادي - قنا",
+      "factory_code": "AN5920183",
+      "governorate": "قنا",
+      "birth_date": "1998-09-15",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_17_rot_pos3",
+    "filename": "card_17_rot_pos3.png",
+    "file_path": "data/synthetic_cards/card_17_rot_pos3.png",
+    "condition": "rotation_perspective",
+    "condition_details": {
+      "angle": 3.0
+    },
+    "ground_truth": {
+      "national_id": "29409120101678",
+      "masked_id": "2940912****678",
+      "name": "ماجد رفعت صبحي الديب",
+      "address": "١٨ شارع شبرا - دوران شبرا - القاهرة",
+      "factory_code": "MR3019482",
+      "governorate": "القاهرة",
+      "birth_date": "1994-09-12",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_18_rot_neg3",
+    "filename": "card_18_rot_neg3.png",
+    "file_path": "data/synthetic_cards/card_18_rot_neg3.png",
+    "condition": "rotation_perspective",
+    "condition_details": {
+      "angle": -3.0
+    },
+    "ground_truth": {
+      "national_id": "29604080202890",
+      "masked_id": "2960408****890",
+      "name": "نادر ممدوح كمال زهران",
+      "address": "١١ شارع المشير إسماعيل - سيدي بشر - الإسكندرية",
+      "factory_code": "NM4920183",
+      "governorate": "الإسكندرية",
+      "birth_date": "1996-04-08",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_19_rot_pos6",
+    "filename": "card_19_rot_pos6.png",
+    "file_path": "data/synthetic_cards/card_19_rot_pos6.png",
+    "condition": "rotation_perspective",
+    "condition_details": {
+      "angle": 6.0
+    },
+    "ground_truth": {
+      "national_id": "28701252101789",
+      "masked_id": "2870125****789",
+      "name": "سامح فؤاد إبراهيم علام",
+      "address": "٢٥ شارع مراد - ميدان الجيزة - الجيزة",
+      "factory_code": "SF6920184",
+      "governorate": "الجيزة",
+      "birth_date": "1987-01-25",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_20_rot_neg6",
+    "filename": "card_20_rot_neg6.png",
+    "file_path": "data/synthetic_cards/card_20_rot_neg6.png",
+    "condition": "rotation_perspective",
+    "condition_details": {
+      "angle": -6.0
+    },
+    "ground_truth": {
+      "national_id": "29812150102345",
+      "masked_id": "2981215****345",
+      "name": "أشرف بهاء الدين عبد العزيز",
+      "address": "٩ شارع الثورة - الكوربة - القاهرة",
+      "factory_code": "AB8201948",
+      "governorate": "القاهرة",
+      "birth_date": "1998-12-15",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_21_rot_pos10",
+    "filename": "card_21_rot_pos10.png",
+    "file_path": "data/synthetic_cards/card_21_rot_pos10.png",
+    "condition": "rotation_perspective",
+    "condition_details": {
+      "angle": 10.0
+    },
+    "ground_truth": {
+      "national_id": "29011301201678",
+      "masked_id": "2901130****678",
+      "name": "شريف رمزي وفيق حمودة",
+      "address": "٤ شارع السكة الجديدة - المنصورة - الدقهلية",
+      "factory_code": "SR7102948",
+      "governorate": "الدقهلية",
+      "birth_date": "1990-11-30",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_22_rot_neg10",
+    "filename": "card_22_rot_neg10.png",
+    "file_path": "data/synthetic_cards/card_22_rot_neg10.png",
+    "condition": "rotation_perspective",
+    "condition_details": {
+      "angle": -10.0
+    },
+    "ground_truth": {
+      "national_id": "29507181402345",
+      "masked_id": "2950718****345",
+      "name": "هاني طلعت مراد السعدني",
+      "address": "١٦ شارع كلية العلوم - شبرا الخيمة - القليوبية",
+      "factory_code": "HT3920194",
+      "governorate": "القليوبية",
+      "birth_date": "1995-07-18",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_23_rot_pos14",
+    "filename": "card_23_rot_pos14.png",
+    "file_path": "data/synthetic_cards/card_23_rot_pos14.png",
+    "condition": "rotation_perspective",
+    "condition_details": {
+      "angle": 14.0
+    },
+    "ground_truth": {
+      "national_id": "28908221601234",
+      "masked_id": "2890822****234",
+      "name": "أيمن وجيه فتحي غراب",
+      "address": "٢٨ شارع الفاتح - المحلة الكبرى - الغربية",
+      "factory_code": "AW8192049",
+      "governorate": "الغربية",
+      "birth_date": "1989-08-22",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_24_perspective_tilt",
+    "filename": "card_24_perspective_tilt.png",
+    "file_path": "data/synthetic_cards/card_24_perspective_tilt.png",
+    "condition": "rotation_perspective",
+    "condition_details": {
+      "perspective": "keystone_tilt"
+    },
+    "ground_truth": {
+      "national_id": "29205100103456",
+      "masked_id": "2920510****456",
+      "name": "باهر رشاد شكري المناوي",
+      "address": "٦ شارع شريف - باب اللوق - القاهرة",
+      "factory_code": "BR1928475",
+      "governorate": "القاهرة",
+      "birth_date": "1992-05-10",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_25_glare_topright",
+    "filename": "card_25_glare_topright.png",
+    "file_path": "data/synthetic_cards/card_25_glare_topright.png",
+    "condition": "glare",
+    "condition_details": {
+      "region": "top_right"
+    },
+    "ground_truth": {
+      "national_id": "29103150201234",
+      "masked_id": "2910315****234",
+      "name": "مدحت صبحي فخري الدسوقي",
+      "address": "٢٠ شارع الإقبال - لوران - الإسكندرية",
+      "factory_code": "MS9102834",
+      "governorate": "الإسكندرية",
+      "birth_date": "1991-03-15",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_26_glare_center",
+    "filename": "card_26_glare_center.png",
+    "file_path": "data/synthetic_cards/card_26_glare_center.png",
+    "condition": "glare",
+    "condition_details": {
+      "region": "center_hotspot"
+    },
+    "ground_truth": {
+      "national_id": "29408200102456",
+      "masked_id": "2940820****456",
+      "name": "وائل رسمي زكي الجمل",
+      "address": "٣٥ شارع مصطفى النحاس - مدينة نصر - القاهرة",
+      "factory_code": "WR4820193",
+      "governorate": "القاهرة",
+      "birth_date": "1994-08-20",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_27_glare_diagonal",
+    "filename": "card_27_glare_diagonal.png",
+    "file_path": "data/synthetic_cards/card_27_glare_diagonal.png",
+    "condition": "glare",
+    "condition_details": {
+      "region": "diagonal_washout"
+    },
+    "ground_truth": {
+      "national_id": "28812102101678",
+      "masked_id": "2881210****678",
+      "name": "عصام فوزي سليم العيوطي",
+      "address": "١٤ شارع مراد - ميدان الجيزة - الجيزة",
+      "factory_code": "EF8201948",
+      "governorate": "الجيزة",
+      "birth_date": "1988-12-10",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_28_glare_bottom_stripe",
+    "filename": "card_28_glare_bottom_stripe.png",
+    "file_path": "data/synthetic_cards/card_28_glare_bottom_stripe.png",
+    "condition": "glare",
+    "condition_details": {
+      "region": "bottom_stripe"
+    },
+    "ground_truth": {
+      "national_id": "29606251201890",
+      "masked_id": "2960625****890",
+      "name": "خالد صابر عبد الحميد راضي",
+      "address": "٨ شارع قناة السويس - المنصورة - الدقهلية",
+      "factory_code": "KS5920183",
+      "governorate": "الدقهلية",
+      "birth_date": "1996-06-25",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_29_glare_photo_corner",
+    "filename": "card_29_glare_photo_corner.png",
+    "file_path": "data/synthetic_cards/card_29_glare_photo_corner.png",
+    "condition": "glare",
+    "condition_details": {
+      "region": "photo_corner"
+    },
+    "ground_truth": {
+      "national_id": "29309050103789",
+      "masked_id": "2930905****789",
+      "name": "نبيل توفيق رؤوف شاهين",
+      "address": "٥٠ شارع الخليفة المأمون - روكسي - القاهرة",
+      "factory_code": "NT7102948",
+      "governorate": "القاهرة",
+      "birth_date": "1993-09-05",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_30_lowlight_b45",
+    "filename": "card_30_lowlight_b45.png",
+    "file_path": "data/synthetic_cards/card_30_lowlight_b45.png",
+    "condition": "low_light_noise",
+    "condition_details": {
+      "brightness": 0.45
+    },
+    "ground_truth": {
+      "national_id": "28608140101567",
+      "masked_id": "2860814****567",
+      "name": "هشام كمال توفيق غانم",
+      "address": "١٢ شارع رمسيس - غمرة - القاهرة",
+      "factory_code": "HK7102948",
+      "governorate": "القاهرة",
+      "birth_date": "1986-08-14",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_31_lowlight_b35",
+    "filename": "card_31_lowlight_b35.png",
+    "file_path": "data/synthetic_cards/card_31_lowlight_b35.png",
+    "condition": "low_light_noise",
+    "condition_details": {
+      "brightness": 0.35
+    },
+    "ground_truth": {
+      "national_id": "29903030202678",
+      "masked_id": "2990303****678",
+      "name": "عادل صفوت فوزي منصور",
+      "address": "٦٠ طريق الكورنيش - الشاطبي - الإسكندرية",
+      "factory_code": "AS3920194",
+      "governorate": "الإسكندرية",
+      "birth_date": "1999-03-03",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_32_gaussian_noise25",
+    "filename": "card_32_gaussian_noise25.png",
+    "file_path": "data/synthetic_cards/card_32_gaussian_noise25.png",
+    "condition": "low_light_noise",
+    "condition_details": {
+      "noise_sigma": 25.0
+    },
+    "ground_truth": {
+      "national_id": "29109090103890",
+      "masked_id": "2910909****890",
+      "name": "باسم عزت فاروق حمزة",
+      "address": "٧٧ شارع مصطفى النحاس - مدينة نصر - القاهرة",
+      "factory_code": "BE8192049",
+      "governorate": "القاهرة",
+      "birth_date": "1991-09-09",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_33_salt_pepper_noise",
+    "filename": "card_33_salt_pepper_noise.png",
+    "file_path": "data/synthetic_cards/card_33_salt_pepper_noise.png",
+    "condition": "low_light_noise",
+    "condition_details": {
+      "sp_amount": 0.04
+    },
+    "ground_truth": {
+      "national_id": "28704202101456",
+      "masked_id": "2870420****456",
+      "name": "معتز سراج الدين رضوان",
+      "address": "١٩ شارع الهرم - محطة مشعل - الجيزة",
+      "factory_code": "MS3847291",
+      "governorate": "الجيزة",
+      "birth_date": "1987-04-20",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_34_low_contrast18",
+    "filename": "card_34_low_contrast18.png",
+    "file_path": "data/synthetic_cards/card_34_low_contrast18.png",
+    "condition": "low_light_noise",
+    "condition_details": {
+      "contrast": 0.4,
+      "brightness": 0.6
+    },
+    "ground_truth": {
+      "national_id": "29511111201234",
+      "masked_id": "2951111****234",
+      "name": "علاء شكري كامل المنشاوي",
+      "address": "١١ شارع المشاية السفلية - المنصورة - الدقهلية",
+      "factory_code": "AS4910283",
+      "governorate": "الدقهلية",
+      "birth_date": "1995-11-11",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_35_dim_noisy",
+    "filename": "card_35_dim_noisy.png",
+    "file_path": "data/synthetic_cards/card_35_dim_noisy.png",
+    "condition": "low_light_noise",
+    "condition_details": {
+      "brightness": 0.4,
+      "noise_sigma": 18.0
+    },
+    "ground_truth": {
+      "national_id": "29207071401890",
+      "masked_id": "2920707****890",
+      "name": "صفوت إبراهيم خيري البرنس",
+      "address": "٢٤ شارع فريد ندا - بنها - القليوبية",
+      "factory_code": "SI5920184",
+      "governorate": "القليوبية",
+      "birth_date": "1992-07-07",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_36_occlusion_tape_address",
+    "filename": "card_36_occlusion_tape_address.png",
+    "file_path": "data/synthetic_cards/card_36_occlusion_tape_address.png",
+    "condition": "partial_occlusion",
+    "condition_details": {
+      "type": "sticker_address"
+    },
+    "ground_truth": {
+      "national_id": "29307200103456",
+      "masked_id": "2930720****456",
+      "name": "إيهاب عصام شفيق غنيم",
+      "address": "٥٠ شارع الخليفة المأمون - روكسي - القاهرة",
+      "factory_code": "IE4820194",
+      "governorate": "القاهرة",
+      "birth_date": "1993-07-20",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_37_occlusion_thumb_corner",
+    "filename": "card_37_occlusion_thumb_corner.png",
+    "file_path": "data/synthetic_cards/card_37_occlusion_thumb_corner.png",
+    "condition": "partial_occlusion",
+    "condition_details": {
+      "type": "thumb_bottom_left"
+    },
+    "ground_truth": {
+      "national_id": "29511282101890",
+      "masked_id": "2951128****890",
+      "name": "عماد فتحي لطفي رضوان",
+      "address": "١٦ شارع جامعة الدول العربية - المهندسين - الجيزة",
+      "factory_code": "EF5920183",
+      "governorate": "الجيزة",
+      "birth_date": "1995-11-28",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_38_occlusion_header_bar",
+    "filename": "card_38_occlusion_header_bar.png",
+    "file_path": "data/synthetic_cards/card_38_occlusion_header_bar.png",
+    "condition": "partial_occlusion",
+    "condition_details": {
+      "type": "dark_bar_header"
+    },
+    "ground_truth": {
+      "national_id": "29005050201234",
+      "masked_id": "2900505****234",
+      "name": "رامي وجدي حسني هلال",
+      "address": "٣٣ شارع الإقبال - لوران - الإسكندرية",
+      "factory_code": "RW1928475",
+      "governorate": "الإسكندرية",
+      "birth_date": "1990-05-05",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_39_occlusion_clip_top",
+    "filename": "card_39_occlusion_clip_top.png",
+    "file_path": "data/synthetic_cards/card_39_occlusion_clip_top.png",
+    "condition": "partial_occlusion",
+    "condition_details": {
+      "type": "paper_clip_top"
+    },
+    "ground_truth": {
+      "national_id": "29801201601456",
+      "masked_id": "2980120****456",
+      "name": "سامي وحيد توفيق الزيات",
+      "address": "١٣ شارع البحر - طنطا - الغربية",
+      "factory_code": "SW8201948",
+      "governorate": "الغربية",
+      "birth_date": "1998-01-20",
+      "gender": "MALE"
+    }
+  },
+  {
+    "card_id": "card_40_occlusion_id_tail_bar",
+    "filename": "card_40_occlusion_id_tail_bar.png",
+    "file_path": "data/synthetic_cards/card_40_occlusion_id_tail_bar.png",
+    "condition": "partial_occlusion",
+    "condition_details": {
+      "type": "barcode_sticker_id"
+    },
+    "ground_truth": {
+      "national_id": "29410100101678",
+      "masked_id": "2941010****678",
+      "name": "أيمن رمزي وفيق حمودة",
+      "address": "٧ شارع القصر العيني - وسط البلد - القاهرة",
+      "factory_code": "AR3920194",
+      "governorate": "القاهرة",
+      "birth_date": "1994-10-10",
+      "gender": "MALE"
+    }
+  }
+]

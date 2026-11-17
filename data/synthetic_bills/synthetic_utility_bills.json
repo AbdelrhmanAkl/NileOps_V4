@@ -1,0 +1,74 @@
+[
+  {
+    "id": "bill-clean-01",
+    "utility_type": "ELECTRICITY_BILL",
+    "provider_name": "شركة شمال القاهرة لتوزيع الكهرباء",
+    "consumer_name": "محمود عادل إبراهيم حسن",
+    "service_address": "15 شارع النيل، المعادي، القاهرة",
+    "issue_date": "2026-10-23",
+    "account_number": "ELEC-CAI-984210",
+    "meter_number": "MTR-55421",
+    "expected_match": true,
+    "expected_discrepancy": null
+  },
+  {
+    "id": "bill-clean-02",
+    "utility_type": "NATURAL_GAS_BILL",
+    "provider_name": "شركة تاون جاس - مصر",
+    "consumer_name": "احمد سامي عبد الرحمن",
+    "service_address": "40 شارع الدقي، الجيزة",
+    "issue_date": "2026-10-03",
+    "account_number": "GAS-GIZ-331298",
+    "meter_number": "MTR-88124",
+    "expected_match": true,
+    "expected_discrepancy": null
+  },
+  {
+    "id": "bill-clean-03",
+    "utility_type": "WATER_BILL",
+    "provider_name": "شركة مياه الشرب بالإسكندرية",
+    "consumer_name": "سارة محمد إبراهيم",
+    "service_address": "25 طريق الجيش، سيدي جابر، الإسكندرية",
+    "issue_date": "2026-09-18",
+    "account_number": "WTR-ALX-774120",
+    "meter_number": "MTR-12948",
+    "expected_match": true,
+    "expected_discrepancy": null
+  },
+  {
+    "id": "bill-mismatch-name",
+    "utility_type": "ELECTRICITY_BILL",
+    "provider_name": "شركة جنوب القاهرة لتوزيع الكهرباء",
+    "consumer_name": "خالد محمود عبد العزيز",
+    "service_address": "15 شارع النيل، المعادي، القاهرة",
+    "issue_date": "2026-10-28",
+    "account_number": "ELEC-CAI-112233",
+    "meter_number": "MTR-99411",
+    "expected_match": false,
+    "expected_discrepancy": "NAME_MISMATCH_ACROSS_DOCS"
+  },
+  {
+    "id": "bill-mismatch-addr",
+    "utility_type": "ELECTRICITY_BILL",
+    "provider_name": "شركة الإسكندرية لتوزيع الكهرباء",
+    "consumer_name": "محمود عادل إبراهيم حسن",
+    "service_address": "12 طريق الحرية، المنتزه، الإسكندرية",
+    "issue_date": "2026-10-18",
+    "account_number": "ELEC-ALX-445566",
+    "meter_number": "MTR-33214",
+    "expected_match": false,
+    "expected_discrepancy": "ADDRESS_MISMATCH_ACROSS_DOCS"
+  },
+  {
+    "id": "bill-too-old",
+    "utility_type": "ELECTRICITY_BILL",
+    "provider_name": "شركة شمال القاهرة لتوزيع الكهرباء",
+    "consumer_name": "محمود عادل إبراهيم حسن",
+    "service_address": "15 شارع النيل، المعادي، القاهرة",
+    "issue_date": "2026-06-20",
+    "account_number": "ELEC-CAI-998877",
+    "meter_number": "MTR-77412",
+    "expected_match": false,
+    "expected_discrepancy": "UTILITY_BILL_TOO_OLD"
+  }
+]

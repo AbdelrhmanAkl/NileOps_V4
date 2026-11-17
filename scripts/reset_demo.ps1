@@ -1,4 +1,4 @@
-﻿# NileOps Demo Reset Script
+# NileOps Demo Reset Script
 # Resets the synthetic demo database ('nileops'), purges temporary demo requests,
 # cleans temporary uploads, and reconciles the Qdrant knowledge base.
 #

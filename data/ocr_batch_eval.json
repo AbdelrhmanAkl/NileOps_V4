@@ -1,0 +1,247 @@
+{
+  "batch_metadata": {
+    "total_images": 4,
+    "ground_truth_availability": "UNAVAILABLE (No ground-truth annotations in repository)",
+    "exact_match_metric": "NOT EVALUATED",
+    "character_error_rate_metric": "NOT EVALUATED"
+  },
+  "aggregate_extraction_rates": {
+    "valid_14_digit_national_id": "2 / 4",
+    "arabic_full_name": "4 / 4",
+    "arabic_address": "4 / 4",
+    "factory_code": "3 / 4"
+  },
+  "aggregate_format_validation": {
+    "format_valid_count": "0 / 4",
+    "invalid_format_count": "4 / 4"
+  },
+  "aggregate_confidence_analysis": {
+    "method_1_detected_fields_mean": 0.7673,
+    "method_1_sample_count": 15,
+    "method_2_all_slots_mean_zero_for_missing": 0.7194,
+    "method_2_sample_count": 16,
+    "note": "OCR confidence reflects raw neural network beam/softmax probability, NOT ground-truth extraction accuracy."
+  },
+  "aggregate_review_routing": {
+    "human_review_required": "4 / 4",
+    "false_automated_approvals": 0
+  },
+  "per_card_results": {
+    "card_01.jpg": {
+      "case_id": "eval-card_01",
+      "ingestion_status": "PASS",
+      "image_meta": {
+        "file_size": 43316,
+        "width": 1000,
+        "height": 796,
+        "channels": 3
+      },
+      "masked_national_id": "5081****1858",
+      "extracted_fields": {
+        "national_id_extracted": true,
+        "national_id_confidence": 0.9513,
+        "raw_candidate_digits": null,
+        "name_extracted": true,
+        "name_confidence": 0.7759,
+        "address_extracted": true,
+        "address_confidence": 0.813,
+        "factory_code": "S627990SI",
+        "factory_code_confidence": 0.9362,
+        "factory_code_extracted": true
+      },
+      "normalization_status": "NORMALIZATION_PASSED",
+      "format_status": "INVALID_FORMAT",
+      "governorate_status": "GOVERNORATE_REFERENCE_UNMATCHED",
+      "ocr_status": "OCR_SUCCESS",
+      "consistency_status": "CONSISTENCY_NOT_EVALUATED",
+      "compound_status": "NONE",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "identity_verification_status": "NOT_VERIFIED",
+      "derived_birth_date": null,
+      "derived_governorate": null,
+      "derived_gender": null,
+      "latency_ms": 26397.38,
+      "evaluation_audit": {
+        "text_detection_success": true,
+        "field_extraction_success": {
+          "national_id_14_digit_extracted": true,
+          "partial_digits_detected": false,
+          "name_extracted": true,
+          "address_extracted": true,
+          "factory_code_extracted": true
+        },
+        "field_format_validation": "INVALID_FORMAT",
+        "ground_truth_exact_match": "NOT EVALUATED (GROUND TRUTH UNAVAILABLE)",
+        "character_error_rate": "NOT EVALUATED (GROUND TRUTH UNAVAILABLE)",
+        "ocr_confidence_metrics": {
+          "mean_confidence_detected_fields": 0.8691,
+          "mean_confidence_all_slots_with_zero": 0.8691
+        },
+        "human_review_routing": "REQUIRES_HUMAN_REVIEW",
+        "identity_verification_invariant": "NOT_VERIFIED"
+      }
+    },
+    "card_02.jpg": {
+      "case_id": "eval-card_02",
+      "ingestion_status": "PASS",
+      "image_meta": {
+        "file_size": 22589,
+        "width": 480,
+        "height": 640,
+        "channels": 3
+      },
+      "masked_national_id": "****",
+      "extracted_fields": {
+        "national_id_extracted": false,
+        "national_id_confidence": 0.0,
+        "raw_candidate_digits": "****",
+        "name_extracted": true,
+        "name_confidence": 0.8244,
+        "address_extracted": true,
+        "address_confidence": 0.9611,
+        "factory_code": "ED2676749",
+        "factory_code_confidence": 0.9993,
+        "factory_code_extracted": true
+      },
+      "normalization_status": "NORMALIZATION_REJECTED",
+      "format_status": "INVALID_FORMAT",
+      "governorate_status": "GOVERNORATE_REFERENCE_UNMATCHED",
+      "ocr_status": "OCR_EXTRACTION_FAILED",
+      "consistency_status": "CONSISTENCY_NOT_EVALUATED",
+      "compound_status": "NONE",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "identity_verification_status": "NOT_VERIFIED",
+      "derived_birth_date": null,
+      "derived_governorate": null,
+      "derived_gender": null,
+      "latency_ms": 12881.03,
+      "evaluation_audit": {
+        "text_detection_success": true,
+        "field_extraction_success": {
+          "national_id_14_digit_extracted": false,
+          "partial_digits_detected": true,
+          "name_extracted": true,
+          "address_extracted": true,
+          "factory_code_extracted": true
+        },
+        "field_format_validation": "INVALID_FORMAT",
+        "ground_truth_exact_match": "NOT EVALUATED (GROUND TRUTH UNAVAILABLE)",
+        "character_error_rate": "NOT EVALUATED (GROUND TRUTH UNAVAILABLE)",
+        "ocr_confidence_metrics": {
+          "mean_confidence_detected_fields": 0.6962,
+          "mean_confidence_all_slots_with_zero": 0.6962
+        },
+        "human_review_routing": "REQUIRES_HUMAN_REVIEW",
+        "identity_verification_invariant": "NOT_VERIFIED"
+      }
+    },
+    "card_03.jpg": {
+      "case_id": "eval-card_03",
+      "ingestion_status": "PASS",
+      "image_meta": {
+        "file_size": 15810,
+        "width": 400,
+        "height": 280,
+        "channels": 3
+      },
+      "masked_national_id": "****",
+      "extracted_fields": {
+        "national_id_extracted": false,
+        "national_id_confidence": 0.0,
+        "raw_candidate_digits": "****",
+        "name_extracted": true,
+        "name_confidence": 0.9641,
+        "address_extracted": true,
+        "address_confidence": 0.9307,
+        "factory_code": null,
+        "factory_code_confidence": 0.0,
+        "factory_code_extracted": false
+      },
+      "normalization_status": "NORMALIZATION_REJECTED",
+      "format_status": "INVALID_FORMAT",
+      "governorate_status": "GOVERNORATE_REFERENCE_UNMATCHED",
+      "ocr_status": "OCR_EXTRACTION_FAILED",
+      "consistency_status": "CONSISTENCY_NOT_EVALUATED",
+      "compound_status": "NONE",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "identity_verification_status": "NOT_VERIFIED",
+      "derived_birth_date": null,
+      "derived_governorate": null,
+      "derived_gender": null,
+      "latency_ms": 8066.12,
+      "evaluation_audit": {
+        "text_detection_success": true,
+        "field_extraction_success": {
+          "national_id_14_digit_extracted": false,
+          "partial_digits_detected": true,
+          "name_extracted": true,
+          "address_extracted": true,
+          "factory_code_extracted": false
+        },
+        "field_format_validation": "INVALID_FORMAT",
+        "ground_truth_exact_match": "NOT EVALUATED (GROUND TRUTH UNAVAILABLE)",
+        "character_error_rate": "NOT EVALUATED (GROUND TRUTH UNAVAILABLE)",
+        "ocr_confidence_metrics": {
+          "mean_confidence_detected_fields": 0.6316,
+          "mean_confidence_all_slots_with_zero": 0.4737
+        },
+        "human_review_routing": "REQUIRES_HUMAN_REVIEW",
+        "identity_verification_invariant": "NOT_VERIFIED"
+      }
+    },
+    "card_04.jpg": {
+      "case_id": "eval-card_04",
+      "ingestion_status": "PASS",
+      "image_meta": {
+        "file_size": 129272,
+        "width": 1280,
+        "height": 963,
+        "channels": 3
+      },
+      "masked_national_id": "4808****0108",
+      "extracted_fields": {
+        "national_id_extracted": true,
+        "national_id_confidence": 0.808,
+        "raw_candidate_digits": null,
+        "name_extracted": true,
+        "name_confidence": 0.7815,
+        "address_extracted": true,
+        "address_confidence": 0.9405,
+        "factory_code": "7021940SI",
+        "factory_code_confidence": 0.8239,
+        "factory_code_extracted": true
+      },
+      "normalization_status": "NORMALIZATION_PASSED",
+      "format_status": "INVALID_FORMAT",
+      "governorate_status": "GOVERNORATE_REFERENCE_UNMATCHED",
+      "ocr_status": "OCR_SUCCESS",
+      "consistency_status": "CONSISTENCY_NOT_EVALUATED",
+      "compound_status": "NONE",
+      "review_status": "REQUIRES_HUMAN_REVIEW",
+      "identity_verification_status": "NOT_VERIFIED",
+      "derived_birth_date": null,
+      "derived_governorate": null,
+      "derived_gender": null,
+      "latency_ms": 35504.49,
+      "evaluation_audit": {
+        "text_detection_success": true,
+        "field_extraction_success": {
+          "national_id_14_digit_extracted": true,
+          "partial_digits_detected": false,
+          "name_extracted": true,
+          "address_extracted": true,
+          "factory_code_extracted": true
+        },
+        "field_format_validation": "INVALID_FORMAT",
+        "ground_truth_exact_match": "NOT EVALUATED (GROUND TRUTH UNAVAILABLE)",
+        "character_error_rate": "NOT EVALUATED (GROUND TRUTH UNAVAILABLE)",
+        "ocr_confidence_metrics": {
+          "mean_confidence_detected_fields": 0.8385,
+          "mean_confidence_all_slots_with_zero": 0.8385
+        },
+        "human_review_routing": "REQUIRES_HUMAN_REVIEW",
+        "identity_verification_invariant": "NOT_VERIFIED"
+      }
+    }
+  }
+}

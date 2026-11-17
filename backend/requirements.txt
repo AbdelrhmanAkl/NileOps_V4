@@ -22,3 +22,8 @@ paddlex==3.7.2
 torch==2.15.0
 sentence-transformers==6.3.0
 transformers==5.23.0
+arabic-reshaper==3.1.0
+python-bidi==0.6.12
+pyclipper==1.4.0
+shapely==2.2.0
+pandas>=2.2.0

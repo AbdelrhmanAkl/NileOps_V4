@@ -18,15 +18,21 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
-DATA_PATH = Path(__file__).resolve().parent.parent.parent / "scratch" / "ocr_evaluation_summary.json"
-OUTPUT_PATH = Path(__file__).resolve().parent.parent.parent / "scratch" / "eval_ocr_results.json"
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+DATA_PATH = REPO_ROOT / "data" / "ocr_evaluation_summary.json"
+OUTPUT_PATH = REPO_ROOT / "scratch" / "eval_ocr_results.json"
 
 
 def run_evaluation() -> Dict[str, Any]:
-    if not DATA_PATH.exists():
-        raise FileNotFoundError(f"OCR evaluation summary not found at {DATA_PATH}")
+    target_path = DATA_PATH
+    if not target_path.exists():
+        fallback_path = REPO_ROOT / "scratch" / "ocr_evaluation_summary.json"
+        if fallback_path.exists():
+            target_path = fallback_path
+        else:
+            raise FileNotFoundError(f"OCR evaluation summary not found at {DATA_PATH}")
 
-    with open(DATA_PATH, "r", encoding="utf-8") as f:
+    with open(target_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     results: List[Dict[str, Any]] = data.get("results", [])

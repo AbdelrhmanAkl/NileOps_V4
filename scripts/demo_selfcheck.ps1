@@ -1,4 +1,4 @@
-﻿# NileOps — Demo Self-Check Test Suite
+# NileOps — Demo Self-Check Test Suite
 # Validates single-port production server (127.0.0.1:8000), authentication,
 # RAG service, Document AI OCR upload, Ops Assistant, and Ollama latency.
 

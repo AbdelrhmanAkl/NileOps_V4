@@ -1,0 +1,1052 @@
+[
+  {
+    "card_id": "ho_clean_01",
+    "filename": "ho_clean_01.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "سامي عبد الله فؤاد ناصر",
+      "address": "١٢ شارع الجمهورية عابدين القاهرة",
+      "national_id": "29403210101567",
+      "derived_dob": "1994-03-21",
+      "governorate_code": "01",
+      "governorate_name": "Cairo"
+    },
+    "comparison_data": {
+      "birth_date": "1994-03-21"
+    }
+  },
+  {
+    "card_id": "ho_clean_02",
+    "filename": "ho_clean_02.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "خالد سمير مرقص حنا",
+      "address": "٢٤ شارع الإقبال لوران الإسكندرية",
+      "national_id": "29108140203344",
+      "derived_dob": "1991-08-14",
+      "governorate_code": "02",
+      "governorate_name": "Alexandria"
+    },
+    "comparison_data": {
+      "birth_date": "1991-08-14"
+    }
+  },
+  {
+    "card_id": "ho_clean_03",
+    "filename": "ho_clean_03.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "نهلة وجدي إبراهيم غانم",
+      "address": "٧ شارع ممفيس حي الشرق بورسعيد",
+      "national_id": "29701300305566",
+      "derived_dob": "1997-01-30",
+      "governorate_code": "03",
+      "governorate_name": "Port Said"
+    },
+    "comparison_data": {
+      "birth_date": "1997-01-30"
+    }
+  },
+  {
+    "card_id": "ho_clean_04",
+    "filename": "ho_clean_04.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "مصطفى وفيق جابر عامر",
+      "address": "١٥ شارع الجيش حي السويس السويس",
+      "national_id": "28912100407788",
+      "derived_dob": "1989-12-10",
+      "governorate_code": "04",
+      "governorate_name": "Suez"
+    },
+    "comparison_data": {
+      "birth_date": "1989-12-10"
+    }
+  },
+  {
+    "card_id": "ho_clean_05",
+    "filename": "ho_clean_05.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "رانيا ممدوح زكي سالم",
+      "address": "٩ شارع سعد زغلول دمياط",
+      "national_id": "29605181109900",
+      "derived_dob": "1996-05-18",
+      "governorate_code": "11",
+      "governorate_name": "Damietta"
+    },
+    "comparison_data": {
+      "birth_date": "1996-05-18"
+    }
+  },
+  {
+    "card_id": "ho_clean_06",
+    "filename": "ho_clean_06.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "ياسر كمال أنور خطاب",
+      "address": "٣ شارع المشاية السفلية المنصورة الدقهلية",
+      "national_id": "29309251201122",
+      "derived_dob": "1993-09-25",
+      "governorate_code": "12",
+      "governorate_name": "Dakahlia"
+    },
+    "comparison_data": {
+      "birth_date": "1993-09-25"
+    }
+  },
+  {
+    "card_id": "ho_clean_07",
+    "filename": "ho_clean_07.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "مها عادل توفيق منصور",
+      "address": "١٨ شارع القومية الزقازيق الشرقية",
+      "national_id": "29502171302233",
+      "derived_dob": "1995-02-17",
+      "governorate_code": "13",
+      "governorate_name": "Ash Sharqia"
+    },
+    "comparison_data": {
+      "birth_date": "1995-02-17"
+    }
+  },
+  {
+    "card_id": "ho_clean_08",
+    "filename": "ho_clean_08.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "حاتم إكرامي شوكت واصف",
+      "address": "٥ شارع فريد ندى بنها القليوبية",
+      "national_id": "29206111403344",
+      "derived_dob": "1992-06-11",
+      "governorate_code": "14",
+      "governorate_name": "Al Qalyubia"
+    },
+    "comparison_data": {
+      "birth_date": "1992-06-11"
+    }
+  },
+  {
+    "card_id": "ho_clean_09",
+    "filename": "ho_clean_09.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "سهام صابر محروس شريف",
+      "address": "٢٢ شارع الخليفة المأمون كفر الشيخ",
+      "national_id": "29811041504455",
+      "derived_dob": "1998-11-04",
+      "governorate_code": "15",
+      "governorate_name": "Kafr El Sheikh"
+    },
+    "comparison_data": {
+      "birth_date": "1998-11-04"
+    }
+  },
+  {
+    "card_id": "ho_clean_10",
+    "filename": "ho_clean_10.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "هشام مدحت رشوان سليم",
+      "address": "١١ شارع البحر طنطا الغربية",
+      "national_id": "29007291605566",
+      "derived_dob": "1990-07-29",
+      "governorate_code": "16",
+      "governorate_name": "Al Gharbia"
+    },
+    "comparison_data": {
+      "birth_date": "1990-07-29"
+    }
+  },
+  {
+    "card_id": "ho_clean_11",
+    "filename": "ho_clean_11.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "إيناس طلعت وهبة رضوان",
+      "address": "٨ شارع صبري أبو علم شبين الكوم المنوفية",
+      "national_id": "29704121706677",
+      "derived_dob": "1997-04-12",
+      "governorate_code": "17",
+      "governorate_name": "Al Monufia"
+    },
+    "comparison_data": {
+      "birth_date": "1997-04-12"
+    }
+  },
+  {
+    "card_id": "ho_clean_12",
+    "filename": "ho_clean_12.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "أيمن شعبان عبد الحليم صقر",
+      "address": "١٤ شارع الجمهورية دمنهور البحيرة",
+      "national_id": "29310081807788",
+      "derived_dob": "1993-10-08",
+      "governorate_code": "18",
+      "governorate_name": "Al Beheira"
+    },
+    "comparison_data": {
+      "birth_date": "1993-10-08"
+    }
+  },
+  {
+    "card_id": "ho_clean_13",
+    "filename": "ho_clean_13.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "بسمة طارق شفيق حماد",
+      "address": "١٦ شارع محمد علي الإسماعيلية",
+      "national_id": "29603151908899",
+      "derived_dob": "1996-03-15",
+      "governorate_code": "19",
+      "governorate_name": "Ismailia"
+    },
+    "comparison_data": {
+      "birth_date": "1996-03-15"
+    }
+  },
+  {
+    "card_id": "ho_clean_14",
+    "filename": "ho_clean_14.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "بهاء عزمي يونس بطرس",
+      "address": "٦ شارع النيل الدقي الجيزة",
+      "national_id": "29101222101234",
+      "derived_dob": "1991-01-22",
+      "governorate_code": "21",
+      "governorate_name": "Giza"
+    },
+    "comparison_data": {
+      "birth_date": "1991-01-22"
+    }
+  },
+  {
+    "card_id": "ho_clean_15",
+    "filename": "ho_clean_15.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "شيماء عبد الحميد متولي بدر",
+      "address": "١٠ شارع بورسعيد بني سويف",
+      "national_id": "29508302202345",
+      "derived_dob": "1995-08-30",
+      "governorate_code": "22",
+      "governorate_name": "Beni Suef"
+    },
+    "comparison_data": {
+      "birth_date": "1995-08-30"
+    }
+  },
+  {
+    "card_id": "ho_clean_16",
+    "filename": "ho_clean_16.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "نبيل كرم إسكندر بشاي",
+      "address": "١٩ شارع الحرية الفيوم",
+      "national_id": "28804192303456",
+      "derived_dob": "1988-04-19",
+      "governorate_code": "23",
+      "governorate_name": "Fayoum"
+    },
+    "comparison_data": {
+      "birth_date": "1988-04-19"
+    }
+  },
+  {
+    "card_id": "ho_clean_17",
+    "filename": "ho_clean_17.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "منى فايز جرجس مقار",
+      "address": "٤ شارع كورنيش النيل المنيا",
+      "national_id": "29412052404567",
+      "derived_dob": "1994-12-05",
+      "governorate_code": "24",
+      "governorate_name": "Minya"
+    },
+    "comparison_data": {
+      "birth_date": "1994-12-05"
+    }
+  },
+  {
+    "card_id": "ho_clean_18",
+    "filename": "ho_clean_18.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "عماد صفوت نخلة تاوضروس",
+      "address": "١٣ شارع الجمهورية أسيوط",
+      "national_id": "29209142505678",
+      "derived_dob": "1992-09-14",
+      "governorate_code": "25",
+      "governorate_name": "Asyut"
+    },
+    "comparison_data": {
+      "birth_date": "1992-09-14"
+    }
+  },
+  {
+    "card_id": "ho_clean_19",
+    "filename": "ho_clean_19.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "عبير لطفي فهمي حبيب",
+      "address": "١٧ شارع المحطة سوهاج",
+      "national_id": "29902282606789",
+      "derived_dob": "1999-02-28",
+      "governorate_code": "26",
+      "governorate_name": "Sohag"
+    },
+    "comparison_data": {
+      "birth_date": "1999-02-28"
+    }
+  },
+  {
+    "card_id": "ho_clean_20",
+    "filename": "ho_clean_20.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "توفيق شريف حسانين درويش",
+      "address": "٢٠ شارع كوبري دندرة قنا",
+      "national_id": "29005162707890",
+      "derived_dob": "1990-05-16",
+      "governorate_code": "27",
+      "governorate_name": "Qena"
+    },
+    "comparison_data": {
+      "birth_date": "1990-05-16"
+    }
+  },
+  {
+    "card_id": "ho_clean_21",
+    "filename": "ho_clean_21.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "أمل حسني بركات رضوان",
+      "address": "٢ شارع أبطال التحرير أسوان",
+      "national_id": "29707072808901",
+      "derived_dob": "1997-07-07",
+      "governorate_code": "28",
+      "governorate_name": "Aswan"
+    },
+    "comparison_data": {
+      "birth_date": "1997-07-07"
+    }
+  },
+  {
+    "card_id": "ho_clean_22",
+    "filename": "ho_clean_22.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "رمزي يوسف لمعي خزام",
+      "address": "٢١ شارع خالد بن الوليد الأقصر",
+      "national_id": "29303032909012",
+      "derived_dob": "1993-03-03",
+      "governorate_code": "29",
+      "governorate_name": "Luxor"
+    },
+    "comparison_data": {
+      "birth_date": "1993-03-03"
+    }
+  },
+  {
+    "card_id": "ho_clean_23",
+    "filename": "ho_clean_23.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "وفاء مجدي شوقي عياد",
+      "address": "٣٠ شارع الشيراتون الغردقة البحر الأحمر",
+      "national_id": "29606203101123",
+      "derived_dob": "1996-06-20",
+      "governorate_code": "31",
+      "governorate_name": "Red Sea"
+    },
+    "comparison_data": {
+      "birth_date": "1996-06-20"
+    }
+  },
+  {
+    "card_id": "ho_clean_24",
+    "filename": "ho_clean_24.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "أشرف رشاد أنيس عوض",
+      "address": "١ شارع جمال عبد الناصر الخارجة الوادي الجديد",
+      "national_id": "29110103202234",
+      "derived_dob": "1991-10-10",
+      "governorate_code": "32",
+      "governorate_name": "New Valley"
+    },
+    "comparison_data": {
+      "birth_date": "1991-10-10"
+    }
+  },
+  {
+    "card_id": "ho_clean_25",
+    "filename": "ho_clean_25.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "سوزان فخري صادق واصف",
+      "address": "٢٨ شارع الجلاء مرسى مطروح مطروح",
+      "national_id": "29501053303345",
+      "derived_dob": "1995-01-05",
+      "governorate_code": "33",
+      "governorate_name": "Matrouh"
+    },
+    "comparison_data": {
+      "birth_date": "1995-01-05"
+    }
+  },
+  {
+    "card_id": "ho_clean_26",
+    "filename": "ho_clean_26.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "وليد صبحي إمام غبريال",
+      "address": "١١ شارع الفاتح العريش شمال سيناء",
+      "national_id": "29808263404456",
+      "derived_dob": "1998-08-26",
+      "governorate_code": "34",
+      "governorate_name": "North Sinai"
+    },
+    "comparison_data": {
+      "birth_date": "1998-08-26"
+    }
+  },
+  {
+    "card_id": "ho_clean_27",
+    "filename": "ho_clean_27.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "دينا وجيه كيرلس قزمان",
+      "address": "٧ شارع السلام طور سيناء جنوب سيناء",
+      "national_id": "28911153505567",
+      "derived_dob": "1989-11-15",
+      "governorate_code": "35",
+      "governorate_name": "South Sinai"
+    },
+    "comparison_data": {
+      "birth_date": "1989-11-15"
+    }
+  },
+  {
+    "card_id": "ho_clean_28",
+    "filename": "ho_clean_28.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "كريم بهاء الدين شكري عامر",
+      "address": "٣٥ شارع عباس العقاد مدينة نصر القاهرة",
+      "national_id": "30105190106678",
+      "derived_dob": "2001-05-19",
+      "governorate_code": "01",
+      "governorate_name": "Cairo"
+    },
+    "comparison_data": {
+      "birth_date": "2001-05-19"
+    }
+  },
+  {
+    "card_id": "ho_clean_29",
+    "filename": "ho_clean_29.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "نورهان فتحي جاد الرب سالم",
+      "address": "١٦ شارع سيدي جابر الإسكندرية",
+      "national_id": "30209080207789",
+      "derived_dob": "2002-09-08",
+      "governorate_code": "02",
+      "governorate_name": "Alexandria"
+    },
+    "comparison_data": {
+      "birth_date": "2002-09-08"
+    }
+  },
+  {
+    "card_id": "ho_clean_30",
+    "filename": "ho_clean_30.png",
+    "condition": "CLEAN",
+    "is_anomaly": false,
+    "expected_reasons": [],
+    "ground_truth": {
+      "name": "أحمد نشأت متولي قاسم",
+      "address": "٢٧ شارع مراد الجيزة",
+      "national_id": "30012122108890",
+      "derived_dob": "2000-12-12",
+      "governorate_code": "21",
+      "governorate_name": "Giza"
+    },
+    "comparison_data": {
+      "birth_date": "2000-12-12"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_01",
+    "filename": "ho_mismatch_01.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "GOVERNORATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "يوسف أحمد علي ناصر",
+      "address": "١٥ شارع رشدي الإسكندرية",
+      "national_id": "29403210101567"
+    },
+    "comparison_data": {
+      "birth_date": "1994-03-21"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_02",
+    "filename": "ho_mismatch_02.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "GOVERNORATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "طارق محمود حسن سالم",
+      "address": "١٤ شارع المحطة الفيوم",
+      "national_id": "29101222101234"
+    },
+    "comparison_data": {
+      "birth_date": "1991-01-22"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_03",
+    "filename": "ho_mismatch_03.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "GOVERNORATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "سامح فؤاد إبراهيم بدر",
+      "address": "١٨ شارع البحر طنطا الغربية",
+      "national_id": "29309251201122"
+    },
+    "comparison_data": {
+      "birth_date": "1993-09-25"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_04",
+    "filename": "ho_mismatch_04.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "GOVERNORATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "ماجد سمير رشاد إمام",
+      "address": "٤ شارع كورنيش النيل أسوان",
+      "national_id": "29902282606789"
+    },
+    "comparison_data": {
+      "birth_date": "1999-02-28"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_05",
+    "filename": "ho_mismatch_05.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "GOVERNORATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "حسام عزمي لطفي عوض",
+      "address": "١٠ شارع محمد علي الإسماعيلية",
+      "national_id": "29701300305566"
+    },
+    "comparison_data": {
+      "birth_date": "1997-01-30"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_06",
+    "filename": "ho_mismatch_06.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "GOVERNORATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "إيهاب طلعت غالي واصف",
+      "address": "٩ شارع طلعت حرب قصر النيل القاهرة",
+      "national_id": "28912100407788"
+    },
+    "comparison_data": {
+      "birth_date": "1989-12-10"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_07",
+    "filename": "ho_mismatch_07.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "BIRTH_DATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "مروان عصام كمال خطاب",
+      "address": "١٢ شارع الجمهورية عابدين القاهرة",
+      "national_id": "29403210101567"
+    },
+    "comparison_data": {
+      "birth_date": "1990-01-01"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_08",
+    "filename": "ho_mismatch_08.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "BIRTH_DATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "فاطمة نبيل جرجس نخلة",
+      "address": "٢٤ شارع الإقبال لوران الإسكندرية",
+      "national_id": "29108140203344"
+    },
+    "comparison_data": {
+      "birth_date": "1995-12-12"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_09",
+    "filename": "ho_mismatch_09.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "BIRTH_DATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "عمرو شريف سامي الشريف",
+      "address": "٧ شارع ممفيس حي الشرق بورسعيد",
+      "national_id": "29701300305566"
+    },
+    "comparison_data": {
+      "birth_date": "1997-01-31"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_10",
+    "filename": "ho_mismatch_10.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "BIRTH_DATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "منى إسماعيل فؤاد بدر",
+      "address": "١٥ شارع الجيش حي السويس السويس",
+      "national_id": "28912100407788"
+    },
+    "comparison_data": {
+      "birth_date": "1989-11-10"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_11",
+    "filename": "ho_mismatch_11.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "BIRTH_DATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "وليد صابر مجدي وهبة",
+      "address": "٩ شارع سعد زغلول دمياط",
+      "national_id": "29605181109900"
+    },
+    "comparison_data": {
+      "birth_date": "1999-05-18"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_12",
+    "filename": "ho_mismatch_12.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "BIRTH_DATE_MISMATCH"
+    ],
+    "ground_truth": {
+      "name": "رشا ممدوح توفيق كامل",
+      "address": "٣ شارع المشاية السفلية المنصورة الدقهلية",
+      "national_id": "29309251201122"
+    },
+    "comparison_data": {
+      "birth_date": "1993-09-26"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_13",
+    "filename": "ho_mismatch_13.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "INVALID_ID_STRUCTURE"
+    ],
+    "ground_truth": {
+      "name": "زياد وفيق حسانين عبد ربه",
+      "address": "١٢ شارع الجمهورية عابدين القاهرة",
+      "national_id": "19403210101567"
+    },
+    "comparison_data": {
+      "birth_date": null
+    }
+  },
+  {
+    "card_id": "ho_mismatch_14",
+    "filename": "ho_mismatch_14.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "INVALID_ID_STRUCTURE"
+    ],
+    "ground_truth": {
+      "name": "هبة يوسف سامي الجوهري",
+      "address": "٢٤ شارع الإقبال لوران الإسكندرية",
+      "national_id": "29413210101567"
+    },
+    "comparison_data": {
+      "birth_date": null
+    }
+  },
+  {
+    "card_id": "ho_mismatch_15",
+    "filename": "ho_mismatch_15.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "INVALID_ID_STRUCTURE"
+    ],
+    "ground_truth": {
+      "name": "أشرف حمدي محروس سليم",
+      "address": "٧ شارع ممفيس حي الشرق بورسعيد",
+      "national_id": "29400210101567"
+    },
+    "comparison_data": {
+      "birth_date": null
+    }
+  },
+  {
+    "card_id": "ho_mismatch_16",
+    "filename": "ho_mismatch_16.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "INVALID_ID_STRUCTURE"
+    ],
+    "ground_truth": {
+      "name": "داليا كمال الدين سراج",
+      "address": "١٥ شارع الجيش حي السويس السويس",
+      "national_id": "29403320101567"
+    },
+    "comparison_data": {
+      "birth_date": null
+    }
+  },
+  {
+    "card_id": "ho_mismatch_17",
+    "filename": "ho_mismatch_17.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "INVALID_ID_STRUCTURE"
+    ],
+    "ground_truth": {
+      "name": "تامر عبد العزيز شكري عامر",
+      "address": "٩ شارع سعد زغلول دمياط",
+      "national_id": "29502290101567"
+    },
+    "comparison_data": {
+      "birth_date": null
+    }
+  },
+  {
+    "card_id": "ho_mismatch_18",
+    "filename": "ho_mismatch_18.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "INVALID_ID_STRUCTURE"
+    ],
+    "ground_truth": {
+      "name": "شريف لطفي عزمي صادق",
+      "address": "٣ شارع المشاية السفلية المنصورة الدقهلية",
+      "national_id": "29403219901567"
+    },
+    "comparison_data": {
+      "birth_date": null
+    }
+  },
+  {
+    "card_id": "ho_mismatch_19",
+    "filename": "ho_mismatch_19.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "MISSING_FIELD_NAME"
+    ],
+    "ground_truth": {
+      "name": "",
+      "address": "١٢ شارع الجمهورية عابدين القاهرة",
+      "national_id": "29403210101567"
+    },
+    "comparison_data": {
+      "birth_date": "1994-03-21"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_20",
+    "filename": "ho_mismatch_20.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "MISSING_FIELD_NAME"
+    ],
+    "ground_truth": {
+      "name": "",
+      "address": "٢٤ شارع الإقبال لوران الإسكندرية",
+      "national_id": "29108140203344"
+    },
+    "comparison_data": {
+      "birth_date": "1991-08-14"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_21",
+    "filename": "ho_mismatch_21.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "MISSING_FIELD_ADDRESS"
+    ],
+    "ground_truth": {
+      "name": "نهلة وجدي إبراهيم غانم",
+      "address": "",
+      "national_id": "29701300305566"
+    },
+    "comparison_data": {
+      "birth_date": "1997-01-30"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_22",
+    "filename": "ho_mismatch_22.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "MISSING_FIELD_ADDRESS"
+    ],
+    "ground_truth": {
+      "name": "مصطفى وفيق جابر عامر",
+      "address": "",
+      "national_id": "28912100407788"
+    },
+    "comparison_data": {
+      "birth_date": "1989-12-10"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_23",
+    "filename": "ho_mismatch_23.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "MISSING_FIELD_NATIONAL_ID"
+    ],
+    "ground_truth": {
+      "name": "رانيا ممدوح زكي سالم",
+      "address": "٩ شارع سعد زغلول دمياط",
+      "national_id": ""
+    },
+    "comparison_data": {
+      "birth_date": "1996-05-18"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_24",
+    "filename": "ho_mismatch_24.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "MISSING_FIELD_NATIONAL_ID"
+    ],
+    "ground_truth": {
+      "name": "ياسر كمال أنور خطاب",
+      "address": "٣ شارع المشاية السفلية المنصورة الدقهلية",
+      "national_id": ""
+    },
+    "comparison_data": {
+      "birth_date": "1993-09-25"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_25",
+    "filename": "ho_mismatch_25.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "LOW_OCR_CONFIDENCE"
+    ],
+    "ground_truth": {
+      "name": "مها عادل توفيق منصور",
+      "address": "١٨ شارع القومية الزقازيق الشرقية",
+      "national_id": "29502171302233"
+    },
+    "comparison_data": {
+      "birth_date": "1995-02-17"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_26",
+    "filename": "ho_mismatch_26.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "LOW_OCR_CONFIDENCE"
+    ],
+    "ground_truth": {
+      "name": "حاتم إكرامي شوكت واصف",
+      "address": "٥ شارع فريد ندى بنها القليوبية",
+      "national_id": "29206111403344"
+    },
+    "comparison_data": {
+      "birth_date": "1992-06-11"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_27",
+    "filename": "ho_mismatch_27.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "LOW_OCR_CONFIDENCE"
+    ],
+    "ground_truth": {
+      "name": "سهام صابر محروس شريف",
+      "address": "٢٢ شارع الخليفة المأمون كفر الشيخ",
+      "national_id": "29811041504455"
+    },
+    "comparison_data": {
+      "birth_date": "1998-11-04"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_28",
+    "filename": "ho_mismatch_28.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "LOW_OCR_CONFIDENCE"
+    ],
+    "ground_truth": {
+      "name": "هشام مدحت رشوان سليم",
+      "address": "١١ شارع البحر طنطا الغربية",
+      "national_id": "29007291605566"
+    },
+    "comparison_data": {
+      "birth_date": "1990-07-29"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_29",
+    "filename": "ho_mismatch_29.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "LOW_OCR_CONFIDENCE"
+    ],
+    "ground_truth": {
+      "name": "إيناس طلعت وهبة رضوان",
+      "address": "٨ شارع صبري أبو علم شبين الكوم المنوفية",
+      "national_id": "29704121706677"
+    },
+    "comparison_data": {
+      "birth_date": "1997-04-12"
+    }
+  },
+  {
+    "card_id": "ho_mismatch_30",
+    "filename": "ho_mismatch_30.png",
+    "condition": "PLANTED_EXCEPTION",
+    "is_anomaly": true,
+    "expected_reasons": [
+      "LOW_OCR_CONFIDENCE"
+    ],
+    "ground_truth": {
+      "name": "أيمن شعبان عبد الحليم صقر",
+      "address": "١٤ شارع الجمهورية دمنهور البحيرة",
+      "national_id": "29310081807788"
+    },
+    "comparison_data": {
+      "birth_date": "1993-10-08"
+    }
+  }
+]
