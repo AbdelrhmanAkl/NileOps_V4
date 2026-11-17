@@ -10,8 +10,16 @@ from pathlib import Path
 import urllib.parse
 import pytest
 from starlette.testclient import TestClient
+import sys
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.pool import NullPool
+
+# Fallback for Windows Smart App Control when native ujson is blocked
+if sys.platform == "win32":
+    try:
+        import ujson  # noqa: F401
+    except (ImportError, Exception):
+        sys.modules["ujson"] = None
 
 # 1. Resolve & Force Test Database URL before any application imports
 env_file = Path(__file__).resolve().parent.parent / ".env"
@@ -29,7 +37,18 @@ if not raw_db_url:
 
 parsed_url = urllib.parse.urlsplit(raw_db_url)
 # Force target database strictly to nileops_test
-test_db_url = f"{parsed_url.scheme}://{parsed_url.username}:{parsed_url.password}@{parsed_url.hostname}:{parsed_url.port}/nileops_test"
+if "sqlite" in parsed_url.scheme:
+    test_db_url = "sqlite+aiosqlite:///./nileops_test"
+else:
+    auth = ""
+    if parsed_url.username:
+        auth = f"{parsed_url.username}"
+        if parsed_url.password:
+            auth += f":{parsed_url.password}"
+        auth += "@"
+    port_str = f":{parsed_url.port}" if parsed_url.port else ""
+    hostname = parsed_url.hostname or "127.0.0.1"
+    test_db_url = f"{parsed_url.scheme}://{auth}{hostname}{port_str}/nileops_test"
 os.environ["DATABASE_URL"] = test_db_url
 
 # 2. Strict Hard-Fail Guard: Must be checked BEFORE any create_all or fixture runs
