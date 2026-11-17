@@ -16,13 +16,13 @@ This report provides an empirical evaluation of the **NileOps Digital Banking Op
 - **Exception Detection Recall:** **96.7% (MET)** on DEV (60 cards) and **100.0% (MET)** on HELD-OUT (60 cards).
 - **Correct Escalation Rate:** **96.7% (MET)** on DEV (60 cards) and **100.0% (MET)** on HELD-OUT (60 cards).
 - **RAG Grounded-Answer Rate (Hit@1):**
-  - **DEV Set (N=40, 25 in-domain):** **76.0% (NOT MET)** vs target $\ge 90.0\%$.
-  - **Held-Out Set 1 (N=30, 25 in-domain):** **52.0% (NOT MET)** vs target $\ge 90.0\%$.
-  - **New Held-Out Set 2 (Colloquial / Typos / Fragments, N=30, 20 in-domain):** **45.0% (NOT MET)** vs target $\ge 90.0\%$.
+  - **DEV Set (N=40, 25 in-domain):** **88.0% (NOT MET)** vs target $\ge 90.0\%$ (22/25).
+  - **Held-Out Set 1 (N=30, 25 in-domain):** **92.0% (MET)** vs target $\ge 90.0\%$ (23/25).
+  - **New Held-Out Set 2 (Colloquial / Typos / Fragments, N=30, 20 in-domain):** **90.0% (MET)** vs target $\ge 90.0\%$ (18/20).
 - **RAG Abstention Rate:**
-  - **DEV Set (N=15 out-of-domain):** **73.3% (NOT MET)** vs target $\ge 90.0\%$ (Abstention Precision: 68.8%).
-  - **Held-Out Set 1 (N=5 out-of-domain):** **100.0% (MET)** vs target $\ge 90.0\%$ (Abstention Precision: 33.3%).
-  - **New Held-Out Set 2 (N=10 out-of-domain):** **60.0% (NOT MET)** vs target $\ge 90.0\%$ (Abstention Precision: 37.5%).
+  - **DEV Set (N=15 out-of-domain):** **20.0% (NOT MET)** vs target $\ge 90.0\%$ (3/15; Abstention Precision: 75.0%, 3/4).
+  - **Held-Out Set 1 (N=5 out-of-domain):** **20.0% (NOT MET)** vs target $\ge 90.0\%$ (1/5; Abstention Precision: 100.0%, 1/1).
+  - **New Held-Out Set 2 (N=10 out-of-domain):** **0.0% (NOT MET)** vs target $\ge 90.0\%$ (0/10; Abstention Precision: 0.0%).
 - **OCR Field Extraction $F_1$ (40 cards across Clean, Glare, Blur, Shadow):**
   - **National ID Field $F_1$:** **87.5% (NOT MET)** vs target $\ge 90.0\%$.
   - **Citizen Name Field $F_1$:** **62.5% (NOT MET)** vs target $\ge 90.0\%$.
@@ -42,12 +42,12 @@ This report provides an empirical evaluation of the **NileOps Digital Banking Op
 | **Correct Escalation Rate** | `recall >= 95.0%` | **96.7%** (29/30) | **100.0%** (30/30) | *N/A* | **MET** | `scripts/eval/eval_exceptions.py` (60 cards each) |
 | **Exception Precision** | *No target* | **100.0%** (29/29) | **83.3%** (30/36) | *N/A* | **NO TARGET** | `scripts/eval/eval_exceptions.py` (30 clean cards) |
 | **Exception Specificity** | *No target* | **100.0%** (30/30) | **80.0%** (24/30) | *N/A* | **NO TARGET** | `scripts/eval/eval_exceptions.py` (30 clean cards) |
-| **RAG Grounded Hit@1 Rate** | `hit1 >= 90.0%` | **76.0%** (19/25) | **52.0%** (13/25) | **45.0%** (9/20) | **NOT MET** | `scripts/eval/eval_rag.py` |
-| **RAG Retrieval Hit@3 Rate** | `hit3 >= 90.0%` | **80.0%** (20/25) | **60.0%** (15/25) | **50.0%** (10/20) | **NOT MET** | `scripts/eval/eval_rag.py` |
-| **RAG Mean Reciprocal Rank (MRR)** | *No target* | **0.7800** | **0.5600** | **0.4750** | **NO TARGET** | `scripts/eval/eval_rag.py` |
-| **RAG Correct Abstention Rate** | `abstention >= 90.0%`| **73.3%** (11/15) | **100.0%** (5/5) | **60.0%** (6/10) | **NOT MET** | `scripts/eval/eval_rag.py` (Out-of-domain) |
-| **RAG Abstention Precision** | *No target* | **68.8%** (11/16) | **33.3%** (5/15) | **37.5%** (6/16) | **NO TARGET** | `scripts/eval/eval_rag.py` |
-| **RAG Retrieval Latency** | `< 1000ms` | **82.9ms** | **23.3ms** | **24.8ms** | **MET** | `scripts/eval/eval_rag.py` |
+| **RAG Grounded Hit@1 Rate** | `hit1 >= 90.0%` | **88.0%** (22/25) | **92.0%** (23/25) | **90.0%** (18/20) | **NOT MET** | `scripts/eval/eval_rag.py` |
+| **RAG Retrieval Hit@3 Rate** | `hit3 >= 90.0%` | **96.0%** (24/25) | **100.0%** (25/25) | **100.0%** (20/20) | **MET** | `scripts/eval/eval_rag.py` |
+| **RAG Mean Reciprocal Rank (MRR)** | *No target* | **0.9200** | **0.9600** | **0.9500** | **NO TARGET** | `scripts/eval/eval_rag.py` |
+| **RAG Correct Abstention Rate** | `abstention >= 90.0%`| **20.0%** (3/15) | **20.0%** (1/5) | **0.0%** (0/10) | **NOT MET** | `scripts/eval/eval_rag.py` (Out-of-domain) |
+| **RAG Abstention Precision** | *No target* | **75.0%** (3/4) | **100.0%** (1/1) | **0.0%** (0/0) | **NO TARGET** | `scripts/eval/eval_rag.py` |
+| **RAG Retrieval Latency** | `< 1000ms` | **80.1ms** | **21.4ms** | **22.6ms** | **MET** | `scripts/eval/eval_rag.py` |
 | **RAG Cross-Portal Leakage** | `0` | **0** | **0** | **0** | **MET** | `backend/tests/test_rag.py` |
 | **OCR National ID Field $F_1$** | `field F1 >= 90.0%` | **87.5%** | *N/A* | *N/A* | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` (40 cards) |
 | **OCR Citizen Name Field $F_1$** | `field F1 >= 90.0%` | **62.5%** | *N/A* | *N/A* | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` (40 cards) |
@@ -63,24 +63,27 @@ This report provides an empirical evaluation of the **NileOps Digital Banking Op
 - **Threshold Policy:** `RAG_SIMILARITY_THRESHOLD = 0.75` (calibrated on DEV to balance in-domain retrieval against out-of-domain abstention).
 - **General Normalization:** All question-derived synonym dictionaries and keyword substitution rules were removed. `query_normalizer.py` applies only general Arabic diacritic (tashkeel) removal and whitespace normalization.
 - **DEV Partition (N=40: 25 In-Domain, 15 Out-of-Domain):**
-  - Hit@1: 76.0% (19/25)
-  - Hit@3: 80.0% (20/25)
-  - MRR: 0.7800
-  - Abstention Recall: 73.3% (11/15)
-  - Abstention Precision: 68.8% (11/16, with 5 in-domain queries false-positive abstaining)
+  - Hit@1: 88.0% (22/25)
+  - Hit@3: 96.0% (24/25)
+  - MRR: 0.9200
+  - Abstention Recall: 20.0% (3/15)
+  - Abstention Precision: 75.0% (3/4, with 1 in-domain query false-positive abstaining)
+  - Latency: 80.1ms
 - **Held-Out Partition 1 (N=30: 25 In-Domain, 5 Out-of-Domain):**
-  - Hit@1: 52.0% (13/25)
-  - Hit@3: 60.0% (15/25)
-  - MRR: 0.5600
-  - Abstention Recall: 100.0% (5/5)
-  - Abstention Precision: 33.3% (5/15, with 10 in-domain queries scoring $< 0.75$)
+  - Hit@1: 92.0% (23/25)
+  - Hit@3: 100.0% (25/25)
+  - MRR: 0.9600
+  - Abstention Recall: 20.0% (1/5)
+  - Abstention Precision: 100.0% (1/1)
+  - Latency: 21.4ms
 - **New Held-Out Partition 2 (Colloquial Egyptian, Typos, Fragments; N=30: 20 In-Domain, 10 Out-of-Domain):**
-  - Hit@1: 45.0% (9/20)
-  - Hit@3: 50.0% (10/20)
-  - MRR: 0.4750
-  - Abstention Recall: 60.0% (6/10)
-  - Abstention Precision: 37.5% (6/16, with 10 in-domain queries false-positive abstaining)
-  - Confusion Matrix: True Positives = 6, False Negatives = 4, False Positives = 10, True Negatives = 10.
+  - Hit@1: 90.0% (18/20)
+  - Hit@3: 100.0% (20/20)
+  - MRR: 0.9500
+  - Abstention Recall: 0.0% (0/10)
+  - Abstention Precision: 0.0% (0/0)
+  - Confusion Matrix: True Positives = 0, False Negatives = 10, False Positives = 0, True Negatives = 20.
+  - Latency: 22.6ms
   - Cross-Portal Leakage: 0 (Strict portal isolation verified).
 
 ### 3.2 Exception Detection & Escalation Benchmark
@@ -132,9 +135,9 @@ This report provides an empirical evaluation of the **NileOps Digital Banking Op
 1. **OCR Arabic Name & Address $F_1$ Deficit:**
    - On synthetic images with blur or glare, Arabic cursive text recognition drops sharply (Name $F_1 = 62.5\%$, Address $F_1 = 50.0\%$).
    - Image enhancement preprocessing (super-resolution, morphological binarization) was not built. The system compensates by deterministically routing degraded cards to human compliance review (`is_escalated: true`).
-2. **RAG Hit@1 on Colloquial Phrasing & Out-of-Domain Abstention:**
-   - While `intfloat/multilingual-e5-small` significantly outperforms character feature hashing, short fragments, misspelled queries, and heavy Egyptian dialect phrasing without keyword expansion achieve **45.0% to 52.0% Hit@1** at threshold 0.75.
-   - At threshold 0.75, abstention precision is between 33% and 38% because valid queries with lower similarity scores trigger false-positive abstentions.
+2. **RAG Semantic Retrieval & Out-of-Domain Abstention Baseline Shift:**
+   - Dense semantic retrieval with `intfloat/multilingual-e5-small` achieves high retrieval quality across all partitions (Hit@1: DEV 88.0%, HELD-OUT 1 92.0%, HELD-OUT 2 90.0%; Hit@3: DEV 96.0%, HELD-OUT 1 100.0%, HELD-OUT 2 100.0%).
+   - However, in multilingual dense vector representations, cosine similarity between arbitrary Arabic passages shares a high baseline score (~0.76 to 0.82) due to language/syntactic clustering (hubness phenomenon). Consequently, at a static global threshold of 0.75, English out-of-domain queries abstain successfully (scores < 0.75), whereas Arabic out-of-domain queries (such as cooking recipes) score ~0.76–0.81 and do not abstain without an explicit query intent/domain classification layer. Correct abstention rate is 20.0% on DEV (3/15) and 0.0% on HELD-OUT 2 (0/10).
 3. **Statutory Expiry Date Rule Assumption:**
    - Egyptian National ID expiry dates are computed assuming a 7-year validity period from synthetic issue dates.
    - *Legal Notice:* This is a **training assumption on synthetic data, not legal advice** or official Civil Status Ministry policy.

@@ -1,4 +1,4 @@
-﻿# NileOps — Model Pre-caching & Offline Preparation Script
+# NileOps — Model Pre-caching & Offline Preparation Script
 # Downloads intfloat/multilingual-e5-small and all PaddleOCR models into local project caches for air-gapped execution.
 
 $ErrorActionPreference = "Stop"

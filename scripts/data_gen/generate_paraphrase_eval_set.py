@@ -1,7 +1,7 @@
 import os
 import json
 
-OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data", "rag_eval"))
+OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data", "rag_eval_generated"))
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 PARAPHRASE_QUESTIONS_20 = [

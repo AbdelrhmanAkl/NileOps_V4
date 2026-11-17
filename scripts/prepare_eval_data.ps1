@@ -35,14 +35,11 @@ Write-Host "`n[3/5] Generating 60 DEV synthetic cards for exception evaluation..
 & $venvPython (Join-Path $repoRoot "scripts\data_gen\generate_dev_60_cards.py")
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "`n[4/5] Generating 60 HELD-OUT synthetic cards for exception evaluation..." -ForegroundColor Yellow
+Write-Host "`n[4/4] Generating 60 HELD-OUT synthetic cards for exception evaluation..." -ForegroundColor Yellow
 & $venvPython (Join-Path $repoRoot "scripts\data_gen\generate_held_out_60_cards.py")
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "`n[5/5] Generating RAG evaluation benchmark sets..." -ForegroundColor Yellow
-& $venvPython (Join-Path $repoRoot "scripts\data_gen\generate_rag_eval_set.py")
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-& $venvPython (Join-Path $repoRoot "scripts\data_gen\generate_paraphrase_eval_set.py")
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+# Notice: Committed RAG benchmark sets (rag_evaluation_set_40.json, rag_evaluation_held_out_30.json,
+# rag_evaluation_new_held_out_30.json) are canonical, version-controlled benchmarks and are not overwritten.
 
 Write-Host "`nAll synthetic evaluation datasets successfully generated and verified." -ForegroundColor Green

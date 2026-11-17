@@ -26,7 +26,7 @@ def map_similarity_threshold(threshold: Optional[float] = None) -> float:
 def get_default_similarity_threshold() -> float:
     return map_similarity_threshold(None)
 
-DEFAULT_SIMILARITY_THRESHOLD = 0.15
+DEFAULT_SIMILARITY_THRESHOLD = settings.RAG_SIMILARITY_THRESHOLD
 
 ABSTENTION_MESSAGES = {
     "ar": "لم يتم العثور على سياسة مطابقة. يرجى محاولة إعادة صياغة سؤالك.",

@@ -169,8 +169,8 @@ The Knowledge Base and RAG pipeline provide grounded policy retrieval:
    - **Customer Portal:** Filtered by `portal_access == 'customer'` AND `is_active == True`. Internal compliance manuals (e.g. `POL-KYC-001`) are physically excluded from search results (0.0% leakage).
    - **Employee Portal:** Retains visibility across both customer and employee operational policies.
 3. **Thresholding & Explicit Abstention:**
-   - Default similarity threshold is maintained at `0.15`.
-   - Queries with top similarity score below `0.15` trigger standardized bilingual abstention, preventing hallucinations on out-of-domain queries.
+   - Default similarity threshold is maintained at `0.75` for dense E5 embeddings (with fallback support for `0.15` on feature hashing).
+   - Queries with top similarity score below the threshold trigger standardized bilingual abstention, preventing hallucinations on out-of-domain queries.
 4. **Verifiable Policy Citations:**
    - Every answer includes structured citations containing policy code, title, domain, and version.
 
@@ -492,13 +492,14 @@ NileOps is designed as an architectural reference implementation and operations 
 > - **Legal Disclaimer on Expiry Dates:** The 7-year National ID expiration rule implemented in the Document AI extraction pipeline is a **training assumption on synthetic data, not legal advice** or official Civil Status Ministry policy.
 > - **Local LLM & Deterministic Fallback:** If a local Ollama instance (`qwen3:8b`) is not running or times out (2.0s threshold), the platform automatically activates deterministic extractive quotation fallback (`fallback_used: true`). Answers are extracted verbatim from retrieved policy chunks, ensuring high availability and zero hallucinations without requiring active GPU/neural generation.
 
-1. **RAG Grounded-Answer Hit@1 Performance (NOT MET):**
+1. **RAG Grounded-Answer Hit@1 Performance & Abstention (Known Gaps):**
    - The platform utilizes `intfloat/multilingual-e5-small` (384 dimensions) for semantic policy retrieval in Qdrant with calibrated threshold 0.75.
-   - Measured against the Egyptian Banking Handbook target ($\ge 90.0\%$ Hit@1), this target is **NOT MET** across unconstrained colloquial phrasings without question-derived keyword expansion:
-     - **DEV Set (N=40, 25 in-domain):** **76.0% Hit@1**
-     - **Held-Out Set 1 (N=30, 25 in-domain):** **52.0% Hit@1**
-     - **Held-Out Set 2 (Colloquial / Typos / Fragments, N=30, 20 in-domain):** **45.0% Hit@1**
-   - General orthographic normalization strips Arabic diacritics and collapses whitespace, but semantic drift on short fragments and colloquial queries remains a known limitation.
+   - Measured against the Egyptian Banking Handbook target ($\ge 90.0\%$ Hit@1):
+     - **DEV Set (N=40, 25 in-domain):** **88.0% Hit@1** (NOT MET vs $\ge 90.0\%$, 22/25)
+     - **Held-Out Set 1 (N=30, 25 in-domain):** **92.0% Hit@1** (MET vs $\ge 90.0\%$, 23/25)
+     - **Held-Out Set 2 (Colloquial / Typos / Fragments, N=30, 20 in-domain):** **90.0% Hit@1** (MET vs $\ge 90.0\%$, 18/20)
+   - Hit@3 retrieval is robust across all partitions: DEV 96.0%, Held-Out 1 100.0%, Held-Out 2 100.0% (MET).
+   - Correct Abstention Rate on out-of-domain queries is **20.0% on DEV** (3/15) and **0.0% on Held-Out 2** (0/10) (NOT MET vs $\ge 90.0\%$): multilingual dense vectors exhibit a baseline similarity shift for Arabic text (~0.76–0.82), so off-topic Arabic queries pass the 0.75 cutoff without a secondary intent classifier.
 
 2. **OCR Performance & Absence of Image Preprocessing (NOT MET):**
    - The Egyptian Banking Handbook specifies a target field $F_1 \ge 90.0\%$.
