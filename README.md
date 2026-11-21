@@ -23,7 +23,7 @@
 - [6. Qdrant & Grounded RAG Architecture](#6-qdrant--grounded-rag-architecture)
 - [7. Egyptian National ID 9D Intelligence (OCR)](#7-egyptian-national-id-9d-intelligence-ocr)
 - [8. Installation Prerequisites](#8-installation-prerequisites)
-- [9. Run Locally for Teammates](#run-locally-for-teammates)
+- [9. One-Click Launcher & Run Locally for Teammates](#9-one-click-launcher--run-locally-for-teammates)
 - [10. Reproduce the Results](#reproduce-the-results)
 - [11. Native Architecture & Component Setup](#11-native-architecture--component-setup)
 - [12. Environment Configuration](#12-environment-configuration)
@@ -205,38 +205,140 @@ Every ID input or document scan is evaluated independently across 9 dimensions:
 
 ---
 
-## 9. Run Locally for Teammates
+## 9. One-Click Launcher & Run Locally for Teammates
 
-Follow these exact steps to run the complete NileOps application locally:
+NileOps includes a fully automated **double-click launcher** that orchestrates all dependencies, verifies system health, initialises seed data, starts the unified production server behind a single port, and launches the application in your default browser.
 
-### Prerequisites
-- Docker Desktop running (or native PostgreSQL 16 & Qdrant)
-- Python 3.11+
-- Node.js 20+
+### 9.1 Double-Click Quick Start (Windows)
 
-### Step-by-Step Setup (PowerShell)
+1. Double-click **`NileOps_Launcher.bat`** in the repository root (or use the Desktop shortcut).
+2. The launcher performs automated pre-flight checks, brings up database containers, starts the server on `http://127.0.0.1:8000`, and opens the browser.
+3. When finished, double-click **`NileOps_Stop.bat`** to gracefully terminate application processes and stop database containers.
+
+---
+
+### 9.2 First-Time Prerequisites
+
+Before running the launcher for the first time, ensure your system has:
+- **Windows 10/11** with **Windows PowerShell 5.1+**.
+- **Docker Desktop** installed and running (WSL 2 backend recommended).
+- **Python 3.11+** installed and available in PATH.
+- **Node.js 20+** installed (required for building the frontend).
+- Hardware virtualization (VT-x / AMD-V) enabled in BIOS/UEFI.
+
+### Initial Teammate Setup (Run Once)
 ```powershell
 # 1. Clone repository
 git clone https://github.com/AbdelrhmanAkl/NileOps_V4.git
 cd NileOps_V4
 
-# 2. Setup backend virtual environment and install dependencies
+# 2. Set up backend virtual environment
 cd backend
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 cd ..
 
-# 3. Start Docker services (PostgreSQL 16 & Qdrant vector database)
-docker compose up -d postgres qdrant
-
-# 4. Pre-cache offline AI models (Multilingual-E5-Small & PaddleOCR)
+# 3. Pre-cache offline AI models (Multilingual-E5-Small & PaddleOCR)
 .\scripts\download_models.ps1
 
-# 5. Launch the unified single-port application (auto-builds frontend if dist/ is missing)
-.\scripts\start_demo.ps1
+# 4. (Optional) Create double-clickable Desktop shortcuts
+.\scripts\create_desktop_shortcut.ps1
+
+# 5. Launch NileOps!
+.\NileOps_Launcher.bat
 ```
-The application will be live at `http://127.0.0.1:8000` with the Customer Portal, Employee Portal, and FastAPI backend all unified behind a single port.
+
+---
+
+### 9.3 Desktop Shortcuts
+
+Run the automated shortcut generator once:
+```powershell
+.\scripts\create_desktop_shortcut.ps1
+```
+This creates two shortcuts on your Windows Desktop pointing directly to this clone:
+- **`NileOps.lnk`** (Green Shield Icon): Launches `NileOps_Launcher.bat`.
+- **`NileOps Stop.lnk`** (Red Stop Icon): Launches `NileOps_Stop.bat`.
+
+---
+
+### 9.4 What the Launcher Does Automatically
+
+The launcher (`scripts\launch_demo.ps1` via `NileOps_Launcher.bat`) executes the following eight automated stages:
+
+1. **Virtual Environment Verification:** Checks `backend\.venv\Scripts\python.exe`. If missing, prints exact setup commands.
+2. **Docker Service & Engine:** If `com.docker.service` is stopped and the engine is unresponsive, requests administrative elevation (UAC prompt) to start the service, launches Docker Desktop if needed, and polls `docker info` for up to 4 minutes.
+3. **Port Conflict Protection:** Inspects ports `5432`, `6333`, and `8000`. If a non-Docker process occupies `5432` or `6333`, or an unrecorded process occupies `8000`, it halts immediately and prints the offending process name, PID, path, and manual remediation command. It **never kills foreign processes**.
+4. **Container Orchestration:** Runs `docker compose up -d postgres qdrant`, waits up to 90s for TCP ports, and validates container health.
+5. **Local Ollama Verification:** Checks for `ollama` on port `11434`. Starts `ollama serve` if installed, or smoothly switches to deterministic extractive quotation fallback if Ollama is absent or offline.
+6. **Model & Asset Integrity:** Probes local HuggingFace cache for `multilingual-e5-small` and verifies `data\paddlex`. Automatically runs `npm install && npm run build` if `frontend\dist` is missing.
+7. **First-Run Data Initialization:** Queries PostgreSQL and Qdrant. If the policy table is empty or Qdrant collection is missing/un-indexed, it runs the canonical seed and vector reconcile routine (`scripts\reset_demo.ps1`).
+8. **Secure Server Startup & Browser Launch:**
+   - Generates an in-memory ephemeral 256-bit `SECRET_KEY` (never written to disk or logged).
+   - Starts the unified server (`uvicorn app.main:app --port 8000`) in a minimized window with `ENVIRONMENT=production` (interactive Swagger `/docs` and `/openapi.json` disabled).
+   - Records the PID in `.run\demo.pid` (git-ignored).
+   - Polls `http://127.0.0.1:8000/health` (timeout 120s). If degraded, warns the user.
+   - Automatically opens `http://127.0.0.1:8000` in the system default browser.
+
+---
+
+### 9.5 Stopping the Platform Cleanly
+
+Run **`NileOps_Stop.bat`** (or `.\scripts\stop_demo.ps1`):
+1. Reads `.run\demo.pid` and safely terminates **only** the recorded backend server and tunnel PIDs.
+2. Runs `docker compose stop postgres qdrant` to stop database containers without removing them or touching volumes (no data loss).
+3. Verifies ports `5432`, `6333`, and `8000` are fully released.
+
+---
+
+### 9.6 Command-Line Switches
+
+You can pass command-line arguments to `NileOps_Launcher.bat`:
+
+| Switch | Purpose | Example Usage |
+| :--- | :--- | :--- |
+| *(None)* | Standard startup, health probe, and browser launch. | `.\NileOps_Launcher.bat` |
+| **`-Check`** | Runs the automated smoke and health test suite (`scripts\demo_selfcheck.ps1`) immediately after the server is ready. | `.\NileOps_Launcher.bat -Check` |
+| **`-Reset`** | Forces a complete demo database reset, re-seeds canonical accounts/policies, and re-indexes Qdrant before launching. | `.\NileOps_Launcher.bat -Reset` |
+| **`-Tunnel`** | Launches a free Cloudflare Quick Tunnel (`cloudflared`), copies the public URL to clipboard, and displays it in console. | `.\NileOps_Launcher.bat -Tunnel` |
+| *Combined* | Combine flags as needed. | `.\NileOps_Launcher.bat -Reset -Check` |
+
+> [!WARNING]
+> **Public Tunnel Policy (`-Tunnel`):** A public tunnel exposes your local demo instance to the internet via Cloudflare. Using this switch requires the coordinator's approval. Always terminate the tunnel immediately after the demo by running `NileOps_Stop.bat`.
+
+---
+
+### 9.7 Troubleshooting
+
+- **Docker Service Stopped / UAC Prompt:**
+  - If `com.docker.service` is stopped, Windows will display a User Account Control (UAC) elevation prompt asking for administrative privileges to start the service. Click **Yes**.
+  - If you decline or UAC is disabled, start the service manually in an Administrator PowerShell:
+    ```powershell
+    Start-Service com.docker.service
+    ```
+- **Docker Engine Not Ready:**
+  - If `docker info` fails after 4 minutes, verify:
+    1. WSL is up to date: `wsl --update`
+    2. Restart WSL: `wsl --shutdown`
+    3. Hardware virtualization is enabled in BIOS/UEFI.
+- **Port Collision (5432, 6333, 8000):**
+  - If a native PostgreSQL or Python process is listening on `5432` or `6333`, or a rogue process occupies `8000`, the launcher will stop and print:
+    ```text
+    [ERROR] Port 8000 is occupied by an unrecorded process!
+    Process Name: python (PID: 12345, Path: C:\...)
+    To stop it manually: Stop-Process -Id 12345 -Force
+    ```
+- **AI Models Missing:**
+  - If `download_models.ps1` was not run, the launcher stops with an error. Run:
+    ```powershell
+    .\scripts\download_models.ps1
+    ```
+- **Degraded Status on `/health`:**
+  - If the vector database or policy table was corrupted or emptied, run:
+    ```powershell
+    .\NileOps_Launcher.bat -Reset
+    ```
 
 ---
 
