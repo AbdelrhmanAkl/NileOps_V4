@@ -46,6 +46,7 @@ def run_evaluation(data_path: Path = HELD_OUT_RESULTS_PATH) -> Dict[str, Any]:
     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0
     accuracy = ((tp + tn) / total_cards * 100.0) if total_cards > 0 else 0.0
     escalation_correctness = recall  # Percentage of planted exceptions correctly escalated to human review
+    straight_through_proxy = specificity  # Share of clean synthetic cards that completed without escalation (proxy)
 
     per_reason = data.get("per_reason_code_metrics", {})
 
@@ -59,6 +60,7 @@ def run_evaluation(data_path: Path = HELD_OUT_RESULTS_PATH) -> Dict[str, Any]:
             "correct_escalation_rate_pct": round(escalation_correctness, 2),
             "precision_pct": round(precision, 2),
             "specificity_pct": round(specificity, 2),
+            "straight_through_proxy_pct": round(straight_through_proxy, 2),
             "f1_score_pct": round(f1, 2),
             "accuracy_pct": round(accuracy, 2),
         },
@@ -85,6 +87,7 @@ def run_evaluation(data_path: Path = HELD_OUT_RESULTS_PATH) -> Dict[str, Any]:
     print(f"Sample Size: {total_cards} Cards ({actual_negatives} Clean, {actual_positives} Planted Exceptions)")
     print(f"Exception Recall:         {recall:.1f}% (Target: >=95.0%) -> {summary['targets']['exception_recall_status']}")
     print(f"Correct Escalation Rate:  {escalation_correctness:.1f}% (Target: >=95.0%) -> {summary['targets']['escalation_rate_status']}")
+    print(f"Straight-Through Proxy:   {straight_through_proxy:.1f}% (Clean cards completing without escalation: {tn}/{actual_negatives}) [Proxy only, not workflow measurement]")
     print(f"Precision:                {precision:.1f}%")
     print(f"Specificity:              {specificity:.1f}%")
     print(f"F1-Score:                 {f1:.1f}%")

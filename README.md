@@ -1,6 +1,6 @@
 # NileOps — Intelligent Digital Banking Operations Platform
 
-[![Backend Tests](https://img.shields.io/badge/tests-134%20passed-brightgreen.svg)]()
+[![Backend Tests](https://img.shields.io/badge/tests-138%20passed-brightgreen.svg)]()
 [![Frontend Build](https://img.shields.io/badge/frontend-Vite%20%2B%20TypeScript-blue.svg)]()
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)]()
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg)]()
@@ -435,12 +435,12 @@ The backend test suite enforces strict isolation:
 - **Relational Isolation:** All tests run against database `nileops_test`. The development database `nileops` is guarded and unreachable by tests.
 - **Vector Isolation:** All tests run against collection `nileops_kb_test`. A hard-failing check in `vector_store.py` ensures tests fail immediately if the collection does not end with `_test`.
 
-### Execute Test Suite (134 Tests)
+### Execute Test Suite (138 Tests)
 ```bash
 cd backend
 pytest -v -x -s --durations=10
 ```
-Test module breakdown (134 passed / 100% pass rate):
+Test module breakdown (138 passed / 100% pass rate):
 - `tests/test_adversarial_agent.py` (29 tests): Allowlisted Ops Assistant agent, adversarial prompt injection defenses (EN/AR), forbidden tools refusal, and output guardrails (14-digit National ID, IBAN, and JWT scrubbing).
 - `tests/test_complaint_intelligence.py` (6 tests): Deterministic advisory classification, SLA calculations, complaint lifecycle transitions, and employee pagination.
 - `tests/test_document_matching.py` (4 tests): Dual-document cross-verification (National ID vs Utility Bill), composite name similarity, Egyptian governorate geo-matching, bill recency, and RBAC endpoint lifecycles.
@@ -455,7 +455,7 @@ Test module breakdown (134 passed / 100% pass rate):
 - `tests/test_ocr_phase_2_2.py` (5 tests): Image quality assessment, CLAHE contrast enhancement, and deskewing.
 - `tests/test_ocr_security.py` (6 tests): Image size guards, decompression bomb protection, and PII masking.
 - `tests/test_production_guards.py` (10 tests): Weak secret rejection, CORS wildcard prevention, login lockout, sliding-window rate limiting, production Swagger /docs and /openapi.json disabling, trusted-peer-only client IP header forwarding guard, and SPA fallback routing.
-- `tests/test_rag.py` (13 tests): Qdrant health, dense E5 embeddings, grounded answers, portal isolation, multi-signal abstention, POL-TEST exclusion, and RBAC guards.
+- `tests/test_rag.py` (15 tests): Qdrant health, dense E5 embeddings, grounded answers, portal isolation, multi-signal abstention, POL-TEST exclusion, mojibake indexing refusal guard, test isolation protection guard, and RBAC guards.
 - `tests/test_simulated_requests.py` (7 tests): Account opening requests, debit card requests, and state machine validation.
 
 ### Frontend Typecheck & Build
@@ -495,10 +495,10 @@ NileOps is designed as an architectural reference implementation and operations 
 1. **RAG Grounded-Answer Hit@1 Performance & Multi-Signal Abstention:**
    - The platform utilizes `intfloat/multilingual-e5-small` (384 dimensions) for semantic policy retrieval in Qdrant with multi-signal calibrated gating combining Top-1 cosine similarity, candidate margin separation, and content containment.
    - Measured across benchmark partitions:
-     - **DEV Set (N=40, 25 in-domain):** **88.0% Hit@1** (22/25), **100.0% Hit@3** (25/25), **0.9400 MRR**, **80.0% Abstention** (12/15 with 100.0% precision).
-     - **Held-Out Set 1 (N=30, 25 in-domain):** **96.0% Hit@1** (24/25), **96.0% Hit@3** (24/25), **0.9600 MRR**, **100.0% Abstention** (5/5 with 83.3% precision).
-     - **Held-Out Set 2 (Colloquial / Typos / Fragments, N=30, 20 in-domain):** **70.0% Hit@1** (14/20), **75.0% Hit@3** (15/20), **0.7250 MRR**, **90.0% Abstention** (9/10 with 64.3% precision).
-   - Across the 100-question pool, **86.7% (26/30)** of out-of-domain queries correctly abstain (vs previous static 0.75 threshold baseline of 13.3%, 4/30).
+     - **DEV Set (In-Sample, N=40, 25 in-domain):** **88.0% Hit@1** (22/25, NOT MET), **100.0% Hit@3** (25/25, MET), **0.9400 MRR**, **73.3% Abstention** (11/15, NOT MET with 100.0% precision).
+     - **Held-Out Set 1 (N=30, 25 in-domain):** **96.0% Hit@1** (24/25, MET), **96.0% Hit@3** (24/25, MET), **0.9600 MRR**, **100.0% Abstention** (5/5, MET with 83.3% precision).
+     - **Held-Out Set 2 (Colloquial / Typos / Fragments, N=30, 20 in-domain):** **70.0% Hit@1** (14/20, NOT MET), **75.0% Hit@3** (15/20, NOT MET), **0.7250 MRR**, **90.0% Abstention** (9/10, MET with 64.3% precision).
+   - Across the 100-question pool, **83.3% (25/30)** of out-of-domain queries correctly abstain.
    - 5-Fold Stratified Cross-Validation on the 100-question pool confirms generalization: **86.7% ± 19.4%** Abstention Recall and **85.7% ± 9.0%** Hit@1.
 
 2. **OCR Performance & Absence of Image Preprocessing (NOT MET):**
@@ -512,8 +512,8 @@ NileOps is designed as an architectural reference implementation and operations 
    - **Statement on Preprocessing:** Advanced OCR image preprocessing (super-resolution, localized contrast equalization, or morphological binarization) was **not implemented**. Raw card images are passed to PaddleOCR, causing character recognition degradation on Arabic cursive handwriting and degraded text lines under glare and blur.
 
 3. **Deterministic Exception Detection & Escalation (MET):**
-   - **DEV Corpus (60 cards):** Exception Recall = **96.7%**, Escalation Correctness = **96.7%**, Precision = **100.0%**.
-   - **HELD-OUT Corpus (60 cards, fresh seed):** Exception Recall = **100.0%**, Escalation Correctness = **100.0%**, Precision = **83.3%**, Specificity = **80.0%**, False Negatives = **0**.
+   - **DEV Corpus (60 cards):** Exception Recall = **96.7%**, Escalation Correctness = **96.7%**, Precision = **100.0%**, Straight-Through Proxy = **100.0%** (30/30 clean cards).
+   - **HELD-OUT Corpus (60 cards, fresh seed):** Exception Recall = **100.0%**, Escalation Correctness = **100.0%**, Precision = **83.3%**, Specificity = **80.0%**, Straight-Through Proxy = **80.0%** (24/30 clean cards), False Negatives = **0**. *(Note: Straight-through proxy evaluates clean card passage at single-document level without escalation; not an end-to-end multi-step lifecycle measurement).*
 
 4. **Permanent NOT_VERIFIED Identity Status:**
    - In accordance with CBE compliance boundaries and the absence of live MOI Civil Status network connectivity, all identity verifications remain permanently marked as `NOT_VERIFIED`.

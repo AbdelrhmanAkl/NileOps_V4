@@ -104,12 +104,14 @@ async def reset_demo():
         print(f"  - Removed {cleaned_files} temporary uploaded files.")
 
     # 6. Reconcile Qdrant vector index
-    print("--- [3/4] Reconciling Qdrant Knowledge Base Collection ---")
+    print("--- [3/4] Recreating & Reconciling Qdrant Knowledge Base Collection ---")
     try:
+        if qdrant_service.client.collection_exists(qdrant_service.collection_name):
+            qdrant_service.client.delete_collection(qdrant_service.collection_name)
         await qdrant_service.init_collection()
         async with async_session_maker() as session:
             recon = await qdrant_service.reconcile_with_postgres(session)
-            print(f"  - Qdrant reconciled: {recon.get('active_points_in_qdrant', 0)} active points.")
+            print(f"  - Qdrant reconciled: {recon.get('total_qdrant_points', 0)} total points.")
     except Exception as e:
         print(f"  - Qdrant notice: {e}")
 

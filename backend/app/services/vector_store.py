@@ -45,6 +45,21 @@ class QdrantVectorService:
                 f"Production collection '{COLLECTION_NAME}' is strictly protected."
             )
 
+    def _assert_write_permitted(self) -> None:
+        """Guard 4(b): Strict security guard making it impossible for tests or fixtures to write to production nileops_kb."""
+        db_url = os.getenv("DATABASE_URL", "")
+        is_testing = (
+            "pytest" in sys.modules
+            or "nileops_test" in db_url
+            or os.getenv("PYTEST_CURRENT_TEST") is not None
+            or os.getenv("NILEOPS_TEST_MODE") == "1"
+        )
+        if is_testing:
+            assert "test" in self.collection_name.lower(), (
+                f"CRITICAL SECURITY GUARD: Refusing write to collection '{self.collection_name}' "
+                f"in test/fixture context. Target collection name MUST contain 'test'!"
+            )
+
     async def init_collection(self) -> bool:
         """Dynamically discover embedding dimension and create collection if missing."""
         try:
@@ -54,6 +69,7 @@ class QdrantVectorService:
             exists = any(c.name == self.collection_name for c in collections)
 
             if not exists:
+                self._assert_write_permitted()
                 self.client.create_collection(
                     collection_name=self.collection_name,
                     vectors_config=models.VectorParams(
@@ -132,7 +148,8 @@ class QdrantVectorService:
         return chunks
 
     async def index_document(self, doc: PolicyDocument) -> Tuple[bool, str]:
-        """Ingest policy document chunks into Qdrant enforcing strict 4-eyes approval."""
+        """Ingest policy document chunks into Qdrant enforcing strict 4-eyes approval and mojibake guards."""
+        self._assert_write_permitted()
         if not self.initialized:
             await self.init_collection()
 
@@ -146,6 +163,17 @@ class QdrantVectorService:
 
         if doc.approved_by_id == doc.created_by_id:
             return False, f"Document {doc.code} rejected: creator cannot approve own document (separation of duties violation)"
+
+        # Guard 4(a): Refuse to index policy text containing mojibake markers or lacking Arabic letters in Arabic fields
+        mojibake_markers = ["\u00c3", "\u00d9", "\u00d8", "\u00da", "\u00c2"]
+        combined_text = (doc.title_ar or "") + " " + (doc.content_ar or "")
+        if any(m in combined_text for m in mojibake_markers):
+            return False, f"Document {doc.code} rejected from vector index: mojibake markers detected in Arabic text"
+
+        has_arabic_title = any("\u0600" <= ch <= "\u06ff" or "\u0750" <= ch <= "\u077f" for ch in (doc.title_ar or ""))
+        has_arabic_content = any("\u0600" <= ch <= "\u06ff" or "\u0750" <= ch <= "\u077f" for ch in (doc.content_ar or ""))
+        if not (has_arabic_title and has_arabic_content):
+            return False, f"Document {doc.code} rejected from vector index: Arabic fields lack valid Arabic characters"
 
         # Delete any existing chunks for this document to ensure clean idempotency
         await self.delete_document_chunks(str(doc.id))
@@ -204,6 +232,7 @@ class QdrantVectorService:
 
     async def delete_document_chunks(self, document_id: str) -> None:
         """Purge all chunks associated with a document ID."""
+        self._assert_write_permitted()
         self.client.delete(
             collection_name=self.collection_name,
             points_selector=models.FilterSelector(
@@ -295,6 +324,7 @@ class QdrantVectorService:
 
     async def reconcile_with_postgres(self, session: AsyncSession) -> Dict[str, Any]:
         """Synchronize Qdrant vector index with authoritative PostgreSQL policy records."""
+        self._assert_write_permitted()
         if not self.initialized:
             await self.init_collection()
 

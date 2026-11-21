@@ -130,6 +130,7 @@ async def main():
     print(f"{'Audit Chain Completeness':<32} | {'100.0%':<12} | {fmt_pct(a_m['audit_completeness_pct']):<12} | {'N/A':<12} | {'N/A':<12} | {eval_status(a_m['audit_completeness_pct'], 100.0, '>='):<8}")
     print(f"{'Exception Detection Recall':<32} | {'>= 95.0%':<12} | {fmt_pct(e_dev['exception_recall_pct']):<12} | {fmt_pct(e_ho['exception_recall_pct']):<12} | {'N/A':<12} | {eval_status(e_dev['exception_recall_pct'], 95.0, '>='):<8}")
     print(f"{'Correct Escalation Rate':<32} | {'>= 95.0%':<12} | {fmt_pct(e_dev['correct_escalation_rate_pct']):<12} | {fmt_pct(e_ho['correct_escalation_rate_pct']):<12} | {'N/A':<12} | {eval_status(e_dev['correct_escalation_rate_pct'], 95.0, '>='):<8}")
+    print(f"{'Straight-Through Proxy (Card)':<32} | {'>= 60.0%':<12} | {fmt_pct(e_dev.get('straight_through_proxy_pct')):<12} | {fmt_pct(e_ho.get('straight_through_proxy_pct')):<12} | {'N/A':<12} | {eval_status(e_dev.get('straight_through_proxy_pct'), 60.0, '>='):<8}")
     print(f"{'Exception Precision':<32} | {'No target':<12} | {fmt_pct(e_dev['precision_pct']):<12} | {fmt_pct(e_ho['precision_pct']):<12} | {'N/A':<12} | {'NO TARGET':<8}")
     print(f"{'Exception Specificity':<32} | {'No target':<12} | {fmt_pct(e_dev['specificity_pct']):<12} | {fmt_pct(e_ho['specificity_pct']):<12} | {'N/A':<12} | {'NO TARGET':<8}")
     print(f"{'RAG Grounded Hit@1 Rate':<32} | {'>= 90.0%':<12} | {fmt_pct(r_dev['grounded_answer_rate_pct']):<12} | {fmt_pct(r_ho1['grounded_answer_rate_pct']):<12} | {fmt_pct(r_ho2['grounded_answer_rate_pct']):<12} | {eval_status(r_dev['grounded_answer_rate_pct'], 90.0, '>='):<8}")
@@ -141,6 +142,9 @@ async def main():
     print(f"{'OCR Citizen Name Field F1':<32} | {'>= 90.0%':<12} | {fmt_pct(o_m['name_f1_pct']):<12} | {'N/A':<12} | {'N/A':<12} | {eval_status(o_m['name_f1_pct'], 90.0, '>='):<8}")
     print(f"{'OCR Residential Address Field F1':<32} | {'>= 90.0%':<12} | {fmt_pct(o_m['address_f1_pct']):<12} | {'N/A':<12} | {'N/A':<12} | {eval_status(o_m['address_f1_pct'], 90.0, '>='):<8}")
     print(f"{'OCR Factory Code Field F1':<32} | {'>= 90.0%':<12} | {fmt_pct(o_m['factory_code_f1_pct']):<12} | {'N/A':<12} | {'N/A':<12} | {eval_status(o_m['factory_code_f1_pct'], 90.0, '>='):<8}")
+    print("==================================================================================")
+    print("  * Note: Straight-Through Proxy (Card) measures the share of clean synthetic cards")
+    print("    that completed without escalation (card-level proxy, not a workflow measurement).")
     print("==================================================================================\n")
 
 

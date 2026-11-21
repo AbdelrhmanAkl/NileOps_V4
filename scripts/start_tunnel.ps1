@@ -1,4 +1,4 @@
-# NileOps — Cloudflare Quick Tunnel Launcher
+﻿# NileOps — Cloudflare Quick Tunnel Launcher
 # Exposes the local unified single-port NileOps instance (http://localhost:8000) securely via Cloudflare.
 
 $ErrorActionPreference = "Stop"

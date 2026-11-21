@@ -1,4 +1,4 @@
-# NileOps — Production Demo Launcher
+﻿# NileOps — Production Demo Launcher
 # Orchestrates dependencies, environment variables, security guards, and starts the unified single-port server.
 
 $ErrorActionPreference = "Stop"

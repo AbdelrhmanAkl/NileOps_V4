@@ -13,17 +13,18 @@ This report provides an empirical evaluation of the **NileOps Digital Banking Op
 
 ### Current Empirical Status
 - **Audit Completeness:** **100.0% (MET)** on live PostgreSQL database ledger.
-- **Exception Detection Recall:** **96.7% (MET)** on DEV (60 cards) and **100.0% (MET)** on HELD-OUT (60 cards).
-- **Correct Escalation Rate:** **96.7% (MET)** on DEV (60 cards) and **100.0% (MET)** on HELD-OUT (60 cards).
+- **Exception Detection Recall:** **96.7% (MET)** on in-sample DEV (60 cards) and **100.0% (MET)** on HELD-OUT (60 cards).
+- **Correct Escalation Rate:** **96.7% (MET)** on in-sample DEV (60 cards) and **100.0% (MET)** on HELD-OUT (60 cards).
+- **Straight-Through Proxy Rate (Card Level):** **100.0% (MET)** on in-sample DEV (30/30 clean cards) and **80.0% (MET)** on HELD-OUT (24/30 clean cards). *(Note: Card-level synthetic proxy where clean cards without exceptions pass without escalation; not an end-to-end multi-step workflow measurement).*
 - **RAG Grounded-Answer Rate (Hit@1):**
-  - **DEV Set (N=40, 25 in-domain):** **88.0% (NOT MET)** vs target $\ge 90.0\%$ (22/25).
+  - **DEV Set (In-Sample, N=40, 25 in-domain):** **88.0% (NOT MET)** vs target $\ge 90.0\%$ (22/25).
   - **Held-Out Set 1 (N=30, 25 in-domain):** **96.0% (MET)** vs target $\ge 90.0\%$ (24/25).
   - **New Held-Out Set 2 (Colloquial / Typos / Fragments, N=30, 20 in-domain):** **70.0% (NOT MET)** vs target $\ge 90.0\%$ (14/20; Hit@3: 75.0%, 15/20).
 - **RAG Abstention Rate (Multi-Signal Calibrated Gating):**
-  - **DEV Set (N=15 out-of-domain):** **80.0% (NOT MET)** vs target $\ge 90.0\%$ (12/15; Abstention Precision: 100.0%, 12/12).
+  - **DEV Set (In-Sample, N=15 out-of-domain):** **73.3% (NOT MET)** vs target $\ge 90.0\%$ (11/15; Abstention Precision: 100.0%, 11/11).
   - **Held-Out Set 1 (N=5 out-of-domain):** **100.0% (MET)** vs target $\ge 90.0\%$ (5/5; Abstention Precision: 83.3%, 5/6).
   - **New Held-Out Set 2 (N=10 out-of-domain):** **90.0% (MET)** vs target $\ge 90.0\%$ (9/10; Abstention Precision: 64.3%, 9/14).
-  - **Overall Burned Dev Pool (N=30 out-of-domain):** **86.7% (26/30)** correctly abstained (massive improvement from previous static-threshold baseline of 13.3%, 4/30).
+  - **Combined 100-Question Pool (N=30 out-of-domain):** **83.3% (25/30)** correctly abstained.
   - **5-Fold Stratified Cross-Validation on 100-Question Pool:** Abstention Recall: **86.7% ± 19.4%**, Abstention Precision: **83.7% ± 15.3%**, Hit@1: **85.7% ± 9.0%**, Hit@3: **91.4% ± 10.5%**, MRR: **0.8857 ± 0.0942**.
 - **OCR Field Extraction $F_1$ (40 cards across Clean, Glare, Blur, Shadow):**
   - **National ID Field $F_1$:** **87.5% (NOT MET)** vs target $\ge 90.0\%$.
@@ -31,30 +32,33 @@ This report provides an empirical evaluation of the **NileOps Digital Banking Op
   - **Residential Address Field $F_1$:** **50.0% (NOT MET)** vs target $\ge 90.0\%$.
   - **Factory Code Field $F_1$:** **90.0% (MET)** vs target $\ge 90.0\%$.
   - *Statement on Preprocessing:* Advanced image preprocessing (such as super-resolution, morphological binarization, or localized CLAHE de-glaring before PaddleOCR) was **not implemented**. Raw or mildly filtered card images are fed directly to PaddleOCR, causing degraded character recognition on cursive Arabic text under glare and blur.
-- **Automated Test Suite:** 131 tests passed in `backend/tests`. Frontend `tsc && vite build` passed with zero errors.
+- **Automated Test Suite:** 138 tests passed in `backend/tests`. Frontend `npm run build` and `tsc --noEmit` passed with zero errors.
 
 ---
 
 ## 2. Complete Handbook KPI Results Table
 
-| Operational / AI Metric | Handbook Target | DEV Measured | HELD-OUT 1 Measured | HELD-OUT 2 (Colloquial/Typos) | Status | Benchmark Source |
+| Operational / AI Metric | Handbook Target | DEV (In-Sample) | HELD-OUT 1 | HELD-OUT 2 (Colloquial/Typos) | Status | Benchmark Source |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
 | **Audit Chain Completeness** | `100.0%` | **100.0%** (359 logs) | *N/A* | *N/A* | **MET** | `scripts/eval/eval_audit_completeness.py` |
 | **Exception Detection Recall** | `recall >= 95.0%` | **96.7%** (29/30) | **100.0%** (30/30) | *N/A* | **MET** | `scripts/eval/eval_exceptions.py` (60 cards each) |
 | **Correct Escalation Rate** | `recall >= 95.0%` | **96.7%** (29/30) | **100.0%** (30/30) | *N/A* | **MET** | `scripts/eval/eval_exceptions.py` (60 cards each) |
+| **Straight-Through Proxy Rate (Card)** | `rate >= 75.0%` | **100.0%** (30/30) | **80.0%** (24/30) | *N/A* | **MET** | `scripts/eval/eval_exceptions.py` (Clean cards proxy) |
 | **Exception Precision** | *No target* | **100.0%** (29/29) | **83.3%** (30/36) | *N/A* | **NO TARGET** | `scripts/eval/eval_exceptions.py` (30 clean cards) |
 | **Exception Specificity** | *No target* | **100.0%** (30/30) | **80.0%** (24/30) | *N/A* | **NO TARGET** | `scripts/eval/eval_exceptions.py` (30 clean cards) |
-| **RAG Grounded Hit@1 Rate** | `hit1 >= 90.0%` | **88.0%** (22/25) | **96.0%** (24/25) | **70.0%** (14/20) | **NOT MET** | `scripts/eval/eval_rag.py` |
-| **RAG Retrieval Hit@3 Rate** | `hit3 >= 90.0%` | **100.0%** (25/25) | **96.0%** (24/25) | **75.0%** (15/20) | **MET** | `scripts/eval/eval_rag.py` |
+| **RAG Grounded Hit@1 Rate** | `hit1 >= 90.0%` | **88.0%** (22/25) | **96.0%** (24/25) | **70.0%** (14/20) | **PARTIAL** (DEV/HO2 NOT MET, HO1 MET) | `scripts/eval/eval_rag.py` |
+| **RAG Retrieval Hit@3 Rate** | `hit3 >= 90.0%` | **100.0%** (25/25) | **96.0%** (24/25) | **75.0%** (15/20) | **PARTIAL** (DEV/HO1 MET, HO2 NOT MET) | `scripts/eval/eval_rag.py` |
 | **RAG Mean Reciprocal Rank (MRR)** | *No target* | **0.9400** | **0.9600** | **0.7250** | **NO TARGET** | `scripts/eval/eval_rag.py` |
-| **RAG Correct Abstention Rate** | `abstention >= 90.0%`| **80.0%** (12/15) | **100.0%** (5/5) | **90.0%** (9/10) | **NOT MET** | `scripts/eval/eval_rag.py` (Out-of-domain) |
-| **RAG Abstention Precision** | *No target* | **100.0%** (12/12) | **83.3%** (5/6) | **64.3%** (9/14) | **NO TARGET** | `scripts/eval/eval_rag.py` |
+| **RAG Correct Abstention Rate** | `abstention >= 90.0%`| **73.3%** (11/15) | **100.0%** (5/5) | **90.0%** (9/10) | **PARTIAL** (DEV NOT MET, HO1/HO2 MET) | `scripts/eval/eval_rag.py` (Out-of-domain) |
+| **RAG Abstention Precision** | *No target* | **100.0%** (11/11) | **83.3%** (5/6) | **64.3%** (9/14) | **NO TARGET** | `scripts/eval/eval_rag.py` |
 | **RAG Retrieval Latency** | `< 1000ms` | **82.4ms** | **27.0ms** | **26.6ms** | **MET** | `scripts/eval/eval_rag.py` |
 | **RAG Cross-Portal Leakage** | `0` | **0** | **0** | **0** | **MET** | `backend/tests/test_rag.py` |
 | **OCR National ID Field $F_1$** | `field F1 >= 90.0%` | **87.5%** | *N/A* | *N/A* | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` (40 cards) |
 | **OCR Citizen Name Field $F_1$** | `field F1 >= 90.0%` | **62.5%** | *N/A* | *N/A* | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` (40 cards) |
 | **OCR Address Field $F_1$** | `field F1 >= 90.0%` | **50.0%** | *N/A* | *N/A* | **NOT MET** | `scripts/eval/eval_ocr_extraction.py` (40 cards) |
 | **OCR Factory Code Field $F_1$** | `field F1 >= 90.0%` | **90.0%** | *N/A* | *N/A* | **MET** | `scripts/eval/eval_ocr_extraction.py` (40 cards) |
+
+*Note on Straight-Through Proxy:* This metric evaluates whether clean cards without exceptions pass without human escalation at the single-document level. It is a synthetic card-level proxy and does not represent an end-to-end multi-step banking lifecycle straight-through processing measurement.
 
 ---
 
@@ -72,8 +76,8 @@ This report provides an empirical evaluation of the **NileOps Digital Banking Op
   - Hit@1: 88.0% (22/25)
   - Hit@3: 100.0% (25/25)
   - MRR: 0.9400
-  - Abstention Recall: 80.0% (12/15)
-  - Abstention Precision: 100.0% (12/12)
+  - Abstention Recall: 73.3% (11/15)
+  - Abstention Precision: 100.0% (11/11)
   - Latency: 82.4ms
 - **Held-Out Partition 1 (N=30: 25 In-Domain, 5 Out-of-Domain):**
   - Hit@1: 96.0% (24/25)

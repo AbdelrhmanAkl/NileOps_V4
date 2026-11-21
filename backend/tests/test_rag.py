@@ -275,3 +275,69 @@ def test_rag_abstention_english_off_topic_cookies(client: TestClient):
     assert data["confidence_score"] == 0.0
     assert len(data["citations"]) == 0
     assert "No matching policy found" in data["answer"]
+
+
+@pytest.mark.asyncio
+async def test_guard_mojibake_policy_indexing_refused():
+    """Guard 4(a): Verify index_document refuses policy text containing mojibake or lacking Arabic letters."""
+    import uuid
+    from app.models.policy import PolicyDocument
+    from app.services.vector_store import qdrant_service
+
+    # Case 1: Mojibake marker in Arabic title
+    bad_doc_mojibake = PolicyDocument(
+        id=str(uuid.uuid4()),
+        code="POL-TEST-MOJI-1",
+        title_en="Mojibake Test Policy",
+        title_ar="Ø³ÙŠØ§Ø³Ø© Ù…Ø®Ø§Ù„Ù Ø©",
+        domain="retail_banking",
+        content_en="English test content",
+        content_ar="يجوز فتح الحساب بالجنيه المصري",
+        status="APPROVED",
+        approved_by_id="usr-comp-01",
+        created_by_id="usr-ops-01",
+        version="1.0",
+    )
+    success, msg = await qdrant_service.index_document(bad_doc_mojibake)
+    assert success is False
+    assert "mojibake markers detected" in msg
+
+    # Case 2: Arabic fields lack Arabic letters
+    bad_doc_no_arabic = PolicyDocument(
+        id=str(uuid.uuid4()),
+        code="POL-TEST-NOARABIC-1",
+        title_en="No Arabic Test Policy",
+        title_ar="Completely English Title In Arabic Field",
+        domain="retail_banking",
+        content_en="English test content",
+        content_ar="Another English text without Arabic letters",
+        status="APPROVED",
+        approved_by_id="usr-comp-01",
+        created_by_id="usr-ops-01",
+        version="1.0",
+    )
+    success2, msg2 = await qdrant_service.index_document(bad_doc_no_arabic)
+    assert success2 is False
+    assert "Arabic fields lack valid Arabic characters" in msg2
+
+
+def test_guard_test_isolation_blocks_write_to_production_kb():
+    """Guard 4(b): Verify it is impossible for tests/fixtures to write to production nileops_kb."""
+    from app.services.vector_store import QdrantVectorService
+
+    # 1. Instantiation guard: creating a service with production collection in test mode raises RuntimeError
+    with pytest.raises(RuntimeError) as exc_info:
+        QdrantVectorService(collection_name="nileops_kb")
+    assert "CRITICAL TEST ISOLATION FAILURE" in str(exc_info.value)
+    assert "Production collection 'nileops_kb' is strictly protected" in str(exc_info.value)
+
+    # 2. Write-time guard: even if mutated, calling _assert_write_permitted raises AssertionError
+    test_service = QdrantVectorService(collection_name="nileops_kb_test")
+    test_service._assert_write_permitted()  # must pass on test collection
+
+    test_service.collection_name = "nileops_kb"
+    with pytest.raises(AssertionError) as exc_info2:
+        test_service._assert_write_permitted()
+    assert "Refusing write to collection 'nileops_kb'" in str(exc_info2.value)
+    assert "MUST contain 'test'" in str(exc_info2.value)
+

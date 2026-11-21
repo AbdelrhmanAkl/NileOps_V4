@@ -26,6 +26,42 @@ async def lifespan(app: FastAPI):
         except Exception as e:
             print(f"[NileOps Startup] Demo seeder notice: {e}")
 
+    # 3. Guard 4(c): Verify Qdrant collection integrity at startup
+    qdrant_startup_error = None
+    try:
+        from app.services.embedding import embedding_service
+        from app.services.vector_store import qdrant_service
+
+        expected_dim = await embedding_service.probe_dimension()
+        collections = [c.name for c in qdrant_service.client.get_collections().collections]
+        if qdrant_service.collection_name not in collections:
+            qdrant_startup_error = f"Qdrant collection '{qdrant_service.collection_name}' does not exist."
+        else:
+            col_info = qdrant_service.client.get_collection(qdrant_service.collection_name)
+            points_count = getattr(col_info, "points_count", 0) or 0
+            vectors_cfg = getattr(getattr(col_info, "config", None), "params", None)
+            actual_dim = getattr(getattr(vectors_cfg, "vectors", None), "size", None)
+            if actual_dim is None and isinstance(getattr(vectors_cfg, "vectors", None), dict):
+                actual_dim = getattr(vectors_cfg, "vectors", {}).get("size")
+
+            if points_count == 0:
+                qdrant_startup_error = f"Qdrant collection '{qdrant_service.collection_name}' is empty (0 points)."
+            elif actual_dim is not None and actual_dim != expected_dim:
+                qdrant_startup_error = (
+                    f"Qdrant vector size mismatch: collection has {actual_dim}, "
+                    f"embedding model requires {expected_dim}."
+                )
+
+        if qdrant_startup_error:
+            import logging
+            logging.getLogger("uvicorn.error").error(f"[NileOps Qdrant Integrity Error] {qdrant_startup_error}")
+    except Exception as e:
+        import logging
+        qdrant_startup_error = f"Qdrant startup verification check failed: {e}"
+        logging.getLogger("uvicorn.error").error(f"[NileOps Qdrant Integrity Error] {qdrant_startup_error}")
+
+    app.state.qdrant_error = qdrant_startup_error
+
     yield
 
 
@@ -58,12 +94,16 @@ def create_application() -> FastAPI:
     async def health_check():
         """Unauthenticated health status probe."""
         db_type = "PostgreSQL 16" if "postgresql" in settings.DATABASE_URL else "SQLite Async MVP"
-        return {
-            "status": "healthy",
+        qdrant_err = getattr(app.state, "qdrant_error", None)
+        res = {
+            "status": "healthy" if not qdrant_err else "degraded",
             "service": "NileOps Backend",
             "version": "1.0.0",
             "database": db_type,
         }
+        if qdrant_err:
+            res["qdrant_error"] = qdrant_err
+        return res
 
     # Mount API v1 router
     app.include_router(api_v1_router, prefix=settings.API_V1_PREFIX)
